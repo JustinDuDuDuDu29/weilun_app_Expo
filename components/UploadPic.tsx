@@ -5,6 +5,7 @@ import plus from "../asset/plus.png";
 import ChoosePicDrawer from "./ChoosePicDrawer";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { Image } from "expo-image";
+
 const UploadPic = ({
   pressFun,
   canPress,
@@ -14,13 +15,11 @@ const UploadPic = ({
 }: {
   pressFun: Function;
   canPress: boolean;
-  src: ImgT;
+  src: ImgT | imgUrl;
   actionSheetRef: React.RefObject<ActionSheetRef>;
   tarFun: Function;
 }): React.JSX.Element => {
-  useEffect(() => {
-    console.log(src);
-  }, [src]);
+  useEffect(() => {}, [src]);
 
   const [toR, setToR] = useState();
 
@@ -39,13 +38,7 @@ const UploadPic = ({
           style={{ width: "100%", height: undefined, aspectRatio: 1 }}
         >
           <Image
-            source={
-              src
-                ? {
-                    uri: `${src.uri}`,
-                  }
-                : plus
-            }
+            source={src ? src : plus}
             style={{ width: "100%", height: "100%" }}
           ></Image>
         </View>

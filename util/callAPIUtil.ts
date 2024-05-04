@@ -15,11 +15,10 @@ export async function callAPI(route: string, method: string, body:object, useAut
 
 export async function callAPIForm(route: string, method: string, body:FormData, useAuth:boolean) {
     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
-
     return await fetch(process.env.EXPO_PUBLIC_HOST+route, {
         headers:{
             'Authorization': (useAuth?bearer:""),
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
         },
         method:method,
         body:body

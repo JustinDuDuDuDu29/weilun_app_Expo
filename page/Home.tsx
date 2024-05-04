@@ -10,7 +10,7 @@ import {
 import { Icon, Text } from "react-native-paper";
 import { logout } from "../util/loginInfo";
 import { isLoggedInAtom } from "../App";
-import { atom, useAtom } from "jotai";
+import { PrimitiveAtom, atom, useAtom } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
@@ -52,7 +52,6 @@ function Home(): React.JSX.Element {
             await callAPI("/api/claimed/current", "POST", {}, true)
           ).json();
           if (!RUEmpty(currentJob)) {
-            console.log("HAVE JOB");
             setPendingJob({
               ID: currentJob.ID,
               FromLoc: currentJob.FromLoc,

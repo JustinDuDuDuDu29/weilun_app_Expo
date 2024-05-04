@@ -18,9 +18,7 @@ const UploadPic = ({
   actionSheetRef: React.RefObject<ActionSheetRef>;
   tarFun: Function;
 }): React.JSX.Element => {
-  useEffect(() => {
-    console.log(src);
-  }, [src]);
+  useEffect(() => {}, [src]);
 
   const [toR, setToR] = useState();
 
