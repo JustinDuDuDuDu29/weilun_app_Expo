@@ -16,6 +16,7 @@ import FinishJob from './page/FinishJob';
 import UserInfo from './page/UserInfo';
 import ChangePassword from './page/ChangePassword';
 import "./global.css"
+import UserManageP from './page/UserManageP';
 export const isLoggedInAtom = atom(false);
 
 const Stack = createNativeStackNavigator();
@@ -65,6 +66,7 @@ function App() {
               <Stack.Screen name="mainTainP" component={Maintain} />
               <Stack.Screen name="userInfoP" component={UserInfo} />
               <Stack.Screen name="changePasswordP" component={ChangePassword} />
+              <Stack.Screen name="userManageP" component={UserManageP} />
             </>
           ) : (
             <>

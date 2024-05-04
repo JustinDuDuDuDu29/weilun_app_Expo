@@ -1,22 +1,24 @@
 import { NullString } from "./jobItemT";
 
+export type NewUser={
+  Name: string;
+  Role: string;
+  PhoneNum:string;
+  BelongCmp: number;
+  driverInfo?: {
+      percentage: number;
+      nationalIdNumber: string;
+  }
+}
 
-// export type userT ={
-//     id: number;
-//     userName: string;
-//     role: number;
-//     phoneNum:string;
-//     belongCmp: number;
-//     cmpName: string;
-//     Initpwdchanged:boolean;
-//     nationalIDNumber?:string;
-//     truckLicense?:NullString;
-//     registration?:NullString;
-//     driverLicense?:NullString;
-//     Insurances?:NullString;
-//     approvedDate?:NullDate;
-//     Percentage?: number;
-//   }
+export type cmpInfo={
+  CreateDate: string;
+  DeletedDate: NullDate;
+  ID: number;
+  LastModifiedDate: string;
+  Name: string;
+}
+
 export type inUserT={
   ApprovedDate:NullDate; 
   Belongcmp: number;

@@ -19,6 +19,7 @@ import { callAPI } from "../util/callAPIUtil";
 import { jobItemT } from "../types/jobItemT";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
+import UserManage from "../components/UserManage";
 
 export const pendingJob = atom<jobItemT | null>(null);
 export const userInfo = atom<inUserT | null>(null);
@@ -148,6 +149,7 @@ function Home(): React.JSX.Element {
           </View>
         </Pressable>
         <JobBlockPJ jobItem={getPendingJob} />
+        {getUserInfo.Role === 100 ? <UserManage /> : <></>}
         <Pressable
           onPress={async () => {
             await logout();
