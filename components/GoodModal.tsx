@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 
 function GoodModal({
   children,
@@ -27,7 +27,8 @@ function GoodModal({
       visible={visible}
       onRequestClose={() => {
         hideModal();
-      }}>
+      }}
+    >
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
@@ -35,12 +36,14 @@ function GoodModal({
         }}
         className="flex justify-end content-center"
         style={{
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: "rgba(0,0,0,0.5)",
           flex: 1,
-        }}>
+        }}
+      >
         <TouchableOpacity
           activeOpacity={1}
-          className="w-screen flex justify-end">
+          className="w-screen flex justify-end"
+        >
           <View style={styles.modalView}>{children}</View>
         </TouchableOpacity>
       </TouchableOpacity>
@@ -48,16 +51,16 @@ function GoodModal({
   );
 }
 
-const ww = Dimensions.get('window').width;
-const wh = Dimensions.get('window').height;
+const ww = Dimensions.get("window").width;
+const wh = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   modalView: {
     maxHeight: wh * 0.8,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    padding: 35,
-    shadowColor: '#000',
+    padding: 5,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,

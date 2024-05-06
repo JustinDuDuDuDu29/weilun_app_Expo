@@ -1,7 +1,6 @@
-// type ScreenProp = NativeStackNavigationProp<RootStackParamList>;
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {jobItemT} from './jobItemT';
 
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { jobItemT } from './JobItemT';
 export type ScreenProp = NativeStackNavigationProp<RootStackParamList>;
 
 
@@ -18,4 +17,8 @@ export type RootStackParamList = {
     finishJobP: undefined;
     userInfoP:undefined;
     changePasswordP:undefined;
+    userManageP:undefined;
+    jobsAdminP:undefined;
+    jobUpdateP: {jobItem: jobItemT};
+    alertP: undefined;
 };

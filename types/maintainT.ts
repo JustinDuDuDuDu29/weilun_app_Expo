@@ -1,12 +1,22 @@
-export type mInfoT = {id: string|null, name: string|null, price: number|null, quantity: number|null}
+import { NullDate } from "./userT";
+
+export type mInfoT = {
+    id:string;
+    name: string|null;
+    price: number|null;
+    quantity: number|null
+}
 
 export type maintainInfoT = {
-    "id": number;
-    "type": string;
-    "info": mInfoT[];
-    "name": string;
-    "plateNum": string;
-    "date": string;
-    "place": string;
+    ID: number;
+    Driverid: number;
+    Drivername: string;
+    type: string;
+    Repairinfo: mInfoT[];
+    // name: string;
+    // plateNum: string;
+    Createdate: string;
+    Approveddate: NullDate;
+    // place: string;
 };
 

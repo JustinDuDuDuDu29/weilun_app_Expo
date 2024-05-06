@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { Icon, Text } from "react-native-paper";
-import { logout } from "../util/loginInfo";
+import { getSecureValue, logout } from "../util/loginInfo";
 import { isLoggedInAtom } from "../App";
 import { PrimitiveAtom, atom, useAtom } from "jotai";
 import { useNavigation } from "@react-navigation/native";
@@ -16,14 +16,44 @@ import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
 import JobBlockPJ from "../components/JobBlockPJ";
 import { callAPI } from "../util/callAPIUtil";
-import { jobItemT } from "../types/jobItemT";
+import { jobItemT } from "../types/JobItemT";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
+import { useIsFocused } from "@react-navigation/native";
+import UserManage from "../components/UserManage";
 
 export const pendingJob = atom<jobItemT | null>(null);
 export const userInfo = atom<inUserT | null>(null);
 
 function Home(): React.JSX.Element {
+  useEffect(() => {
+    const ff = async () => {
+      const ws = new WebSocket("ws://10.0.2.2:8080/api/io");
+
+      ws.onopen = async () => {
+        // connection opened
+        ws.send((await getSecureValue("jwtToken")).toString()); // send a message
+      };
+
+      ws.onmessage = (e) => {
+        // a message was received
+        Alert.alert("YO!", JSON.parse(e.data).msg, [{ text: "OK" }]);
+        console.log("msg:", e);
+      };
+
+      ws.onerror = (e) => {
+        // an error occurred
+        console.log("err", e);
+      };
+
+      ws.onclose = (e) => {
+        // connection closed
+        console.log(e.code, e.reason);
+      };
+    };
+    ff();
+  }, []);
+  const isFocused = useIsFocused();
   useEffect(() => {
     const getUserInfo = async () => {
       try {
@@ -58,15 +88,16 @@ function Home(): React.JSX.Element {
               Mid: currentJob.Mid,
               ToLoc: currentJob.ToLoc,
             });
+          } else {
+            setPendingJob(null);
           }
         }
       } catch (error) {
         console.log("error: ", error);
       }
     };
-
     getUserInfo();
-  }, []);
+  }, [isFocused]);
 
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const navigation = useNavigation<ScreenProp>();
@@ -82,7 +113,7 @@ function Home(): React.JSX.Element {
     <SafeAreaView className="h-full flex justify-center">
       <View className="px-5 flex flex-col justify-around h-4/5">
         <View className="flex flex-row justify-around items-center">
-          <Text>{getUserInfo!.Username}</Text>
+          <Text className="text-xl">歡迎！{getUserInfo!.Username}</Text>
           <Pressable
             onPress={() => {
               navigation.navigate("userInfoP");
@@ -93,7 +124,11 @@ function Home(): React.JSX.Element {
         </View>
         <Pressable
           className="flex flex-row content-center bg-blue-300 rounded-lg px-9 py-2 justify-center "
-          onPress={() => navigation.navigate("jobsP")}
+          onPress={() => {
+            getUserInfo.Role === 100
+              ? navigation.navigate("jobsAdminP")
+              : navigation.navigate("jobsP");
+          }}
         >
           <View className="w-1/6">
             <Icon source="truck-fast" size={0.12 * ww} />
@@ -138,7 +173,7 @@ function Home(): React.JSX.Element {
         </Pressable>
         <Pressable
           className="flex flex-row content-center bg-blue-300 rounded-lg px-9 py-2 justify-center"
-          onPress={() => navigation.navigate("customerSP")}
+          onPress={() => navigation.navigate("alertP")}
         >
           <View className="w-1/6">
             <Icon source="exclamation" size={0.12 * ww} />
@@ -148,6 +183,7 @@ function Home(): React.JSX.Element {
           </View>
         </Pressable>
         <JobBlockPJ jobItem={getPendingJob} />
+        {getUserInfo.Role === 100 ? <UserManage /> : <></>}
         <Pressable
           onPress={async () => {
             await logout();
