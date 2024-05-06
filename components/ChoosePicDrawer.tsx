@@ -21,7 +21,6 @@ function ChoosePicDrawer({
             const result = await ImagePicker.launchCameraAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
             });
-            console.log(result.assets![0]);
             tarFun({
               uri: result.assets![0].uri!,
               name: result.assets![0].fileName!,

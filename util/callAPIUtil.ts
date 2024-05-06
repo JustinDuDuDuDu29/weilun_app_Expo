@@ -9,7 +9,7 @@ export async function callAPI(route: string, method: string, body:object, useAut
             'Authorization': (useAuth?bearer:""),
         },
         method:method,
-        body:method == "POST"?(JSON.stringify({...body})):null
+        body:method == "GET"?null:(JSON.stringify({...body}))
     })
 }
 

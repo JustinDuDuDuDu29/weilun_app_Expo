@@ -85,7 +85,6 @@ function UserManageP(): React.JSX.Element {
           Alert.alert("成功！", "新增公司成功", [{ text: "OK" }]);
       } else {
         if (user.Name == "" || user.PhoneNum == "" || user.BelongCmp == null) {
-          console.log(1);
           Alert.alert("注意！", "請確認資料是否完整", [{ text: "OK" }]);
           return;
         }
@@ -94,7 +93,6 @@ function UserManageP(): React.JSX.Element {
           (user.driverInfo?.nationalIdNumber == "" ||
             user.driverInfo?.percentage == 0)
         ) {
-          console.log(2);
           Alert.alert("注意！", "請確認資料是否完整", [{ text: "OK" }]);
           return;
         }
@@ -228,7 +226,7 @@ function UserManageP(): React.JSX.Element {
                               setUser({
                                 ...user,
                                 driverInfo: {
-                                  ...user.driverInfo,
+                                  percentage: user.driverInfo?.percentage!,
                                   nationalIdNumber: e,
                                 },
                               });
@@ -242,7 +240,9 @@ function UserManageP(): React.JSX.Element {
                               setUser({
                                 ...user,
                                 driverInfo: {
-                                  ...user.driverInfo,
+                                  // ...user.driverInfo,
+                                  nationalIdNumber:
+                                    user.driverInfo?.nationalIdNumber!,
                                   percentage: parseInt(e),
                                 },
                               });

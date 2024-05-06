@@ -1,4 +1,4 @@
-import { NullString } from "./jobItemT";
+import { NullString } from "./JobItemT";
 
 export type NewUser={
   Name: string;
@@ -43,6 +43,6 @@ export type NullInt64={
   Valid: boolean;
 }
 export type NullDate = {
-  String: string;
+  Time: string;
   Valid: boolean;
 }

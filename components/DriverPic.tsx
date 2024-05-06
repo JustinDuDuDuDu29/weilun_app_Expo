@@ -118,19 +118,15 @@ function DriverPic(): React.JSX.Element {
             const f = new FormData();
 
             if (truckLicense && !("headers" in truckLicense)) {
-              console.log("TL have changed");
               f.append("TruckLicense", truckLicense!);
             }
             if (driverLicense && !("headers" in driverLicense!)) {
-              console.log("DL have changed");
               f.append("DriverLicense", driverLicense!);
             }
             if (getUserInfo?.Insurances && !("headers" in insurances!)) {
-              console.log("IN have changed");
               f.append("Insurances", insurances!);
             }
             if (registration && !("headers" in registration!)) {
-              console.log("R have changed");
               f.append("Registration", registration!);
             }
             try {
@@ -144,7 +140,6 @@ function DriverPic(): React.JSX.Element {
             } catch (error) {
               Alert.alert("糟糕", "好像出錯了...", [{ text: "ok" }]);
               console.log(error);
-              console.log(f);
             }
           }}
         >
