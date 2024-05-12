@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList, Pressable, SafeAreaView, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { callAPI } from "../util/callAPIUtil";
 import { NewUser, cmpInfo, inUserT } from "../types/userT";
 import UseListEl from "../components/UserListEl";
@@ -52,21 +62,9 @@ function UserManageP(): React.JSX.Element {
   }, [newUserType]);
 
   const [type, setType] = useState<string>("user");
-  const [selectedLanguage, setSelectedLanguage] = useState();
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && { color: "blue" }]}>
-          Dropdown label
-        </Text>
-      );
-    }
-    return null;
-  };
 
   async function handleSubmit() {
     try {
@@ -121,168 +119,173 @@ function UserManageP(): React.JSX.Element {
         <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
       </View>
       <GoodModal visible={visible} hideModal={hideModal}>
-        <>
-          <View className="flex flex-col justify-between">
-            <View>
-              <Text>請選擇類別：</Text>
-              <View className="flex flex-row justify-between">
-                <RadioButton.Group
-                  onValueChange={(newValue) => {
-                    setCmpName("");
-                    setType(newValue);
-                  }}
-                  value={type}
-                >
-                  <View className="flex flex-col">
-                    <View className="flex flex-row  items-center align-middle">
-                      <RadioButton value="user" />
-                      <Text>新增使用者</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+            style={styles.container}
+          >
+            <View className="flex flex-col justify-between">
+              <View>
+                <Text>請選擇類別：</Text>
+                <View className="flex flex-row justify-between">
+                  <RadioButton.Group
+                    onValueChange={(newValue) => {
+                      setCmpName("");
+                      setType(newValue);
+                    }}
+                    value={type}
+                  >
+                    <View className="flex flex-col">
+                      <View className="flex flex-row  items-center align-middle">
+                        <RadioButton value="user" />
+                        <Text>新增使用者</Text>
+                      </View>
+                      <View className="flex flex-row  items-center align-middle">
+                        <RadioButton value="cmp" />
+                        <Text>新增公司</Text>
+                      </View>
                     </View>
-                    <View className="flex flex-row  items-center align-middle">
-                      <RadioButton value="cmp" />
-                      <Text>新增公司</Text>
-                    </View>
-                  </View>
-                </RadioButton.Group>
+                  </RadioButton.Group>
+                </View>
               </View>
-            </View>
-            <View>
-              {type === "user" ? (
-                <>
-                  <View>
-                    <Text>{JSON.stringify(user)}</Text>
+              <View>
+                {type === "user" ? (
+                  <>
                     <View>
-                      <TextInput
-                        placeholder="姓名"
-                        onChangeText={(e) => {
-                          setUser({ ...user, Name: e });
+                      <View>
+                        <TextInput
+                          placeholder="姓名"
+                          onChangeText={(e) => {
+                            setUser({ ...user, Name: e });
+                          }}
+                        />
+                      </View>
+                      <View>
+                        <TextInput
+                          placeholder="電話號碼"
+                          onChangeText={(e) => {
+                            setUser({ ...user, PhoneNum: e });
+                          }}
+                        />
+                      </View>
+                      <Dropdown
+                        style={[
+                          styles.dropdown,
+                          isFocus && { borderColor: "blue" },
+                        ]}
+                        mode="modal"
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={cmpList}
+                        search
+                        labelField="Name"
+                        valueField="ID"
+                        placeholder={!isFocus ? "所屬公司" : "..."}
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onFocus={() => setIsFocus(true)}
+                        onBlur={() => setIsFocus(false)}
+                        onChange={(item) => {
+                          setUser({ ...user, BelongCmp: item.ID });
+                          setIsFocus(false);
                         }}
                       />
-                    </View>
-                    <View>
-                      <TextInput
-                        placeholder="電話號碼"
-                        onChangeText={(e) => {
-                          setUser({ ...user, PhoneNum: e });
+                      <RadioButton.Group
+                        onValueChange={(newValue) => {
+                          setUser({
+                            Name: user.Name,
+                            BelongCmp: user.BelongCmp,
+                            Role: user.Role,
+                            PhoneNum: user.PhoneNum,
+                          });
+                          setNewUserType(newValue);
                         }}
-                      />
+                        value={newUserType}
+                      >
+                        <View className="flex flex-row">
+                          <Text style={{ textAlignVertical: "center" }}>
+                            職位：
+                          </Text>
+                          <View className="flex flex-row  items-center align-middle">
+                            <RadioButton value="cmpAdmin" />
+                            <Text>公司負責人</Text>
+                          </View>
+                          <View className="flex flex-row  items-center align-middle">
+                            <RadioButton value="driver" />
+                            <Text>司機</Text>
+                          </View>
+                        </View>
+                      </RadioButton.Group>
+                      {newUserType === "driver" ? (
+                        <>
+                          <View>
+                            <TextInput
+                              placeholder="身份證"
+                              onChangeText={(e) => {
+                                setUser({
+                                  ...user,
+                                  driverInfo: {
+                                    percentage: user.driverInfo?.percentage!,
+                                    nationalIdNumber: e,
+                                  },
+                                });
+                              }}
+                            />
+                          </View>
+                          <View>
+                            <TextInput
+                              placeholder="比率"
+                              onChangeText={(e) => {
+                                setUser({
+                                  ...user,
+                                  driverInfo: {
+                                    // ...user.driverInfo,
+                                    nationalIdNumber:
+                                      user.driverInfo?.nationalIdNumber!,
+                                    percentage: parseInt(e),
+                                  },
+                                });
+                              }}
+                            />
+                          </View>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </View>
-                    <Dropdown
-                      style={[
-                        styles.dropdown,
-                        isFocus && { borderColor: "blue" },
-                      ]}
-                      mode="modal"
-                      placeholderStyle={styles.placeholderStyle}
-                      selectedTextStyle={styles.selectedTextStyle}
-                      inputSearchStyle={styles.inputSearchStyle}
-                      iconStyle={styles.iconStyle}
-                      data={cmpList}
-                      search
-                      labelField="Name"
-                      valueField="ID"
-                      placeholder={!isFocus ? "所屬公司" : "..."}
-                      searchPlaceholder="Search..."
-                      value={value}
-                      onFocus={() => setIsFocus(true)}
-                      onBlur={() => setIsFocus(false)}
-                      onChange={(item) => {
-                        setUser({ ...user, BelongCmp: item.ID });
-                        setIsFocus(false);
+                  </>
+                ) : (
+                  <>
+                    <Text>{cmpName}</Text>
+                    <TextInput
+                      placeholder="公司名稱"
+                      onChangeText={(e) => {
+                        setCmpName(e);
                       }}
                     />
-                    <RadioButton.Group
-                      onValueChange={(newValue) => {
-                        setUser({
-                          Name: user.Name,
-                          BelongCmp: user.BelongCmp,
-                          Role: user.Role,
-                          PhoneNum: user.PhoneNum,
-                        });
-                        setNewUserType(newValue);
-                      }}
-                      value={newUserType}
-                    >
-                      <View className="flex flex-row">
-                        <Text style={{ textAlignVertical: "center" }}>
-                          職位：
-                        </Text>
-                        <View className="flex flex-row  items-center align-middle">
-                          <RadioButton value="cmpAdmin" />
-                          <Text>公司負責人</Text>
-                        </View>
-                        <View className="flex flex-row  items-center align-middle">
-                          <RadioButton value="driver" />
-                          <Text>司機</Text>
-                        </View>
-                      </View>
-                    </RadioButton.Group>
-                    {newUserType === "driver" ? (
-                      <>
-                        <View>
-                          <TextInput
-                            placeholder="身份證"
-                            onChangeText={(e) => {
-                              setUser({
-                                ...user,
-                                driverInfo: {
-                                  percentage: user.driverInfo?.percentage!,
-                                  nationalIdNumber: e,
-                                },
-                              });
-                            }}
-                          />
-                        </View>
-                        <View>
-                          <TextInput
-                            placeholder="比率"
-                            onChangeText={(e) => {
-                              setUser({
-                                ...user,
-                                driverInfo: {
-                                  // ...user.driverInfo,
-                                  nationalIdNumber:
-                                    user.driverInfo?.nationalIdNumber!,
-                                  percentage: parseInt(e),
-                                },
-                              });
-                            }}
-                          />
-                        </View>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </View>
-                </>
-              ) : (
-                <>
-                  <Text>{cmpName}</Text>
-                  <TextInput
-                    placeholder="公司名稱"
-                    onChangeText={(e) => {
-                      setCmpName(e);
-                    }}
-                  />
-                </>
-              )}
-            </View>
-            <View className="bg-blue-400 py-3 mt-3">
-              <Pressable
-                onPress={() => {
-                  // handle sumit
-                  handleSubmit();
-                }}
-              >
-                <Text
-                  style={{ textAlign: "center", textAlignVertical: "center" }}
+                  </>
+                )}
+              </View>
+              <View className="bg-blue-400 py-3 mt-3">
+                <Pressable
+                  onPress={() => {
+                    // handle sumit
+                    handleSubmit();
+                  }}
                 >
-                  送出
-                </Text>
-              </Pressable>
+                  <Text
+                    style={{ textAlign: "center", textAlignVertical: "center" }}
+                  >
+                    送出
+                  </Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </GoodModal>
     </SafeAreaView>
   );
@@ -296,8 +299,8 @@ const styles = StyleSheet.create({
     bottom: 50,
   },
   container: {
-    backgroundColor: "red",
-    padding: 16,
+    display: "flex",
+    paddingHorizontal: 10,
   },
   dropdown: {
     backgroundColor: "rgb(233, 223, 235)",

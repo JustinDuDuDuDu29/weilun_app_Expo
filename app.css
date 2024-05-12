@@ -1,0 +1,37 @@
+
+.dropdown{
+    background-color: rgb(233, 223, 235);
+    height: 50;
+    border-color: gray;
+    border-width: 0.5;
+    padding-right: 8;
+    padding-left: 8;
+  }
+
+.icon{
+    margin-right: 5;
+}
+
+.label{
+    position: "absolute";
+    background-color: "white";
+    left: 22;
+    top: 8;
+    z-index: 999;
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },

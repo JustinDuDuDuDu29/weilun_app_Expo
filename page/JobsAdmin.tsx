@@ -16,7 +16,9 @@ import {
 import _data from "../asset/fakeData/_jobs.json";
 import { NullString, jobItemT } from "../types/JobItemT";
 import JobBlock from "../components/JobBlock";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import { callAPI } from "../util/callAPIUtil";
 import { FAB, TextInput } from "react-native-paper";
 import GoodModal from "../components/GoodModal";
@@ -83,7 +85,10 @@ function JobsAdmin(): React.JSX.Element {
   const [show, setShow] = useState(false);
   const [showC, setShowC] = useState(false);
 
-  const onChange = (event, selectedDate: Date) => {
+  const onChange = (
+    event: DateTimePickerEvent,
+    selectedDate: Date | undefined
+  ) => {
     const currentDate = selectedDate;
     setShow(false);
     setJobItem({
@@ -91,12 +96,15 @@ function JobsAdmin(): React.JSX.Element {
       Jobdate: currentDate.toISOString().split("T")[0],
     });
   };
-  const onChangeClose = (event, selectedDate: Date) => {
+  const onChangeClose = (
+    event: DateTimePickerEvent,
+    selectedDate: Date | undefined
+  ) => {
     const currentDate = selectedDate;
     setShowC(false);
     setJobItem({
       ...jobItem,
-      CloseDate: currentDate.toISOString().split("T")[0],
+      CloseDate: currentDate!.toISOString().split("T")[0],
     });
   };
 
