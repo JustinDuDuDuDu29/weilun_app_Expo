@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { Icon, Text } from "react-native-paper";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenProp } from "../types/navigationT";
 
 function MaintainBlock({
   maintainInfo,
@@ -15,7 +17,7 @@ function MaintainBlock({
   maintainInfo: maintainInfoT;
 }): React.JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
-
+  const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
   const wh = Dimensions.get("window").height;
 
@@ -34,6 +36,9 @@ function MaintainBlock({
   return (
     <SafeAreaView>
       <Pressable
+        onLongPress={() => {
+          navigation.navigate("maintainInfoP", { maintainID: maintainInfo.ID });
+        }}
         onPress={() => {
           // expain the block
           if (isPressed) {

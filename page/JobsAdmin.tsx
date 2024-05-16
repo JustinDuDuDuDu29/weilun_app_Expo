@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   RefreshControl,
@@ -27,6 +27,21 @@ import { Dropdown } from "react-native-element-dropdown";
 import { cmpInfo } from "../types/userT";
 
 function JobsAdmin(): React.JSX.Element {
+  const getData = useCallback(async () => {
+    try {
+      const cmpList: cmpInfo[] = await (
+        await callAPI("/api/cmp/all", "GET", {}, true)
+      ).json();
+      setCmpList(cmpList);
+      const allJobs = await (
+        await callAPI("/api/jobs/all", "POST", {}, true)
+      ).json();
+      setData(allJobs);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState();
   const [visible, setVisible] = useState(false);
@@ -34,34 +49,10 @@ function JobsAdmin(): React.JSX.Element {
   const hideModal = () => setVisible(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cmpList: cmpInfo[] = await (
-          await callAPI("/api/cmp/all", "GET", {}, true)
-        ).json();
-        setCmpList(cmpList);
-        const allJobs = await (
-          await callAPI("/api/jobs/all", "POST", {}, true)
-        ).json();
-        setData(allJobs);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const getData = async () => {
     setRefreshing(true);
-    await new Promise(() => {
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 2000);
-    });
-  };
-
-  //
+    getData();
+    setRefreshing(false);
+  }, []);
 
   const [jobItem, setJobItem] = useState<jobItemT>({
     FromLoc: "",
@@ -144,12 +135,31 @@ function JobsAdmin(): React.JSX.Element {
         },
         true
       );
-      if (res.status == 200)
+      if (res.status == 200) {
         Alert.alert("成功", "資料新增成功", [{ text: "OK" }]);
+        await getData();
+        hideModal();
+        setJobItem({
+          FromLoc: "",
+          Mid: "",
+          ToLoc: "",
+          Price: undefined,
+          Remaining: undefined,
+          Belongcmp: NaN,
+          Source: "",
+          Jobdate: "",
+          Memo: "",
+          CloseDate: "",
+          DeleteDate: "",
+        });
+        return;
+      }
+      throw new Error("QQ");
     } catch (error) {
       console.log(error);
     }
   };
+
   //
   return (
     <SafeAreaView>
@@ -160,7 +170,11 @@ function JobsAdmin(): React.JSX.Element {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={() => getData()}
+              onRefresh={async () => {
+                setRefreshing(true);
+                await getData();
+                setRefreshing(false);
+              }}
             />
           }
           renderItem={({ item }: { item: jobItemT }) => (

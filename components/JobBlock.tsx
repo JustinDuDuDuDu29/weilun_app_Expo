@@ -7,7 +7,7 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import { jobItemT } from "../types/JobItemT";
+import { NullString, jobItemT } from "../types/JobItemT";
 import { Icon } from "react-native-paper";
 import { useAtom } from "jotai";
 import { pendingJob, userInfo } from "../page/Home";
@@ -78,9 +78,17 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
 
         <View
           style={{ flex: 0.3, flexBasis: 0.3 }}
-          className="flex justify-center items-center content-center"
+          className="flex justify-center items-center content-center relative"
         >
-          <Icon source="arrow-right-bold" size={ww * 0.25} />
+          <Text
+            style={{ textAlign: "center" }}
+            className=" absolute text-white z-50"
+          >
+            {jobItem instanceof String
+              ? (jobItem.Mid as string)
+              : ((jobItem.Mid as NullString).String as string)}
+          </Text>
+          <Icon source="arrow-right-bold" size={ww * 0.3} />
         </View>
         <View
           style={{ flex: 0.3, flexBasis: 0.3 }}

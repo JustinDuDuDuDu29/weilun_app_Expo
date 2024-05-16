@@ -21,6 +21,10 @@ import JobUpdateP from './page/JobUpdateP';
 import AlertP from './page/AlertP';
 import { io } from "socket.io-client";
 import { socket } from './util/sio';
+import { colorScheme, useColorScheme } from "nativewind";
+import AdminClaimedJob from './page/AdminClaimedJob';
+import ClaimJobP from './page/ClaimJobP';
+import MaintainInfo from './page/MainTainInfo';
 
 export const isLoggedInAtom = atom(false);
 
@@ -40,8 +44,6 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState('N/A');
-
-
 
   useEffect(() => {
     const fun = async () => {
@@ -78,6 +80,9 @@ function App() {
               <Stack.Screen name="jobUpdateP" component={JobUpdateP} />
               <Stack.Screen name="userManageP" component={UserManageP} />
               <Stack.Screen name="alertP" component={AlertP} />
+              <Stack.Screen name="adminClaimedJobP" component={AdminClaimedJob} />
+              <Stack.Screen name="claimJobP" component={ClaimJobP} />
+              <Stack.Screen name="maintainInfoP" component={MaintainInfo} />
             </>
           ) : (
             <>

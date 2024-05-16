@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  View,
-  useWindowDimensions,
-  Dimensions,
-  Pressable,
-  Alert,
-} from "react-native";
+import { colorScheme as cS, useColorScheme } from "nativewind";
+import { SafeAreaView, View, Dimensions, Pressable, Alert } from "react-native";
 import { Icon, Text } from "react-native-paper";
 import { getSecureValue, logout } from "../util/loginInfo";
 import { isLoggedInAtom } from "../App";
@@ -20,7 +14,7 @@ import { jobItemT } from "../types/JobItemT";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
-import UserManage from "../components/UserManage";
+// import UserManage from "../components/UserManage";
 
 export const pendingJob = atom<jobItemT | null>(null);
 export const userInfo = atom<inUserT | null>(null);
@@ -104,13 +98,15 @@ function Home(): React.JSX.Element {
   const ww = Dimensions.get("window").width;
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
   const [getPendingJob, setPendingJob] = useAtom(pendingJob);
+  cS.set("system");
+  const { toggleColorScheme } = useColorScheme();
 
   if (getUserInfo == null) {
     return <></>;
   }
 
   return (
-    <SafeAreaView className="h-full flex justify-center">
+    <SafeAreaView className="h-full flex justify-center darkXXX">
       <View className="px-5 flex flex-col justify-around h-4/5">
         <View className="flex flex-row justify-around items-center">
           <Text className="text-xl">歡迎！{getUserInfo!.Username}</Text>
@@ -183,15 +179,68 @@ function Home(): React.JSX.Element {
           </View>
         </Pressable>
         <JobBlockPJ jobItem={getPendingJob} />
-        {getUserInfo.Role === 100 ? <UserManage /> : <></>}
-        <Pressable
-          onPress={async () => {
-            await logout();
-            setIsLoggedIn(false);
-          }}
-        >
-          <Text>登出</Text>
-        </Pressable>
+        {getUserInfo.Role === 100 ? (
+          <>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 rounded-lg px-9 py-2 justify-center"
+              onPress={() => navigation.navigate("userManageP")}
+            >
+              <View className="w-1/6">
+                <Icon source="head-outline" size={0.12 * ww} />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl">用戶管理</Text>
+              </View>
+            </Pressable>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 rounded-lg px-9 py-2 justify-center"
+              onPress={() => navigation.navigate("adminClaimedJobP")}
+            >
+              <View className="w-1/6">
+                <Icon source="head-outline" size={0.12 * ww} />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl">已接取的任務</Text>
+              </View>
+            </Pressable>
+          </>
+        ) : (
+          <></>
+        )}
+        <View className="flex flex-row justify-between">
+          <Pressable
+            className={`bg-red-200 dark:bg-green-200  w-1/4 rounded-xl py-2`}
+            onPress={async () => {
+              await logout();
+              setIsLoggedIn(false);
+            }}
+          >
+            <Text
+              className="text-xl"
+              style={{ verticalAlign: "middle", textAlign: "center" }}
+            >
+              登出
+            </Text>
+          </Pressable>
+          <Pressable
+            className="bg-red-200 w-1/4 rounded-xl py-2"
+            onPress={() => {
+              // if (cS.get() == "dark") {
+              //   cS.set("light");
+              // }
+              // if (cS.get() == "light") {
+              //   cS.set("dark");
+              // }
+            }}
+          >
+            <Text
+              className="text-xl"
+              style={{ verticalAlign: "middle", textAlign: "center" }}
+            >
+              {cS.get()}
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
