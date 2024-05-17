@@ -7,13 +7,13 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import { jobItemT } from "../types/jobItemT";
 import { Icon } from "react-native-paper";
 import { useAtom } from "jotai";
 import { pendingJob } from "../page/Home";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
+import { NullString, jobItemT } from "../types/JobItemT";
 
 function JobBlockPJ({
   jobItem,
@@ -73,8 +73,16 @@ function JobBlockPJ({
 
           <View
             style={{ flex: 0.3, flexBasis: 0.3 }}
-            className="flex justify-center items-center content-center"
+            className="flex justify-center items-center content-center relative"
           >
+            <Text
+              style={{ textAlign: "center" }}
+              className=" absolute text-white z-50"
+            >
+              {jobItem instanceof String
+                ? (jobItem.Mid as string)
+                : ((jobItem.Mid as NullString).String as string)}
+            </Text>
             <Icon source="arrow-right-bold" size={ww * 0.25} />
           </View>
           <View
