@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { colorScheme as cS, useColorScheme } from "nativewind";
+import { colorScheme as cS } from "nativewind";
 import { SafeAreaView, View, Dimensions, Pressable, Alert } from "react-native";
 import { Icon, Text } from "react-native-paper";
 import { getSecureValue, logout } from "../util/loginInfo";
 import { isLoggedInAtom } from "../App";
-import { PrimitiveAtom, atom, useAtom } from "jotai";
+import { atom, useAtom } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
@@ -98,15 +98,18 @@ function Home(): React.JSX.Element {
   const ww = Dimensions.get("window").width;
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
   const [getPendingJob, setPendingJob] = useAtom(pendingJob);
-  cS.set("system");
-  const { toggleColorScheme } = useColorScheme();
+  const [mode, setMode] = useState<"system" | "light" | "dark">("system");
+
+  useEffect(() => {
+    cS.set(mode);
+  }, [mode]);
 
   if (getUserInfo == null) {
     return <></>;
   }
 
   return (
-    <SafeAreaView className="h-full flex justify-center darkXXX">
+    <SafeAreaView className="h-fullxx flex justify-center">
       <View className="px-5 flex flex-col justify-around h-4/5">
         <View className="flex flex-row justify-around items-center">
           <Text className="text-xl">歡迎！{getUserInfo!.Username}</Text>
@@ -225,12 +228,13 @@ function Home(): React.JSX.Element {
           <Pressable
             className="bg-red-200 w-1/4 rounded-xl py-2"
             onPress={() => {
-              // if (cS.get() == "dark") {
-              //   cS.set("light");
-              // }
-              // if (cS.get() == "light") {
-              //   cS.set("dark");
-              // }
+              console.log("PP");
+              if (cS.get() == "dark") {
+                setMode("light");
+              }
+              if (cS.get() == "light") {
+                setMode("dark");
+              }
             }}
           >
             <Text

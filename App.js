@@ -1,7 +1,8 @@
 import React, { useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import {MD2Colors, PaperProvider} from 'react-native-paper';
+import {MD2Colors, PaperProvider,  MD3DarkTheme,  MD3LightTheme } from 'react-native-paper';
+import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import Login from './page/Login';
 import Home from './page/Home';
 import CustomerS from './page/CustomerS';
@@ -21,10 +22,11 @@ import JobUpdateP from './page/JobUpdateP';
 import AlertP from './page/AlertP';
 import { io } from "socket.io-client";
 import { socket } from './util/sio';
-import { colorScheme, useColorScheme } from "nativewind";
+import {  useColorScheme } from "nativewind";
 import AdminClaimedJob from './page/AdminClaimedJob';
 import ClaimJobP from './page/ClaimJobP';
 import MaintainInfo from './page/MainTainInfo';
+import { setBackgroundColorAsync } from 'expo-system-ui';
 
 export const isLoggedInAtom = atom(false);
 
@@ -57,13 +59,22 @@ function App() {
     fun();
   }, []);
 
+
+
+  const colorScheme = useColorScheme();
+  const { theme } = useMaterial3Theme();
+
+  const paperTheme =
+    colorScheme === 'dark'
+      ? { ...MD3DarkTheme, colors: theme.dark }
+      : { ...MD3LightTheme, colors: theme.light };
+      
   if (isLoading) {
     // We haven't finished checking for the token yet
     return <SplashScreen />;
   }
-
   return (
-    <PaperProvider theme={{}}>
+    <PaperProvider  theme={paperTheme} >
       <NavigationContainer>
         <Stack.Navigator>
           {loginState ? (
