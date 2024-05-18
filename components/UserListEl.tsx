@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Pressable, SafeAreaView, View, Text } from "react-native";
 import { inUserT } from "../types/userT";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenProp } from "../types/navigationT";
 
 function UseListEl({ info }: { info: inUserT }): React.JSX.Element {
+  const navigation = useNavigation<ScreenProp>();
+
   return (
     <SafeAreaView>
       <Pressable
@@ -15,7 +19,9 @@ function UseListEl({ info }: { info: inUserT }): React.JSX.Element {
             ? "bg-pink-300"
             : "bg-lime-200"
         }`}
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate("userInfoAdminP", { uid: info.ID });
+        }}
       >
         <View className="">
           <Text>員編：{info.ID}</Text>

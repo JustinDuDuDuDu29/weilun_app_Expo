@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5669ba3-b6dd-4fbf-a36e-dae4115efc03" name="Changes" comment="" />
+    <list default="true" id="c5669ba3-b6dd-4fbf-a36e-dae4115efc03" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/JobBlockPJ.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/JobBlockPJ.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/UserListEl.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/UserListEl.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/page/Home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/TurnOver.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/page/TurnOver.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/UserInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/page/UserInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/UserManageP.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/page/UserManageP.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/JobItemT.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/JobItemT.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/navigationT.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/navigationT.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/userT.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/userT.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,6 +28,12 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="2g4A4jZzLROPJLcmggjsDvJLvak" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -17,10 +41,15 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true"
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/du/Desktop/js/weilun_app"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

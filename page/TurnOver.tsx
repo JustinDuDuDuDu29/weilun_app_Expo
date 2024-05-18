@@ -31,36 +31,51 @@ function TurnOver(): React.JSX.Element {
   const cS = usc();
 
   const getData = useCallback(async () => {
-    setIsLoading(true);
-    const res = await callAPI("/api/revenue", "GET", {}, true);
-    const data = await res.json();
-    console.log(data);
-    setData(data);
-    let max = -100;
-    const aa = data?.map((d: revT, i: number) => {
-      if (d.Earn > max) setMax(d.Earn);
-      return {
-        value: d.Earn,
-        dataPointText: d.Earn.toString(),
-        label: `${new Date().getFullYear()}/${new Date().getMonth() - 1 + i}`,
-      };
-    });
-    setGData(aa);
-    const cj = await (
-      await callAPI(
-        `/api/claimed/list?${
-          getUserInfo?.Role === 300
-            ? "id=" + getUserInfo?.ID
-            : "cmp=" + getUserInfo?.Belongcmp
-        }`,
-        "GET",
-        {},
-        true
-      )
-    ).json();
-    setCJ(cj);
+    try {
+      setIsLoading(true);
+      const data = await (
+        await callAPI(
+          `/api/revenue?${
+            getUserInfo?.Role === 300
+              ? "id=" + getUserInfo?.ID
+              : "cmp=" + getUserInfo?.Belongcmp
+          }`,
+          "GET",
+          {},
+          true
+        )
+      ).json();
+      console.log(data);
+      setData(data);
+      let max = -100;
+      const aa = data?.map((d: revT, i: number) => {
+        if (d.Earn > max) setMax(d.Earn);
+        return {
+          value: d.Earn,
+          dataPointText: d.Earn.toString(),
+          label: `${new Date().getFullYear()}/${new Date().getMonth() - 1 + i}`,
+        };
+      });
 
-    setIsLoading(false);
+      setGData(aa);
+      const cj = await (
+        await callAPI(
+          `/api/claimed/list?${
+            getUserInfo?.Role === 300
+              ? "id=" + getUserInfo?.ID
+              : "cmp=" + getUserInfo?.Belongcmp
+          }`,
+          "GET",
+          {},
+          true
+        )
+      ).json();
+      setCJ(cj);
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   useEffect(() => {

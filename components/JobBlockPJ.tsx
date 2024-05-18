@@ -13,12 +13,12 @@ import { pendingJob } from "../page/Home";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
-import { NullString, jobItemT } from "../types/JobItemT";
+import { NullString, currentJob, jobItemT } from "../types/JobItemT";
 
 function JobBlockPJ({
   jobItem,
 }: {
-  jobItem: jobItemT | null;
+  jobItem: currentJob | null;
 }): React.JSX.Element {
   const ww = Dimensions.get("window").width;
   const [getPendingJob, setPendingJob] = useAtom(pendingJob);

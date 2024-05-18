@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { colorScheme, remapProps, useColorScheme } from "nativewind";
+// import { colorScheme, remapProps, useColorScheme } from "nativewind";
 import {
   SafeAreaView,
   View,
@@ -18,12 +18,12 @@ import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
 import JobBlockPJ from "../components/JobBlockPJ";
 import { callAPI } from "../util/callAPIUtil";
-import { jobItemT } from "../types/JobItemT";
+import { currentJob } from "../types/JobItemT";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
 
-export const pendingJob = atom<jobItemT | null>(null);
+export const pendingJob = atom<currentJob | null>(null);
 export const userInfo = atom<inUserT | null>(null);
 
 function Home(): React.JSX.Element {
@@ -61,9 +61,10 @@ function Home(): React.JSX.Element {
         if (!getUserInfo) {
           const res = await callAPI("/api/user/me", "POST", {}, true);
 
-          const me: inUserT = (await res.json()).res;
+          const me: inUserT = await res.json();
 
           setUserInfo(me);
+          console.log("me = ", me);
           if (res.status == 451) {
             Alert.alert(
               "糟糕！",
@@ -86,12 +87,7 @@ function Home(): React.JSX.Element {
             await callAPI("/api/claimed/current", "POST", {}, true)
           ).json();
           if (!RUEmpty(currentJob)) {
-            setPendingJob({
-              ID: currentJob.ID,
-              FromLoc: currentJob.FromLoc,
-              Mid: currentJob.Mid,
-              ToLoc: currentJob.ToLoc,
-            });
+            setPendingJob(currentJob);
           } else {
             setPendingJob(null);
           }

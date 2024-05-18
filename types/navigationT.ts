@@ -15,7 +15,7 @@ export type RootStackParamList = {
     customerSP: undefined;
     mainTainP: undefined;
     finishJobP: undefined;
-    userInfoP:{ uid: number|null};
+    userInfoP:undefined;
     changePasswordP:undefined;
     userManageP:undefined;
     jobsAdminP:undefined;
@@ -24,4 +24,5 @@ export type RootStackParamList = {
     adminClaimedJobP: undefined;
     claimJobP: { claimedJob: number};
     maintainInfoP: { maintainID: number};
+    userInfoAdminP: { uid: number};
 };

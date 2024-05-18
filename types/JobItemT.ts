@@ -15,6 +15,18 @@ export type jobItemT = {
     DeleteDate: NullDate | string;
 };
 
+export type currentJob = {
+    Claimid: number;
+    Claimdate: string;
+    FromLoc: string;
+    Mid: NullString | string;
+    ToLoc: string;
+    Price: number;
+    Source: string;
+    Memo: NullString;
+    ID: number;
+}
+
 export type NullString = {
     String: string;
     Valid: boolean;

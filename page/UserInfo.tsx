@@ -10,14 +10,13 @@ import DriverPic from "../components/DriverPic";
 
 function UserInfo(): React.JSX.Element {
   useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-      } catch (error) {
-        console.log("error: ", error);
-      }
-    };
-
-    getUserInfo();
+    // const getData = async () => {
+    //   try {
+    //   } catch (error) {
+    //     console.log("error: ", error);
+    //   }
+    // };
+    // getData();
   }, []);
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
 

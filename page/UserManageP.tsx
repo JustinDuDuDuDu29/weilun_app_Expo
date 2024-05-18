@@ -17,6 +17,10 @@ import { FAB, RadioButton, Text, TextInput } from "react-native-paper";
 import { StyleSheet } from "nativewind";
 import GoodModal from "../components/GoodModal";
 import { Dropdown } from "react-native-element-dropdown";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 function UserManageP(): React.JSX.Element {
   useEffect(() => {
@@ -107,10 +111,17 @@ function UserManageP(): React.JSX.Element {
       console.log(error);
     }
   }
-
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView>
-      <View className="px-3 bg-red-100 relative h-full">
+    <SafeAreaView
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
+      <View className="px-3 py-2 relative h-full">
         <FlatList
           data={userList}
           renderItem={({ item }) => <UseListEl info={item} />}
@@ -127,7 +138,7 @@ function UserManageP(): React.JSX.Element {
           >
             <View className="flex flex-col justify-between">
               <View>
-                <Text>請選擇類別：</Text>
+                <Text className=" dark:text-white">請選擇類別：</Text>
                 <View className="flex flex-row justify-between">
                   <RadioButton.Group
                     onValueChange={(newValue) => {
@@ -139,11 +150,11 @@ function UserManageP(): React.JSX.Element {
                     <View className="flex flex-col">
                       <View className="flex flex-row  items-center align-middle">
                         <RadioButton value="user" />
-                        <Text>新增使用者</Text>
+                        <Text className=" dark:text-white">新增使用者</Text>
                       </View>
                       <View className="flex flex-row  items-center align-middle">
                         <RadioButton value="cmp" />
-                        <Text>新增公司</Text>
+                        <Text className=" dark:text-white">新增公司</Text>
                       </View>
                     </View>
                   </RadioButton.Group>
@@ -206,16 +217,19 @@ function UserManageP(): React.JSX.Element {
                         value={newUserType}
                       >
                         <View className="flex flex-row">
-                          <Text style={{ textAlignVertical: "center" }}>
+                          <Text
+                            className=" dark:text-white"
+                            style={{ textAlignVertical: "center" }}
+                          >
                             職位：
                           </Text>
                           <View className="flex flex-row  items-center align-middle">
                             <RadioButton value="cmpAdmin" />
-                            <Text>公司負責人</Text>
+                            <Text className=" dark:text-white">公司負責人</Text>
                           </View>
                           <View className="flex flex-row  items-center align-middle">
                             <RadioButton value="driver" />
-                            <Text>司機</Text>
+                            <Text className=" dark:text-white">司機</Text>
                           </View>
                         </View>
                       </RadioButton.Group>
@@ -259,7 +273,7 @@ function UserManageP(): React.JSX.Element {
                   </>
                 ) : (
                   <>
-                    <Text>{cmpName}</Text>
+                    <Text className=" dark:text-white">{cmpName}</Text>
                     <TextInput
                       placeholder="公司名稱"
                       onChangeText={(e) => {
@@ -277,6 +291,7 @@ function UserManageP(): React.JSX.Element {
                   }}
                 >
                   <Text
+                    className=" dark:text-white"
                     style={{ textAlign: "center", textAlignVertical: "center" }}
                   >
                     送出
