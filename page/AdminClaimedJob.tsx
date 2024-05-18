@@ -4,9 +4,11 @@ import { callAPI } from "../util/callAPIUtil";
 import { ClaimedJob } from "../types/JobItemT";
 import AlertBlock from "../components/AlertBlock";
 import CJBlock from "../components/CJBlock";
+import { useIsFocused } from "@react-navigation/native";
 
 function AdminClaimedJob(): React.JSX.Element {
   const [claimedList, setClaimedList] = useState<ClaimedJob[]>([]);
+  const focused = useIsFocused();
 
   const getData = useCallback(async () => {
     try {
@@ -22,7 +24,7 @@ function AdminClaimedJob(): React.JSX.Element {
 
   useEffect(() => {
     getData();
-  });
+  }, [focused]);
 
   return (
     <SafeAreaView>

@@ -28,7 +28,6 @@ function Login(): React.JSX.Element {
   const handleLogin = async () => {
     try {
       // save user data
-
       const result = await callAPI(
         "/api/auth",
         "POST",

@@ -52,7 +52,6 @@ function Maintain(): React.JSX.Element {
   });
 
   const removeByUUID = (id: string) => {
-    console.log("removing ", id);
     setGasLiter(
       gasLiter.filter((el: mInfoT) => {
         return el.id != id;

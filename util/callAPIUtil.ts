@@ -4,7 +4,21 @@ import { getSecureValue } from './loginInfo';
 
 export async function callAPI(route: string, method: string, body:object, useAuth:boolean) {
     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
+
+    const r = process.env.EXPO_PUBLIC_HOST+route
+    return await fetch(r, {
+        headers:{
+            'Authorization': (useAuth?bearer:""),
+        },
+        method:method,
+        body:method == "GET"?null:(JSON.stringify({...body}))
+    })
+}
+
+export async function callAPIAbort(route: string, method: string, body:object, useAuth:boolean, signal: AbortSignal) {
+    const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
     return await fetch(process.env.EXPO_PUBLIC_HOST+route, {
+        signal:signal,
         headers:{
             'Authorization': (useAuth?bearer:""),
         },

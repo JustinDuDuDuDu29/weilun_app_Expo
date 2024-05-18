@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 // import { colorScheme, remapProps, useColorScheme } from "nativewind";
 import {
   SafeAreaView,
@@ -27,6 +27,12 @@ export const pendingJob = atom<currentJob | null>(null);
 export const userInfo = atom<inUserT | null>(null);
 
 function Home(): React.JSX.Element {
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  const navigation = useNavigation<ScreenProp>();
+  const ww = Dimensions.get("window").width;
+  const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
+  const cS = usc();
   useEffect(() => {
     const ff = async () => {
       const ws = new WebSocket("ws://10.0.2.2:8080/api/io");
@@ -39,7 +45,6 @@ function Home(): React.JSX.Element {
       ws.onmessage = (e) => {
         // a message was received
         Alert.alert("YO!", JSON.parse(e.data).msg, [{ text: "OK" }]);
-        console.log("msg:", e);
       };
 
       ws.onerror = (e) => {
@@ -55,34 +60,31 @@ function Home(): React.JSX.Element {
     ff();
   }, []);
   const isFocused = useIsFocused();
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        if (!getUserInfo) {
-          const res = await callAPI("/api/user/me", "POST", {}, true);
 
-          const me: inUserT = await res.json();
+  const setData = useCallback(async () => {
+    try {
+      if (!getUserInfo) {
+        const res = await callAPI("/api/user/me", "POST", {}, true);
 
-          setUserInfo(me);
-          console.log("me = ", me);
-          if (res.status == 451) {
-            Alert.alert(
-              "糟糕！",
-              "您本次的登入資訊已無效\n可能是在其他地方登入了，或是個人資料已被修改\n如有需要，請洽管理人員！",
-              [
-                {
-                  text: "OK",
-                  onPress: async () => {
-                    await logout();
-                    setIsLoggedIn(false);
-                  },
+        const me: inUserT = await res.json();
+
+        setUserInfo(me);
+        if (res.status == 451) {
+          Alert.alert(
+            "糟糕！",
+            "您本次的登入資訊已無效\n可能是在其他地方登入了，或是個人資料已被修改\n如有需要，請洽管理人員！",
+            [
+              {
+                text: "OK",
+                onPress: async () => {
+                  await logout();
+                  setIsLoggedIn(false);
                 },
-              ]
-            );
-          }
+              },
+            ]
+          );
         }
-
-        if (getUserInfo?.Role == 300) {
+        if (me.Role == 300) {
           const currentJob = await (
             await callAPI("/api/claimed/current", "POST", {}, true)
           ).json();
@@ -92,19 +94,33 @@ function Home(): React.JSX.Element {
             setPendingJob(null);
           }
         }
-      } catch (error) {
-        console.log("error: ", error);
       }
-    };
-    getData();
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  }, []);
+
+  const getCur = useCallback(async () => {
+    if (getUserInfo?.Role == 300) {
+      const currentJob = await (
+        await callAPI("/api/claimed/current", "POST", {}, true)
+      ).json();
+      if (!RUEmpty(currentJob)) {
+        setPendingJob(currentJob);
+      } else {
+        setPendingJob(null);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    setData();
   }, [isFocused]);
 
-  const [getUserInfo, setUserInfo] = useAtom(userInfo);
-  const navigation = useNavigation<ScreenProp>();
-  const ww = Dimensions.get("window").width;
-  const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
-  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
-  const cS = usc();
+  // useEffect(() => {
+  //   console.log("call");
+  //   getCur();
+  // }, [getUserInfo]);
 
   if (getUserInfo == null) {
     return <></>;
@@ -248,6 +264,7 @@ function Home(): React.JSX.Element {
             onPress={async () => {
               await logout();
               setIsLoggedIn(false);
+              setUserInfo(null);
             }}
           >
             <Text

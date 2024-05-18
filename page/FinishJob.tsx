@@ -33,7 +33,7 @@ function FinishJob(): React.JSX.Element {
         // const bb = await (await fetch(finishImg!.uri)).blob();
         fd.append("file", finishImg!);
         const res = await callAPIForm(
-          `/api/claimed/finish/${getPendingJob!.ID}`,
+          `/api/claimed/finish/${getPendingJob!.Claimid}`,
           "POST",
           fd,
           true

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -9,44 +9,62 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   View,
+  Text,
 } from "react-native";
-import { callAPI } from "../util/callAPIUtil";
+import { callAPI, callAPIAbort } from "../util/callAPIUtil";
 import { NewUser, cmpInfo, inUserT } from "../types/userT";
 import UseListEl from "../components/UserListEl";
-import { FAB, RadioButton, Text, TextInput } from "react-native-paper";
+import { FAB, RadioButton, TextInput } from "react-native-paper";
 import { StyleSheet } from "nativewind";
 import GoodModal from "../components/GoodModal";
+
 import { Dropdown } from "react-native-element-dropdown";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function UserManageP(): React.JSX.Element {
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res: inUserT[] = await (
-          await callAPI("/api/user", "GET", {}, true)
-        ).json();
-        setUsetList(res);
-
-        const cmpList: cmpInfo[] = await (
-          await callAPI("/api/cmp/all", "GET", {}, true)
-        ).json();
-        setCmpList(cmpList);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, []);
-
   const [visible, setVisible] = useState(false);
   const [newUserType, setNewUserType] = useState("cmpAdmin");
 
   const [userList, setUsetList] = useState<inUserT[]>([]);
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
+  const [searchVal, setSearchVal] = useState<{
+    Name: string;
+    ID: string;
+    occupied: boolean;
+    searchQ: string;
+    canSearch: boolean;
+  } | null>();
+  const [search, setSearch] = useState<
+    {
+      Name: string;
+      ID: string;
+      occupied: boolean;
+      searchQ: string;
+      canSearch: boolean;
+    }[]
+  >([
+    {
+      Name: "姓名",
+      ID: "Name",
+      occupied: false,
+      searchQ: "",
+      canSearch: false,
+    },
+    {
+      Name: "電話",
+      ID: "PhoneNum",
+      occupied: false,
+      searchQ: "",
+      canSearch: false,
+    },
+    {
+      Name: "所屬公司",
+      ID: "BelongCmp",
+      occupied: false,
+      searchQ: "",
+      canSearch: false,
+    },
+  ]);
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
@@ -111,7 +129,46 @@ function UserManageP(): React.JSX.Element {
       console.log(error);
     }
   }
+  const ctrl: AbortController = new AbortController();
+  const signal: AbortSignal = ctrl.signal;
+
+  const getData = useCallback(async () => {
+    console.log("searching... ");
+    try {
+      let str = "";
+      search.forEach((e) => {
+        if (e.canSearch) {
+          str = str + e.ID + "=" + e.searchQ + "&";
+        }
+      });
+
+      const data: inUserT[] = await (
+        await callAPIAbort(
+          "/api/user?" + str.replace(/&$/, ""),
+          "GET",
+          {},
+          true,
+          signal
+        )
+      ).json();
+      setUsetList(data);
+
+      const cmpList: cmpInfo[] = await (
+        await callAPIAbort("/api/cmp/all", "GET", {}, true, signal)
+      ).json();
+      setCmpList(cmpList);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    getData();
+  }, [search]);
+  const inp = useRef();
+
   const insets = useSafeAreaInsets();
+
   return (
     <SafeAreaView
       style={{
@@ -121,6 +178,81 @@ function UserManageP(): React.JSX.Element {
         paddingRight: insets.right,
       }}
     >
+      <View className="flex flex-col w-full bg-yellow-200">
+        <Text>{JSON.stringify(search)}</Text>
+        <Text></Text>
+        <Text>{JSON.stringify(searchVal)}</Text>
+        <Dropdown
+          style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          iconStyle={styles.iconStyle}
+          data={search.filter((e) => !e.occupied)}
+          labelField="Name"
+          valueField="ID"
+          placeholder={!isFocus ? "條件" : "..."}
+          value={searchVal}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item) => {
+            setSearchVal(item);
+            setIsFocus(false);
+          }}
+        />
+        <View className=" bg-red-200 w-full ">
+          <TextInput
+            ref={inp}
+            onChangeText={(e) => {
+              if (searchVal) {
+                ctrl.abort();
+                setSearch(
+                  search.map((el, i) => {
+                    if (el.ID == searchVal.ID) {
+                      return {
+                        ...el,
+                        canSearch: e == "" ? false : true,
+                        searchQ: e,
+                      };
+                    }
+                    return el;
+                  })
+                );
+              }
+            }}
+          />
+        </View>
+      </View>
+      <Pressable
+        className="bg-sky-400"
+        onPress={() => {
+          if (searchVal) {
+            const arr = search.map((e) => {
+              if (e.ID == searchVal.ID) {
+                return { ...e, occupied: true };
+              }
+              return e;
+            });
+            setSearch(arr);
+            setSearchVal(null);
+            // console.log("inp.current: ",
+
+            // );
+          }
+          inp.current.clear();
+        }}
+      >
+        <Text>增加</Text>
+      </Pressable>
+      {search.map((el) => {
+        if (el.occupied) {
+          return (
+            <Text>
+              {el.Name}:{el.searchQ}
+            </Text>
+          );
+        }
+        return;
+      })}
       <View className="px-3 py-2 relative h-full">
         <FlatList
           data={userList}
@@ -129,6 +261,7 @@ function UserManageP(): React.JSX.Element {
         />
         <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
       </View>
+
       <GoodModal visible={visible} hideModal={hideModal}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView
