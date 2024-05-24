@@ -1,63 +1,117 @@
-import React, { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Alert,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+  TextInput,
+} from "react-native";
 import { callAPI } from "../util/callAPIUtil";
-import { atom, useAtom } from "jotai";
-import { userInfo } from "./Home";
-import { Button } from "react-native-paper";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import DriverPic from "../components/DriverPic";
-import { inUserT } from "../types/userT";
+import { Icon } from "react-native-paper";
+import { cmpInfo, inUserT } from "../types/userT";
+import UserCU from "../components/UserCU";
 
 function UserInfoAdmin({
   route,
 }: {
   route: RouteProp<{ params: { uid: number } }, "params">;
 }): React.JSX.Element {
-  const [user, setUser] = useState<inUserT>();
+  const [editable, setEditable] = useState(false);
+  const [OInfo, setOInfo] = useState<inUserT>();
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await callAPI(
-          `/api/user/${route.params.uid}`,
-          "GET",
-          {},
-          true
-        );
-        const data = await res.json();
-        setUser(data);
-      } catch (error) {
-        console.log("error: ", error);
-      }
-    };
+  const getData = useCallback(async () => {
+    try {
+      const res = await callAPI(
+        `/api/user/${route.params.uid}`,
+        "GET",
+        {},
+        true
+      );
+      const data = await res.json();
 
-    getData();
+      setOInfo(data);
+    } catch (error) {
+      console.log("error: ", error);
+    }
   }, []);
 
-  const roleName =
-    user?.Role == 100 ? "管理員" : user?.Role == 200 ? "公司負責人" : "司機";
+  useEffect(() => {
+    getData();
+  }, []);
 
   const navigation = useNavigation<ScreenProp>();
 
   return (
     <SafeAreaView>
       <ScrollView className="mx-4 my-3">
-        <View>
-          <Text className="text-xl">姓名：{user?.Username}</Text>
-          <Text className="text-xl">電話：{user?.Phonenum}</Text>
-          <Text className="text-xl">編號：{user?.ID}</Text>
-          <Text className="text-xl">所屬公司：{user?.Cmpname}</Text>
-          <Text className="text-xl">類別：{roleName}</Text>
-        </View>
-        <Button
+        <Pressable
           onPress={() => {
-            navigation.navigate("changePasswordP");
+            setEditable(!editable);
           }}
         >
-          <Text>修改密碼</Text>
-        </Button>
-        {user?.Role == 300 ? <DriverPic /> : <></>}
+          {!editable ? (
+            <Text>
+              編輯 <Icon source={"lead-pencil"} size={15} />
+            </Text>
+          ) : (
+            <Text>取消</Text>
+          )}
+        </Pressable>
+        {OInfo && <UserCU editable={editable} OInfo={OInfo!} />}
+        <Pressable
+          onPress={() => {
+            // navigation.navigate("changePasswordP");
+            Alert.alert("注意！", "此用戶的密碼將重置成手機號碼", [
+              {
+                text: "確定",
+                onPress: async () => {
+                  const res = await callAPI(
+                    `/api/user/approve/${OInfo?.ID}`,
+                    "POST",
+                    { id: OInfo?.ID, pwd: OInfo?.Phonenum, oldPwd: "" },
+                    true
+                  );
+                  if (res.status == 200) {
+                    Alert.alert("成功!", "請通知該使用者，不然他真的會哭出來");
+                  }
+                },
+              },
+              { text: "取消" },
+            ]);
+          }}
+        >
+          <Text>核可</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            // navigation.navigate("changePasswordP");
+            Alert.alert("注意！", "此用戶的密碼將重置成手機號碼", [
+              {
+                text: "確定",
+                onPress: async () => {
+                  const res = await callAPI(
+                    "/api/user/pwd",
+                    "POST",
+                    { id: OInfo?.ID, pwd: OInfo?.Phonenum, oldPwd: "" },
+                    true
+                  );
+                  if (res.status == 200) {
+                    Alert.alert("成功!", "請通知該使用者，不然他真的會哭出來");
+                  }
+                },
+              },
+              { text: "取消" },
+            ]);
+          }}
+        >
+          <Text>重置密碼</Text>
+        </Pressable>
+        {/* {!editable && OInfo?.Role == 300 ? <DriverPic /> : <></>} */}
       </ScrollView>
     </SafeAreaView>
   );

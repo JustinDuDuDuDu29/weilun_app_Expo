@@ -12,7 +12,7 @@ import {
   Text,
 } from "react-native";
 import { callAPI, callAPIAbort } from "../util/callAPIUtil";
-import { NewUser, cmpInfo, inUserT, userLS } from "../types/userT";
+import { NewUser, cmpInfo, inUserT } from "../types/userT";
 import UseListEl from "../components/UserListEl";
 import { FAB, RadioButton, TextInput } from "react-native-paper";
 import { StyleSheet } from "nativewind";
@@ -26,7 +26,7 @@ function UserManageP(): React.JSX.Element {
   const [visible, setVisible] = useState(false);
   const [newUserType, setNewUserType] = useState("cmpAdmin");
 
-  const [userList, setUsetList] = useState<userLS[]>([]);
+  const [userList, setUsetList] = useState<inUserT[]>([]);
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
 
   const showModal = () => setVisible(true);
@@ -108,7 +108,6 @@ function UserManageP(): React.JSX.Element {
 
   return (
     <SafeAreaView
-      className="flex flex-col relative flex-1"
       style={{
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
@@ -117,14 +116,14 @@ function UserManageP(): React.JSX.Element {
       }}
     >
       <SearchComp setUsetList={setUsetList} />
-      <View className="px-3 py-2 flex-1 ">
+      <View className="px-3 py-2 relative h-full">
         <FlatList
           data={userList}
           renderItem={({ item }) => <UseListEl info={item} />}
-          keyExtractor={(item) => item.cmpid.toString()}
+          keyExtractor={(item) => item.ID.toString()}
         />
+        <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
       </View>
-      <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
 
       <GoodModal visible={visible} hideModal={hideModal}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

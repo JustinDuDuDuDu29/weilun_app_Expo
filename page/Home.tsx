@@ -67,7 +67,6 @@ function Home(): React.JSX.Element {
         const res = await callAPI("/api/user/me", "POST", {}, true);
 
         const me: inUserT = await res.json();
-
         setUserInfo(me);
         if (res.status == 451) {
           Alert.alert(
@@ -248,7 +247,11 @@ function Home(): React.JSX.Element {
               onPress={() => navigation.navigate("adminClaimedJobP")}
             >
               <View className="w-1/6">
-                <Icon source="head-outline" size={0.12 * ww} />
+                <Icon
+                  color={cS == "light" ? "black" : "white"}
+                  source="head-outline"
+                  size={0.12 * ww}
+                />
               </View>
               <View className="flex content-center justify-center">
                 <Text className="text-3xl dark:text-white">已接取的任務</Text>

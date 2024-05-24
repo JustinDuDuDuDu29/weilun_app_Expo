@@ -120,12 +120,16 @@ function DriverPic(): React.JSX.Element {
             if (truckLicense && !("headers" in truckLicense)) {
               f.append("TruckLicense", truckLicense!);
             }
+
             if (driverLicense && !("headers" in driverLicense!)) {
               f.append("DriverLicense", driverLicense!);
             }
-            if (getUserInfo?.Insurances && !("headers" in insurances!)) {
+
+            if (insurances && !("headers" in insurances!)) {
               f.append("Insurances", insurances!);
             }
+            console.log("TrYd");
+
             if (registration && !("headers" in registration!)) {
               f.append("Registration", registration!);
             }

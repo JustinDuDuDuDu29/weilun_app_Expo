@@ -1,4 +1,4 @@
-import { NullString } from "./JobItemT";
+import { NullInt16, NullString } from "./JobItemT";
 
 export type NewUser={
   Name: string;
@@ -6,8 +6,8 @@ export type NewUser={
   PhoneNum:string;
   BelongCmp: number;
   driverInfo?: {
-      percentage: number;
-      nationalIdNumber: string;
+      percentage?: number;
+      nationalIdNumber?: string;
   }
 }
 
@@ -22,7 +22,7 @@ export type cmpInfo={
 
 
 export type inUserT={
-  ApprovedDate:NullDate; 
+  ApprovedDate?:NullDate; 
   Belongcmp: number;
   DeletedDate: NullDate; 
   Driverlicense?: NullString;
@@ -33,11 +33,26 @@ export type inUserT={
   Username: string; 
   Cmpname: string; 
   Nationalidnumber?: string;
-  Percentage?: number;
+  Percentage?: NullInt16;
   Phonenum: string; 
   Registration?: NullString; 
   Role: number; 
   Trucklicense?: NullString;
+}
+
+export type userLSL = {
+  id: number|null;
+  phoneNum: string|null;
+  Username: string|null;
+  Role: number|null;
+  deleted_date: string|null;
+  last_modified_date: string|null;
+}
+
+export type userLS = {
+  cmpid: number;
+  Cmpname: string;
+  list: userLSL[]
 }
 
 export type NullInt64={

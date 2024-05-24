@@ -45,7 +45,7 @@ function TurnOver(): React.JSX.Element {
           true
         )
       ).json();
-      console.log(data);
+
       setData(data);
       let max = -100;
       const aa = data?.map((d: revT, i: number) => {
