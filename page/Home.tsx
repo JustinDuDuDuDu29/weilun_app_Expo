@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 // import { colorScheme, remapProps, useColorScheme } from "nativewind";
+import Dialog from "react-native-dialog";
 import {
   SafeAreaView,
   View,
@@ -17,16 +18,21 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
 import JobBlockPJ from "../components/JobBlockPJ";
-import { callAPI } from "../util/callAPIUtil";
+import { callAPI, download } from "../util/callAPIUtil";
 import { currentJob } from "../types/JobItemT";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
+import MonthPicker from "react-native-month-year-picker";
 
 export const pendingJob = atom<currentJob | null>(null);
 export const userInfo = atom<inUserT | null>(null);
 
 function Home(): React.JSX.Element {
+  const [show, setShow] = useState(false);
+  const [year, setYear] = useState<string>();
+  const [month, setMonth] = useState<string>();
+
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
@@ -257,6 +263,21 @@ function Home(): React.JSX.Element {
                 <Text className="text-3xl dark:text-white">已接取的任務</Text>
               </View>
             </Pressable>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              onPress={() => setShow(true)}
+            >
+              <View className="w-1/6">
+                <Icon
+                  color={cS == "light" ? "black" : "white"}
+                  source="head-outline"
+                  size={0.12 * ww}
+                />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl dark:text-white">下載報告</Text>
+              </View>
+            </Pressable>
           </>
         ) : (
           <></>
@@ -297,6 +318,48 @@ function Home(): React.JSX.Element {
           </Pressable> */}
         </View>
       </View>
+      {show && (
+        <Dialog.Container visible={show}>
+          <Dialog.Title>下載報告</Dialog.Title>
+          <Dialog.Description>請輸入年月</Dialog.Description>
+          <Dialog.Input
+            placeholder="西元年"
+            onChangeText={(e: string) => {
+              setYear(e);
+            }}
+            keyboardType="numeric"
+          ></Dialog.Input>
+          <Dialog.Input
+            placeholder="月份"
+            onChangeText={(e: string) => {
+              setMonth(e);
+            }}
+            keyboardType="numeric"
+          ></Dialog.Input>
+          <Dialog.Button
+            label="送出"
+            onPress={async () => {
+              // const res = await callAPI(
+              //   `/api/revenue/excel?year=${year}&month=${month}`,
+              //   "GET",
+              //   {},
+              //   true
+              // );
+
+              const res = await download(year!, month!);
+              // console.log(res.)
+              // download(year!, month!);
+              setShow(false);
+            }}
+          />
+          <Dialog.Button
+            label="關閉"
+            onPress={async () => {
+              setShow(false);
+            }}
+          />
+        </Dialog.Container>
+      )}
     </SafeAreaView>
   );
 }

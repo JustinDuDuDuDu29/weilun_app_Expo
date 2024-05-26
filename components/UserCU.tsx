@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { SafeAreaView, TextInput, View, Text } from "react-native";
+import {
+  SafeAreaView,
+  TextInput,
+  View,
+  Text,
+  Pressable,
+  Alert,
+} from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { NewUser, cmpInfo, inUserT } from "../types/userT";
 
@@ -7,13 +14,17 @@ import { StyleSheet } from "nativewind";
 import { Icon, RadioButton } from "react-native-paper";
 import DriverPic from "./DriverPic";
 import { callAPI } from "../util/callAPIUtil";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenProp } from "../types/navigationT";
 
 function UserCU({
   editable,
   OInfo,
+  setEditable,
 }: {
   editable: boolean;
   OInfo: inUserT;
+  setEditable: Function;
 }): React.JSX.Element {
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
   const [isFocus, setIsFocus] = useState(false);
@@ -29,6 +40,7 @@ function UserCU({
     driverInfo: {
       percentage: 0,
       nationalIdNumber: "",
+      plateNum: "",
     },
   });
   const roleName =
@@ -42,7 +54,6 @@ function UserCU({
   }, []);
   const setUp = useCallback(() => {
     if (OInfo) {
-      console.log("CALLING");
       setUser({
         Name: OInfo.Username,
         Role:
@@ -63,13 +74,28 @@ function UserCU({
 
   useEffect(() => {
     setUp();
-
     getCmp();
   }, []);
+  const navigation = useNavigation<ScreenProp>();
 
   return (
     <SafeAreaView>
-      <Text>{JSON.stringify(user)}</Text>
+      <Pressable
+        onPress={() => {
+          setEditable(!editable);
+          if (editable) {
+            navigation.goBack(); //"changePasswordP");
+          }
+        }}
+      >
+        {!editable ? (
+          <Text>
+            編輯 <Icon source={"lead-pencil"} size={15} />
+          </Text>
+        ) : (
+          <Text>取消</Text>
+        )}
+      </Pressable>
       <View>
         <View className="my-3 flex flex-row">
           <Text
@@ -165,17 +191,18 @@ function UserCU({
         {editable && !(OInfo?.Role == 100) ? (
           <RadioButton.Group
             onValueChange={(newValue) => {
+              setNewUserType(newValue);
+
               setUser({
                 Name: user.Name,
                 BelongCmp: user.BelongCmp,
-                Role: user.Role,
+                Role: newUserType,
                 PhoneNum: user.PhoneNum,
                 driverInfo: {
                   nationalIdNumber: OInfo?.Nationalidnumber,
                   percentage: OInfo?.Percentage?.Int16,
                 },
               });
-              setNewUserType(newValue);
             }}
             value={newUserType}
           >
@@ -212,8 +239,8 @@ function UserCU({
             </Text>
           </View>
         )}
-        {!editable && OInfo?.Role == 300 ? <></> : <></>}
-        {newUserType === "driver" || OInfo?.Role == 300 ? (
+        {(newUserType === "driver" && editable) ||
+        (OInfo?.Role == 300 && !editable) ? (
           <>
             <View className="my-3 flex flex-row">
               <Text
@@ -235,7 +262,37 @@ function UserCU({
                     ...user,
                     driverInfo: {
                       percentage: user.driverInfo?.percentage!,
+                      plateNum: user.driverInfo?.plateNum,
                       nationalIdNumber: e,
+                    },
+                  });
+                }}
+              >
+                {OInfo?.Nationalidnumber}
+              </TextInput>
+            </View>
+            <View className="my-3 flex flex-row">
+              <Text
+                className="text-xl"
+                style={{ textAlign: "center", textAlignVertical: "center" }}
+              >
+                車牌號碼：
+              </Text>
+              <TextInput
+                className={`flex-1 text-xl px-3 color-black rounded-xl  ${
+                  editable
+                    ? "border-b-2  border-fuchsia-300"
+                    : "border-slate-400"
+                }`}
+                placeholder="車牌號碼"
+                editable={editable}
+                onChangeText={(e) => {
+                  setUser({
+                    ...user,
+                    driverInfo: {
+                      percentage: user.driverInfo?.percentage!,
+                      plateNum: e,
+                      nationalIdNumber: user.driverInfo?.nationalIdNumber!,
                     },
                   });
                 }}
@@ -265,6 +322,7 @@ function UserCU({
                     driverInfo: {
                       // ...user.driverInfo,
                       nationalIdNumber: user.driverInfo?.nationalIdNumber!,
+                      plateNum: user.driverInfo?.plateNum!,
                       percentage: parseInt(e),
                     },
                   });
@@ -274,6 +332,22 @@ function UserCU({
               </TextInput>
             </View>
           </>
+        ) : (
+          <></>
+        )}
+        {editable ? (
+          <Pressable
+            onPress={async () => {
+              if (
+                (await callAPI(`/api/user/${OInfo.ID}`, "PUT", user, true))
+                  .status == 200
+              ) {
+                Alert.alert("完成", "成功修改資料", [{ text: "OK" }]);
+              }
+            }}
+          >
+            <Text>送出</Text>
+          </Pressable>
         ) : (
           <></>
         )}

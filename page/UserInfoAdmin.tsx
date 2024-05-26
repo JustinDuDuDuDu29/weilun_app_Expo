@@ -49,20 +49,13 @@ function UserInfoAdmin({
   return (
     <SafeAreaView>
       <ScrollView className="mx-4 my-3">
-        <Pressable
-          onPress={() => {
-            setEditable(!editable);
-          }}
-        >
-          {!editable ? (
-            <Text>
-              編輯 <Icon source={"lead-pencil"} size={15} />
-            </Text>
-          ) : (
-            <Text>取消</Text>
-          )}
-        </Pressable>
-        {OInfo && <UserCU editable={editable} OInfo={OInfo!} />}
+        {OInfo && (
+          <UserCU
+            editable={editable}
+            OInfo={OInfo!}
+            setEditable={setEditable}
+          />
+        )}
         <Pressable
           onPress={() => {
             // navigation.navigate("changePasswordP");

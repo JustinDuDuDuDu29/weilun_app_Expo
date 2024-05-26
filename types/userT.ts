@@ -6,6 +6,7 @@ export type NewUser={
   PhoneNum:string;
   BelongCmp: number;
   driverInfo?: {
+      plateNum?:string;
       percentage?: number;
       nationalIdNumber?: string;
   }

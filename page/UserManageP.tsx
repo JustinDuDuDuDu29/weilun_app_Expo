@@ -41,6 +41,7 @@ function UserManageP(): React.JSX.Element {
     driverInfo: {
       percentage: 0,
       nationalIdNumber: "",
+      plateNum: "",
     },
   });
   useEffect(() => {
@@ -241,6 +242,22 @@ function UserManageP(): React.JSX.Element {
                                   driverInfo: {
                                     percentage: user.driverInfo?.percentage!,
                                     nationalIdNumber: e,
+                                  },
+                                });
+                              }}
+                            />
+                          </View>
+                          <View>
+                            <TextInput
+                              placeholder="車牌號碼"
+                              onChangeText={(e) => {
+                                setUser({
+                                  ...user,
+                                  driverInfo: {
+                                    percentage: user.driverInfo?.percentage!,
+                                    nationalIdNumber:
+                                      user.driverInfo?.nationalIdNumber,
+                                    plateNum: e,
                                   },
                                 });
                               }}

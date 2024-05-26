@@ -1,6 +1,89 @@
 // import {process.env.EXPO_PUBLIC_HOST} from '@env';
 import { getSecureValue } from './loginInfo';
- 
+import { Platform } from 'react-native';
+import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
+import * as Permissions from 'expo-permissions';
+const { StorageAccessFramework } = FileSystem;
+export async function download(year:string, month:string){
+    const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
+
+    const uri = process.env.EXPO_PUBLIC_HOST+`/api/revenue/excel?year=${year}&month=${month}`
+    let fileUri = FileSystem.documentDirectory + "small.xlsx";
+    FileSystem.downloadAsync(uri, fileUri, {
+                headers:{
+                    'Authorization': bearer,
+                }
+            })
+    .then(async({ uri }) => {
+        await saveAndroidFile(uri);
+      })
+      .catch(error => {
+        console.error(error);
+      })
+}
+
+    const saveAndroidFile = async (fileUri:string, fileName = 'File') => {
+        try {
+          const fileString = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.Base64 });
+          
+          const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+          if (!permissions.granted) {
+            return;
+          }
+    
+          try {
+            await StorageAccessFramework.createFileAsync(permissions.directoryUri, fileName+".xls", 'application/vnd.ms-excel')
+              .then(async (uri) => {
+                await FileSystem.writeAsStringAsync(uri, fileString, { encoding: FileSystem.EncodingType.Base64 });
+                alert('Report Downloaded Successfully')
+              })
+              .catch((e) => {
+              });
+          } catch (e) {
+            throw new Error(e);
+          }
+    
+        } catch (err) {
+        }
+      }
+    
+
+// export async function download(year:string, month:string) {
+
+//     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
+//     const response = await fetch(process.env.EXPO_PUBLIC_HOST+`/api/revenue/excel?year=${year}&month=${month}`, {
+//         headers:{
+//             'Authorization': bearer,
+//         },
+//         method:"GET"
+//     })
+//     const data = await response.blob()
+
+// const reader = new FileReader();
+// reader.onload = async () => {
+//   const fileUri = FileSystem.documentDirectory + "file";
+//   console.log(reader.result)
+//   await FileSystem.writeAsStringAsync(
+//     fileUri, reader.result.split(',')[1], 
+//     { encoding: FileSystem.EncodingType.Base64 }
+//   );
+// };
+// reader.readAsDataURL(data);
+//     // console.log(FileSystem.documentDirectory)
+//     // try{
+//     // const result = await FileSystem.downloadAsync( process.env.EXPO_PUBLIC_HOST+`/api/revenue/excel?year=${year}&month=${month}`, 
+//     //  FileSystem.documentDirectory + 'small.xlsx',{headers:{
+//     //     'Authorization': bearer,
+//     // }})
+    
+    
+//     // await saveFile(result.uri, "small", "application/vnd.ms-excel");
+
+// // }catch (error) {
+// //     console.log(error);
+// //   }
+// }
 
 export async function callAPI(route: string, method: string, body:object, useAuth:boolean) {
     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
