@@ -41,11 +41,17 @@ function Home(): React.JSX.Element {
   const cS = usc();
   useEffect(() => {
     const ff = async () => {
-      const ws = new WebSocket("ws://10.0.2.2:8080/api/io");
+      console.log("CC");
+      const ws = new WebSocket("wss://apiweilun.imdu29.com/api/io");
 
       ws.onopen = async () => {
         // connection opened
-        ws.send((await getSecureValue("jwtToken")).toString()); // send a message
+
+        setInterval(() => {
+          ws.send("ping");
+        }, 10000);
+        const jwt = (await getSecureValue("jwtToken")).toString();
+        ws.send(jwt); // send a message
       };
 
       ws.onmessage = (e) => {
@@ -55,11 +61,13 @@ function Home(): React.JSX.Element {
 
       ws.onerror = (e) => {
         // an error occurred
-        console.log("err", e);
+        console.log("err!", e);
       };
 
       ws.onclose = (e) => {
         // connection closed
+        console.log("Closing");
+
         console.log(e.code, e.reason);
       };
     };

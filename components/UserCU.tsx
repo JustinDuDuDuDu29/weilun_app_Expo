@@ -65,6 +65,7 @@ function UserCU({
         PhoneNum: OInfo.Phonenum,
         BelongCmp: OInfo.Belongcmp,
         driverInfo: {
+          plateNum: OInfo.Platenum?.String ?? "",
           percentage: OInfo.Percentage?.Int16 ?? 0,
           nationalIdNumber: OInfo.Nationalidnumber ?? "",
         },
@@ -297,7 +298,7 @@ function UserCU({
                   });
                 }}
               >
-                {OInfo?.Nationalidnumber}
+                {OInfo.Platenum?.String}
               </TextInput>
             </View>
             <View className="my-3 flex flex-row">
@@ -351,7 +352,11 @@ function UserCU({
         ) : (
           <></>
         )}
-        {!editable && OInfo?.Role == 300 ? <DriverPic /> : <></>}
+        {!editable && OInfo?.Role == 300 ? (
+          <DriverPic showOption={false} />
+        ) : (
+          <></>
+        )}
       </View>
     </SafeAreaView>
   );

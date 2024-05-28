@@ -23,6 +23,7 @@ export type cmpInfo={
 
 
 export type inUserT={
+  Platenum?:NullString;
   ApprovedDate?:NullDate; 
   Belongcmp: number;
   DeletedDate: NullDate; 

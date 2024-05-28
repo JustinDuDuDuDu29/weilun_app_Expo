@@ -14,7 +14,7 @@ import {
 } from "../util/callAPIUtil";
 import { Button } from "react-native-paper";
 
-function DriverPic(): React.JSX.Element {
+function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
   useEffect(() => {
     const getData = async () => {
       try {
@@ -49,6 +49,7 @@ function DriverPic(): React.JSX.Element {
 
     getData();
   }, []);
+
   const ww = Dimensions.get("window").width;
 
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
@@ -77,41 +78,60 @@ function DriverPic(): React.JSX.Element {
 
   return (
     <SafeAreaView>
-      <Button
-        onPress={() => {
-          setCanPress(true);
-        }}
-      >
-        {canPress ? "取消" : "編輯"}
-      </Button>
-      <UploadPic
-        pressFun={pressFun1}
-        canPress={canPress}
-        src={truckLicense!}
-        actionSheetRef={actionSheetRef1}
-        tarFun={setTruckLicense}
-      />
-      <UploadPic
-        pressFun={pressFun2}
-        canPress={canPress}
-        src={registration!}
-        actionSheetRef={actionSheetRef2}
-        tarFun={setRegistration}
-      />
-      <UploadPic
-        pressFun={pressFun3}
-        canPress={canPress}
-        src={driverLicense!}
-        actionSheetRef={actionSheetRef3}
-        tarFun={setDriverLicense}
-      />
-      <UploadPic
-        pressFun={pressFun}
-        canPress={canPress}
-        src={insurances!}
-        actionSheetRef={actionSheetRef}
-        tarFun={setInsurances}
-      />
+      {showOption ? (
+        <Button
+          onPress={() => {
+            setCanPress(true);
+          }}
+        >
+          {canPress ? "取消" : "編輯"}
+        </Button>
+      ) : (
+        <></>
+      )}
+
+      <View className="flex flex-col ">
+        <View className="flex flex-row justify-around my-3">
+          <UploadPic
+            showOption={showOption}
+            pressFun={pressFun1}
+            canPress={canPress}
+            src={truckLicense!}
+            actionSheetRef={actionSheetRef1}
+            tarFun={setTruckLicense}
+            showText="拖車照"
+          />
+          <UploadPic
+            showOption={showOption}
+            pressFun={pressFun2}
+            canPress={canPress}
+            src={registration!}
+            actionSheetRef={actionSheetRef2}
+            tarFun={setRegistration}
+            showText="行照"
+          />
+        </View>
+        <View className="flex flex-row justify-around my-3">
+          <UploadPic
+            showOption={showOption}
+            pressFun={pressFun3}
+            canPress={canPress}
+            src={driverLicense!}
+            actionSheetRef={actionSheetRef3}
+            tarFun={setDriverLicense}
+            showText="駕照"
+          />
+          <UploadPic
+            showOption={showOption}
+            pressFun={pressFun}
+            canPress={canPress}
+            src={insurances!}
+            actionSheetRef={actionSheetRef}
+            tarFun={setInsurances}
+            showText="保單"
+          />
+        </View>
+      </View>
       {canPress ? (
         <Button
           onPress={async () => {

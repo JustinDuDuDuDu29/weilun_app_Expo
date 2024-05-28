@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, SafeAreaView, View } from "react-native";
+import { Pressable, SafeAreaView, View, Text, Dimensions } from "react-native";
 import { ImgT, imgUrl } from "../types/ImgT";
 import plus from "../asset/plus.png";
 import ChoosePicDrawer from "./ChoosePicDrawer";
@@ -12,37 +12,40 @@ const UploadPic = ({
   src,
   actionSheetRef,
   tarFun,
+  showText,
+  showOption,
 }: {
   pressFun: Function;
   canPress: boolean;
   src: ImgT | imgUrl;
   actionSheetRef: React.RefObject<ActionSheetRef>;
   tarFun: Function;
+  showText: string;
+  showOption: boolean;
 }): React.JSX.Element => {
   useEffect(() => {}, [src]);
-
-  const [toR, setToR] = useState();
+  const wh = Dimensions.get("window").height;
+  const ww = Dimensions.get("window").width;
 
   return (
     <SafeAreaView>
-      <Pressable
-        style={{ width: "100%", height: undefined, aspectRatio: 1 }}
-        className="border-dashed border-red-200 border-8 w-full p-8 flex align-middle flex-col justify-center justify-items-center content-center"
-        disabled={!canPress}
-        onPress={() => {
-          pressFun();
-        }}
-      >
-        <View
+      {src ? (
+        <Pressable
           className=" flex items-center  justify-center"
           style={{ width: "100%", height: undefined, aspectRatio: 1 }}
         >
-          <Image
-            source={src ? src : plus}
-            style={{ width: "100%", height: "100%" }}
-          ></Image>
-        </View>
-      </Pressable>
+          <Image source={src} style={{ width: "100%", height: "100%" }}></Image>
+        </Pressable>
+      ) : (
+        <Pressable
+          className="flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200 "
+          style={{ height: wh * 0.3, width: ww * 0.4 }}
+        >
+          <Text>
+            {showOption ? "按我" : "尚未"}上傳{showText}照片
+          </Text>
+        </Pressable>
+      )}
       <ChoosePicDrawer actionSheetRef={actionSheetRef} tarFun={tarFun} />
     </SafeAreaView>
   );

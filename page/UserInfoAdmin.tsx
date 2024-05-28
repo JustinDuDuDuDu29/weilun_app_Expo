@@ -104,7 +104,6 @@ function UserInfoAdmin({
         >
           <Text>重置密碼</Text>
         </Pressable>
-        {/* {!editable && OInfo?.Role == 300 ? <DriverPic /> : <></>} */}
       </ScrollView>
     </SafeAreaView>
   );
