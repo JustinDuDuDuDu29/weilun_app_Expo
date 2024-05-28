@@ -19,12 +19,15 @@ import { RUEmpty } from "../util/RUEmpty";
 import { ImgT } from "../types/ImgT";
 import UploadPic from "../components/UploadPic";
 import ChoosePicDrawer from "../components/ChoosePicDrawer";
+import { ScreenProp } from "../types/navigationT";
+import { useNavigation } from "@react-navigation/native";
 
 function FinishJob(): React.JSX.Element {
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const ww = Dimensions.get("window").width;
   const [finishImg, setFinishImg] = useState<ImgT>();
   const [getPendingJob, setPendingJob] = useAtom(pendingJob);
+  const navigation = useNavigation<ScreenProp>();
 
   const finishJobf = async () => {
     try {
@@ -38,6 +41,10 @@ function FinishJob(): React.JSX.Element {
           fd,
           true
         );
+        if (res.status == 200) {
+          Alert.alert("恭喜", "您已完成這項工作");
+          navigation.goBack();
+        }
       } else {
         Alert.alert("糟糕！", "請確認是否有正確選擇照片唷～", [{ text: "好" }]);
       }
@@ -51,19 +58,21 @@ function FinishJob(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView className="flex align-middle flex-row justify-center">
+    <SafeAreaView className="flex align-middle flex-col justify-center content-center items-center h-screen">
       <View
-        style={{ width: 0.8 * ww }}
+        // style={{ width: 0.8 * ww }}
         className="flex flex-col justify-around"
       >
         <UploadPic
+          showOption={true}
+          showText="完工證明"
           pressFun={pressFun}
           canPress={true}
           src={finishImg!}
           actionSheetRef={actionSheetRef}
           tarFun={setFinishImg}
         />
-        <View>
+        <View className="my-5">
           <Button
             onPress={async () => {
               await finishJobf();

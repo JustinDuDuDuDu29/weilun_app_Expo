@@ -3,7 +3,22 @@ import { NullDate } from "./userT";
 export type jobItemT = {
     ID: number;
     FromLoc: string;
-    Mid: NullString | string;
+    Mid: NullString;
+    // | string;
+    ToLoc: string;
+    Price: number;
+    Remaining: number;
+    Belongcmp: number;
+    Source: string;
+    Jobdate: string;
+    Memo: NullString ;
+    CloseDate: NullDate | string;
+    DeleteDate: NullDate | string;
+};
+export type jobItemTS = {
+    ID: number;
+    FromLoc: string;
+    Mid: string;
     ToLoc: string;
     Price: number;
     Remaining: number;

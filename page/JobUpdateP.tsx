@@ -209,7 +209,7 @@ function JobUpdateP({
                 className="text-2xl"
                 style={{ textAlignVertical: "center" }}
               >
-                土頭:
+                甲方:
               </Text>
               <View className="flex-1 py-3 px-2">
                 <TextInput

@@ -46,7 +46,7 @@ function UserInfo(): React.JSX.Element {
         >
           <Text>修改密碼</Text>
         </Button>
-        {getUserInfo?.Role == 300 ? <DriverPic /> : <></>}
+        {getUserInfo?.Role == 300 ? <DriverPic showOption={true} /> : <></>}
       </ScrollView>
     </SafeAreaView>
   );

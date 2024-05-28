@@ -38,7 +38,7 @@ function JobBlockPJ({
               onPress: async () => {
                 try {
                   const res = await await callAPI(
-                    `/api/claimed/${jobItem.ID}`,
+                    `/api/claimed/${jobItem.Claimid}`,
                     "DELETE",
                     {},
                     true

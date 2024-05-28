@@ -81,22 +81,18 @@ function UserCU({
 
   return (
     <SafeAreaView>
-      <Pressable
-        onPress={() => {
-          setEditable(!editable);
-          if (editable) {
-            navigation.goBack(); //"changePasswordP");
-          }
-        }}
-      >
-        {!editable ? (
+      {OInfo && (
+        <Pressable
+          className="my-1"
+          onPress={() => {
+            navigation.navigate("editUserInfoP", { OInfo: OInfo });
+          }}
+        >
           <Text>
-            編輯 <Icon source={"lead-pencil"} size={15} />
+            編輯 <Icon source={"lead-pencil"} size={17} />
           </Text>
-        ) : (
-          <Text>取消</Text>
-        )}
-      </Pressable>
+        </Pressable>
+      )}
       <View>
         <View className="my-3 flex flex-row">
           <Text
@@ -352,11 +348,7 @@ function UserCU({
         ) : (
           <></>
         )}
-        {!editable && OInfo?.Role == 300 ? (
-          <DriverPic showOption={false} />
-        ) : (
-          <></>
-        )}
+        {OInfo?.Role == 300 ? <DriverPic showOption={false} /> : <></>}
       </View>
     </SafeAreaView>
   );

@@ -14,7 +14,7 @@ import {
   Alert,
 } from "react-native";
 import _data from "../asset/fakeData/_jobs.json";
-import { NullString, jobItemT } from "../types/JobItemT";
+import { NullString, jobItemT, jobItemTS } from "../types/JobItemT";
 import JobBlock from "../components/JobBlock";
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -54,7 +54,7 @@ function JobsAdmin(): React.JSX.Element {
     setRefreshing(false);
   }, []);
 
-  const [jobItem, setJobItem] = useState<jobItemT>({
+  const [jobItem, setJobItem] = useState<jobItemTS>({
     FromLoc: "",
     Mid: "",
     ToLoc: "",
@@ -253,7 +253,7 @@ function JobsAdmin(): React.JSX.Element {
                     className="text-2xl"
                     style={{ textAlignVertical: "center" }}
                   >
-                    土頭:
+                    甲方:
                   </Text>
                   <View className="flex-1 py-3 px-2">
                     <TextInput

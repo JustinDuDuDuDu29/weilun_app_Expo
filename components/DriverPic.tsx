@@ -81,7 +81,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
       {showOption ? (
         <Button
           onPress={() => {
-            setCanPress(true);
+            setCanPress(!canPress);
           }}
         >
           {canPress ? "取消" : "編輯"}

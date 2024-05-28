@@ -59,7 +59,7 @@ function UserInfoAdmin({
         <Pressable
           onPress={() => {
             // navigation.navigate("changePasswordP");
-            Alert.alert("注意！", "此用戶的密碼將重置成手機號碼", [
+            Alert.alert("注意！", "即將核可此用戶資料", [
               {
                 text: "確定",
                 onPress: async () => {
@@ -70,7 +70,7 @@ function UserInfoAdmin({
                     true
                   );
                   if (res.status == 200) {
-                    Alert.alert("成功!", "請通知該使用者，不然他真的會哭出來");
+                    Alert.alert("成功!", "已核可此用戶");
                   }
                 },
               },
@@ -88,9 +88,9 @@ function UserInfoAdmin({
                 text: "確定",
                 onPress: async () => {
                   const res = await callAPI(
-                    "/api/user/pwd",
+                    "/api/user/pwdreset",
                     "POST",
-                    { id: OInfo?.ID, pwd: OInfo?.Phonenum, oldPwd: "" },
+                    { id: OInfo?.ID },
                     true
                   );
                   if (res.status == 200) {

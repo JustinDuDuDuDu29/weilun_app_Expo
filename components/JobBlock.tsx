@@ -24,13 +24,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
   return (
     <SafeAreaView>
       <Pressable
-        // style={{
-        //   backgroundColor:
-        //     getPendingJob!.ID == jobItem.ID
-        //       ? 'rgb(254 249 195)'
-        //       : 'rgb(167 243 208)',
-        // }}
-        className="bg-green-300 my-3 rounded-2xl w-full flex flex-row justify-center content-center"
+        className="bg-green-300 my-3 rounded-2xl w-full flex flex-col px-4 py-3"
         onPress={async () => {
           // driver press to claim job
           if (getUserInfo?.Role == 300) {
@@ -67,36 +61,70 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
           }
         }}
       >
-        <View
-          style={{ flex: 0.3, flexBasis: 0.3 }}
-          className="flex justify-center content-center"
-        >
-          <Text style={{ textAlign: "center" }} className="text-3xl">
-            {jobItem.FromLoc}
-          </Text>
-        </View>
+        <View className="flex flex-row py-2">
+          <View className="flex justify-center content-center flex-1">
+            <Text style={{ textAlign: "center" }} className="text-3xl">
+              {jobItem.FromLoc}
+            </Text>
+          </View>
+          <View className="flex justify-center content-center">
+            <Text style={{ textAlign: "center" }} className="text-3xl">
+              ➡
+            </Text>
+          </View>
+          {jobItem.Mid.Valid ? (
+            <>
+              <View className="flex justify-center content-center flex-1">
+                <Text style={{ textAlign: "center" }} className="text-3xl">
+                  {jobItem.Mid.String}
+                </Text>
+              </View>
 
-        <View
-          style={{ flex: 0.3, flexBasis: 0.3 }}
-          className="flex justify-center items-center content-center relative"
-        >
-          <Text
-            style={{ textAlign: "center" }}
-            className=" absolute text-white z-50"
-          >
-            {jobItem instanceof String
-              ? (jobItem.Mid as string)
-              : ((jobItem.Mid as NullString).String as string)}
-          </Text>
-          <Icon source="arrow-right-bold" size={ww * 0.3} />
+              <View className="flex justify-center content-center">
+                <Text style={{ textAlign: "center" }} className="text-3xl">
+                  ➡
+                </Text>
+              </View>
+            </>
+          ) : (
+            <></>
+          )}
+
+          <View className="flex justify-center content-center flex-1">
+            <Text style={{ textAlign: "center" }} className="text-3xl ">
+              {jobItem.ToLoc}
+            </Text>
+          </View>
         </View>
-        <View
-          style={{ flex: 0.3, flexBasis: 0.3 }}
-          className="flex justify-center content-center"
-        >
-          <Text style={{ textAlign: "center" }} className="text-3xl">
-            {jobItem.ToLoc}
-          </Text>
+        <View className="bg-slate-100 rounded-xl px-2 my-2">
+          {jobItem.Memo.Valid ? (
+            <View className="my-1">
+              <Text className="text-xl">注意事項：{jobItem.Memo.String}</Text>
+            </View>
+          ) : (
+            <></>
+          )}
+          {jobItem.Price ? (
+            <View className="my-1">
+              <Text className="text-xl">運費：{jobItem.Price}</Text>
+            </View>
+          ) : (
+            <></>
+          )}
+          {jobItem.Remaining ? (
+            <View className="my-1">
+              <Text className="text-xl">剩餘趟數：{jobItem.Remaining}</Text>
+            </View>
+          ) : (
+            <></>
+          )}
+          {jobItem.Source ? (
+            <View className="my-1">
+              <Text className="text-xl">甲方：{jobItem.Source}</Text>
+            </View>
+          ) : (
+            <></>
+          )}
         </View>
       </Pressable>
     </SafeAreaView>

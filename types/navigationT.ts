@@ -1,6 +1,7 @@
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import { ClaimedJob, jobItemT } from './JobItemT';
+import { inUserT } from './userT';
 export type ScreenProp = NativeStackNavigationProp<RootStackParamList>;
 
 
@@ -25,4 +26,5 @@ export type RootStackParamList = {
     claimJobP: { claimedJob: number};
     maintainInfoP: { maintainID: number};
     userInfoAdminP: { uid: number};
+    editUserInfoP: { OInfo: inUserT};
 };

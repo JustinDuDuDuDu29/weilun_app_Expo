@@ -1,22 +1,21 @@
-import React, {useState} from 'react';
-import {SafeAreaView, View, Dimensions, Pressable} from 'react-native';
-import {Button, Icon, TextInput, Text} from 'react-native-paper';
-import lineLogo from '../asset/line.png';
-import phoneLogo from '../asset/telephone.png';
-import {Linking} from 'react-native';
+import React, { useState } from "react";
+import { SafeAreaView, View, Dimensions, Pressable } from "react-native";
+import { Button, Icon, TextInput, Text } from "react-native-paper";
+import lineLogo from "../asset/line.png";
+import phoneLogo from "../asset/telephone.png";
+import { Linking } from "react-native";
 
 function CustomerS(): React.JSX.Element {
-  const ww = Dimensions.get('window').width;
+  const ww = Dimensions.get("window").width;
   return (
     <SafeAreaView className="h-full flex justify-center content-center">
       <View className="flex flex-row justify-around content-center">
         <Pressable
           onPress={() => {
-            Linking.openURL(
-              'https://liff.line.me/1645278921-kWRPP32q/?accountId=mcd.tw',
-            );
+            Linking.openURL("https://line.me/ti/p/Q456k_ed6l");
           }}
-          className="flex flex-col justify-self-center justify-center ">
+          className="flex flex-col justify-self-center justify-center "
+        >
           <View>
             <Icon source={lineLogo} size={ww * 0.38} />
           </View>
@@ -27,14 +26,15 @@ function CustomerS(): React.JSX.Element {
         <View
           style={{
             borderLeftWidth: 1,
-            borderLeftColor: 'black',
+            borderLeftColor: "black",
           }}
         />
         <Pressable
           onPress={() => {
-            Linking.openURL('tel:123');
+            Linking.openURL("tel:123");
           }}
-          className="flex flex-col justify-self-center justify-center ">
+          className="flex flex-col justify-self-center justify-center "
+        >
           <View>
             <Icon source={phoneLogo} size={ww * 0.38} />
           </View>
