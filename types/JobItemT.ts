@@ -34,7 +34,7 @@ export type currentJob = {
     Claimid: number;
     Claimdate: string;
     FromLoc: string;
-    Mid: NullString | string;
+    Mid: NullString;
     ToLoc: string;
     Price: number;
     Source: string;

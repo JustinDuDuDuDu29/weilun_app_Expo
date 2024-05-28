@@ -16,6 +16,7 @@ import DriverPic from "./DriverPic";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
+import DriverPicAdmin from "./DriverPicAdmin";
 
 function UserCU({
   editable,
@@ -348,7 +349,11 @@ function UserCU({
         ) : (
           <></>
         )}
-        {OInfo?.Role == 300 ? <DriverPic showOption={false} /> : <></>}
+        {OInfo?.Role == 300 ? (
+          <DriverPicAdmin showOption={true} getUserInfo={OInfo} />
+        ) : (
+          <></>
+        )}
       </View>
     </SafeAreaView>
   );

@@ -30,6 +30,7 @@ function JobBlockPJ({
   return (
     <SafeAreaView>
       <Pressable
+        className="bg-yellow-300 my-3 rounded-2xl w-full flex flex-col justify-center content-center  px-9 py-2"
         onLongPress={() => {
           // cancel job
           Alert.alert("取消工作", "確定要取消這個工作嗎？", [
@@ -61,39 +62,70 @@ function JobBlockPJ({
           navigation.navigate("finishJobP");
         }}
       >
-        <View className="bg-yellow-300 my-3 rounded-2xl w-full flex flex-row justify-center content-center">
-          <View
-            style={{ flex: 0.3, flexBasis: 0.3 }}
-            className="flex justify-center content-center"
-          >
-            <Text style={{ textAlign: "center" }} className="text-3xl">
-              {jobItem!.FromLoc}
-            </Text>
-          </View>
-
-          <View
-            style={{ flex: 0.3, flexBasis: 0.3 }}
-            className="flex justify-center items-center content-center relative"
-          >
+        <View className="flex flex-row py-2">
+          <View className="flex justify-center content-center flex-1">
             <Text
-              style={{ textAlign: "center" }}
-              className=" absolute text-white z-50"
+              style={{ textAlign: "center", verticalAlign: "middle" }}
+              className="text-3xl"
             >
-              {jobItem instanceof String
-                ? (jobItem.Mid as string)
-                : ((jobItem.Mid as NullString).String as string)}
+              {jobItem.FromLoc}
             </Text>
-            <Icon source="arrow-right-bold" size={ww * 0.25} />
           </View>
-          <View
-            style={{ flex: 0.3, flexBasis: 0.3 }}
-            className="flex justify-center content-center"
-          >
-            <Text style={{ textAlign: "center" }} className="text-3xl">
-              {jobItem!.ToLoc}
+          <View className="flex justify-center content-center">
+            <Text
+              style={{ textAlign: "center", verticalAlign: "middle" }}
+              className="text-3xl"
+            >
+              ➡
+            </Text>
+          </View>
+          {jobItem.Mid.Valid ? (
+            <>
+              <View className="flex justify-center content-center flex-1">
+                <Text
+                  style={{ textAlign: "center", verticalAlign: "middle" }}
+                  className="text-3xl"
+                >
+                  {jobItem.Mid.String}
+                </Text>
+              </View>
+
+              <View className="flex justify-center content-center">
+                <Text
+                  style={{ textAlign: "center", verticalAlign: "middle" }}
+                  className="text-3xl"
+                >
+                  ➡
+                </Text>
+              </View>
+            </>
+          ) : (
+            <></>
+          )}
+
+          <View className="flex justify-center content-center flex-1">
+            <Text
+              style={{ textAlign: "center", verticalAlign: "middle" }}
+              className="text-3xl "
+            >
+              {jobItem.ToLoc}
             </Text>
           </View>
         </View>
+        {jobItem.Memo.Valid ? (
+          <View className="bg-slate-100 rounded-xl px-2 my-2">
+            <View className="my-1">
+              <Text
+                style={{ textAlign: "center", verticalAlign: "middle" }}
+                className="text-xl"
+              >
+                注意事項：{jobItem.Memo.String}
+              </Text>
+            </View>
+          </View>
+        ) : (
+          <></>
+        )}
       </Pressable>
     </SafeAreaView>
   );

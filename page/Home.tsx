@@ -92,6 +92,8 @@ function Home(): React.JSX.Element {
                 onPress: async () => {
                   await logout();
                   setIsLoggedIn(false);
+                  setPendingJob(null);
+                  setUserInfo(null);
                 },
               },
             ]

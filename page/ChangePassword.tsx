@@ -3,7 +3,7 @@ import { Alert, SafeAreaView } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { callAPI } from "../util/callAPIUtil";
 import { useAtom } from "jotai";
-import { userInfo } from "./Home";
+import { pendingJob, userInfo } from "./Home";
 import { logout } from "../util/loginInfo";
 import { isLoggedInAtom } from "../App";
 
@@ -16,6 +16,7 @@ function ChangePassword(): React.JSX.Element {
   const [secure2, setSecure2] = useState(true);
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
 
   const setPwd = async () => {
     if (newPassword != passwordA) {
@@ -38,6 +39,7 @@ function ChangePassword(): React.JSX.Element {
             onPress: async () => {
               await logout();
               setIsLoggedIn(false);
+              setPendingJob(null);
               setUserInfo(null);
             },
           },

@@ -69,7 +69,7 @@ const UploadPic = ({
       <ChoosePicDrawer actionSheetRef={actionSheetRef} tarFun={tarFun} />
       <ShowMeMorePic visible={visible} hideModal={hideModal}>
         <View>
-          <Image source={src} style={{ width: "102%", height: "102%" }}></Image>
+          <Image source={src} style={{ width: "100%", height: "100%" }}></Image>
         </View>
       </ShowMeMorePic>
     </SafeAreaView>

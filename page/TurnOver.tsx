@@ -47,6 +47,7 @@ function TurnOver(): React.JSX.Element {
       ).json();
 
       setData(data);
+      console.log(data);
       let max = -100;
       const aa = data?.map((d: revT, i: number) => {
         if (d.Earn > max) setMax(d.Earn);
@@ -71,7 +72,6 @@ function TurnOver(): React.JSX.Element {
         )
       ).json();
       setCJ(cj);
-
       setIsLoading(false);
     } catch (error) {
       console.log(error);

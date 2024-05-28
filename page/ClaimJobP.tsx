@@ -8,6 +8,7 @@ import UploadPic from "../components/UploadPicFCJob";
 import { ScreenProp } from "../types/navigationT";
 import { useAtom } from "jotai";
 import { userInfo } from "./Home";
+import UploadPicFCJob from "../components/UploadPicFCJob";
 
 function ClaimJobP({
   route,
@@ -104,7 +105,7 @@ function ClaimJobP({
 
           <View className="my-2">
             <Text className="text-xl">完工照片：</Text>
-            <UploadPic src={jobPic} />
+            <UploadPicFCJob src={jobPic} />
           </View>
         </View>
         {getUserInfo?.Role === 100 ? (
