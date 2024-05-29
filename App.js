@@ -20,8 +20,6 @@ import Jobs from "./page/Jobs";
 import { atom, useAtom } from "jotai";
 import { isLoggedIn } from "./util/loginInfo";
 import {
-  ActivityIndicator,
-  View,
   useColorScheme as usc,
   StatusBar,
 } from "react-native";

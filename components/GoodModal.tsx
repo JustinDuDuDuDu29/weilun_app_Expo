@@ -1,10 +1,7 @@
 import React from "react";
 import {
   Dimensions,
-  KeyboardAvoidingView,
   Modal,
-  Pressable,
-  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,

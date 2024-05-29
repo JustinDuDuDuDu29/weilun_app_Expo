@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { SafeAreaView, View, Dimensions, Pressable } from "react-native";
-import { Button, Icon, TextInput, Text } from "react-native-paper";
+import React from "react";
+import { SafeAreaView, View, Dimensions, Pressable, Text } from "react-native";
+import { Icon } from "react-native-paper";
 import lineLogo from "../asset/line.png";
 import phoneLogo from "../asset/telephone.png";
 import { Linking } from "react-native";
@@ -20,7 +20,9 @@ function CustomerS(): React.JSX.Element {
             <Icon source={lineLogo} size={ww * 0.38} />
           </View>
           <View className="flex flex-row justify-center align-middle">
-            <Text className="text-2xl">Line客服</Text>
+            <Text className="text-2xl text-black dark:text-white">
+              Line客服
+            </Text>
           </View>
         </Pressable>
         <View
@@ -39,7 +41,7 @@ function CustomerS(): React.JSX.Element {
             <Icon source={phoneLogo} size={ww * 0.38} />
           </View>
           <View className="flex flex-row justify-center align-middle">
-            <Text className="text-2xl">客服專線</Text>
+            <Text className="text-2xl dark:text-white">客服專線</Text>
           </View>
         </Pressable>
       </View>

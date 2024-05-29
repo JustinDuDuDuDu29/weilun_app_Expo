@@ -17,6 +17,7 @@ import { NewUser, cmpInfo, userLS } from "../types/userT";
 import { StyleSheet } from "nativewind";
 import { RadioButton } from "react-native-paper";
 import GoodModal from "./GoodModal";
+import { useColorScheme as usc, StatusBar } from "react-native";
 
 function SearchComp(props: {
   setUsetList: Function;
@@ -24,6 +25,8 @@ function SearchComp(props: {
   hideModal: Function;
   setVisible: Function;
 }): React.JSX.Element {
+  const cS = usc();
+
   const [isFocus1, setIsFocus1] = useState(false);
   const [searchVal, setSearchVal] = useState<{
     Name: string;
@@ -216,9 +219,10 @@ function SearchComp(props: {
             }}
           />
         </View>
-        <View className=" mx-1 flex-1 flex justify-center border-2 border-gray-300 onFocus rounded">
+        <View className=" mx-1 flex-1 flex justify-center border-2 border-gray-300 onFocus rounded ">
           <TextInput
-            className="px-2 flex items-center align-middle"
+            className="px-2 flex items-center align-middle dark:text-white"
+            placeholderTextColor={cS == "light" ? "#000" : "#fff"}
             // style={{ verticalAlign: "center" }}
             placeholder="請輸入條件"
             ref={inp}

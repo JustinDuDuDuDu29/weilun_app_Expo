@@ -5,6 +5,7 @@ import { ClaimedJob } from "../types/JobItemT";
 import AlertBlock from "../components/AlertBlock";
 import CJBlock from "../components/CJBlock";
 import { useIsFocused } from "@react-navigation/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function AdminClaimedJob(): React.JSX.Element {
   const [claimedList, setClaimedList] = useState<ClaimedJob[]>([]);
@@ -25,9 +26,18 @@ function AdminClaimedJob(): React.JSX.Element {
   useEffect(() => {
     getData();
   }, [focused]);
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      className="flex flex-col relative flex-1 mx-4"
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
       <FlatList
         className="h-full"
         data={claimedList}

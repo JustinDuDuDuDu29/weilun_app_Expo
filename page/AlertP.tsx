@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Alert,
   FlatList,
@@ -20,18 +20,19 @@ import { cmpInfo } from "../types/userT";
 import { useAtom } from "jotai";
 import { userInfo } from "./Home";
 import { Dropdown } from "react-native-element-dropdown";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function AlertP(): React.JSX.Element {
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await callAPI("/api/alert", "GET", {}, true);
+  const getData = useCallback(async () => {
+    try {
+      const res = await callAPI("/api/alert", "GET", {}, true);
 
-        if (res.status == 200) setAlertList((await res.json()).res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      if (res.status == 200) setAlertList((await res.json()).res);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const cmpList: cmpInfo[] = await (
@@ -71,14 +72,24 @@ function AlertP(): React.JSX.Element {
         setValue(undefined);
         setNewAlert({});
         setVisible(false);
+        getData();
       }
     } catch (error) {
       console.log(error);
     }
   };
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      className="flex flex-col relative flex-1"
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
       <View className=" relative ">
         <Text>{JSON.stringify(newAlert)}</Text>
         <FlatList

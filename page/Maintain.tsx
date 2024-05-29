@@ -19,8 +19,12 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import giveMeDate from "../util/giveMeDate";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
+import { useAtom } from "jotai";
+import { userInfo } from "./Home";
 
 function Maintain(): React.JSX.Element {
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -143,7 +147,9 @@ function Maintain(): React.JSX.Element {
             <MaintainBlock maintainInfo={item} />
           )}
         />
-        <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
+        {getUserInfo?.Role == 300 && (
+          <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
+        )}
       </View>
 
       <GoodModal visible={visible} hideModal={hideModal}>

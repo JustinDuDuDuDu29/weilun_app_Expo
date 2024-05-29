@@ -41,7 +41,6 @@ function Home(): React.JSX.Element {
   const cS = usc();
   useEffect(() => {
     const ff = async () => {
-      console.log("CC");
       const ws = new WebSocket("wss://apiweilun.imdu29.com/api/io");
 
       ws.onopen = async () => {

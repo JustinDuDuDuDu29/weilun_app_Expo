@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Dimensions, Image, SafeAreaView, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Pressable,
+  SafeAreaView,
+  View,
+} from "react-native";
 import UploadPic from "./UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ImgT, imgUrl } from "../types/ImgT";
@@ -12,7 +19,6 @@ import {
   callAPI,
   callAPIForm,
 } from "../util/callAPIUtil";
-import { Button } from "react-native-paper";
 
 function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
   useEffect(() => {
@@ -79,13 +85,14 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
   return (
     <SafeAreaView>
       {showOption ? (
-        <Button
+        <Pressable
+          className=" border border-purple-400 bg-purple-300 rounded-xl py-1"
           onPress={() => {
             setCanPress(!canPress);
           }}
         >
           {canPress ? "取消" : "編輯"}
-        </Button>
+        </Pressable>
       ) : (
         <></>
       )}
@@ -133,7 +140,8 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
         </View>
       </View>
       {canPress ? (
-        <Button
+        <Pressable
+          className=" border border-purple-400 bg-purple-300 rounded-xl py-1"
           onPress={async () => {
             const f = new FormData();
 
@@ -168,7 +176,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
           }}
         >
           儲存
-        </Button>
+        </Pressable>
       ) : (
         <></>
       )}
