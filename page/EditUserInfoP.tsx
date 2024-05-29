@@ -15,6 +15,7 @@ import { RadioButton } from "react-native-paper";
 import { callAPI } from "../util/callAPIUtil";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function EditUserInfoP({
   route,
@@ -33,7 +34,7 @@ function EditUserInfoP({
     PhoneNum: route.params.OInfo?.Phonenum,
     BelongCmp: route.params.OInfo?.Belongcmp,
     driverInfo: {
-      percentage: route.params.OInfo?.Percentage?.Int16,
+      percentage: route.params.OInfo?.Percentage?.Int32,
       nationalIdNumber: route.params.OInfo?.Nationalidnumber,
       plateNum: route.params.OInfo?.Platenum?.String,
     },
@@ -56,19 +57,27 @@ function EditUserInfoP({
     getCmp();
   }, []);
   const navigation = useNavigation<ScreenProp>();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView>
-      <Text>{JSON.stringify(user)}</Text>
+    <SafeAreaView
+      className="flex flex-col relative flex-1 mx-4 my-3"
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      }}
+    >
       <View className="my-3 flex flex-row">
         <Text
-          className="text-xl"
+          className="text-xl dark:text-white"
           style={{ textAlign: "center", textAlignVertical: "center" }}
         >
           姓名：
         </Text>
         <TextInput
-          className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300`}
+          className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
           placeholder="姓名"
           onChangeText={(e) => {
             setUser({ ...user, Name: e });
@@ -79,13 +88,13 @@ function EditUserInfoP({
       </View>
       <View className="my-3 flex flex-row">
         <Text
-          className="text-xl"
+          className="text-xl dark:text-white"
           style={{ textAlign: "center", textAlignVertical: "center" }}
         >
           手機號碼：
         </Text>
         <TextInput
-          className={`flex-1 text-xl px-3 color-black rounded-xl  border-b-2  border-fuchsia-300`}
+          className={`flex-1 text-xl px-3 color-black rounded-xl  border-b-2  border-fuchsia-300 dark:text-white`}
           keyboardType="numeric"
           placeholder="電話號碼"
           onChangeText={(e) => {
@@ -98,7 +107,7 @@ function EditUserInfoP({
 
       <View className="my-3 flex flex-row">
         <Text
-          className="text-xl"
+          className="text-xl dark:text-white"
           style={{ textAlign: "center", textAlignVertical: "center" }}
         >
           所屬公司：
@@ -141,7 +150,7 @@ function EditUserInfoP({
               driverInfo: {
                 plateNum: route.params.OInfo?.Platenum?.String,
                 nationalIdNumber: route.params.OInfo?.Nationalidnumber,
-                percentage: route.params.OInfo?.Percentage?.Int16,
+                percentage: route.params.OInfo?.Percentage?.Int32,
               },
             });
           }}
@@ -167,13 +176,13 @@ function EditUserInfoP({
       ) : (
         <View className="my-3 flex flex-row">
           <Text
-            className="text-xl"
+            className="text-xl dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             職位：
           </Text>
           <Text
-            className=" text-xl px-3 color-black rounded-xl"
+            className=" text-xl px-3 color-black rounded-xl dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             {roleName}
@@ -184,13 +193,13 @@ function EditUserInfoP({
         <>
           <View className="my-3 flex flex-row">
             <Text
-              className="text-xl"
+              className="text-xl dark:text-white"
               style={{ textAlign: "center", textAlignVertical: "center" }}
             >
               身份證：
             </Text>
             <TextInput
-              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300`}
+              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
               placeholder="身份證"
               onChangeText={(e) => {
                 setUser({
@@ -208,13 +217,13 @@ function EditUserInfoP({
           </View>
           <View className="my-3 flex flex-row">
             <Text
-              className="text-xl"
+              className="text-xl dark:text-white"
               style={{ textAlign: "center", textAlignVertical: "center" }}
             >
               車牌號碼：
             </Text>
             <TextInput
-              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300`}
+              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
               placeholder="車牌號碼"
               onChangeText={(e) => {
                 setUser({
@@ -232,13 +241,13 @@ function EditUserInfoP({
           </View>
           <View className="my-3 flex flex-row">
             <Text
-              className="text-xl"
+              className="text-xl dark:text-white"
               style={{ textAlign: "center", textAlignVertical: "center" }}
             >
               比率：
             </Text>
             <TextInput
-              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300`}
+              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
               placeholder="比率"
               keyboardType="numeric"
               onChangeText={(e) => {
@@ -253,31 +262,39 @@ function EditUserInfoP({
                 });
               }}
             >
-              {route.params.OInfo?.Percentage?.Int16}
+              {route.params.OInfo?.Percentage?.Int32}
             </TextInput>
           </View>
         </>
       ) : (
         <></>
       )}
-      <Pressable
-        onPress={async () => {
-          if (
-            (
-              await callAPI(
-                `/api/user/${route.params.OInfo.ID}`,
-                "PUT",
-                user,
-                true
-              )
-            ).status == 200
-          ) {
-            Alert.alert("完成", "成功修改資料", [{ text: "OK" }]);
-          }
-        }}
-      >
-        <Text>送出</Text>
-      </Pressable>
+      <View className="flex flex-row justify-center">
+        <Pressable
+          className="border w-1/3 rounded-lg bg-violet-300 px-3 py-2"
+          onPress={async () => {
+            if (
+              (
+                await callAPI(
+                  `/api/user/${route.params.OInfo.ID}`,
+                  "PUT",
+                  user,
+                  true
+                )
+              ).status == 200
+            ) {
+              Alert.alert("完成", "成功修改資料", [{ text: "OK" }]);
+            }
+          }}
+        >
+          <Text
+            style={{ verticalAlign: "middle", textAlign: "center" }}
+            className="dark:text-white"
+          >
+            送出
+          </Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }

@@ -7,7 +7,6 @@ import { ScreenProp } from "../types/navigationT";
 import DriverPic from "../components/DriverPic";
 
 function UserInfo(): React.JSX.Element {
-  å;
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
 
   const roleName =

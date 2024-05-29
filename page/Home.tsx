@@ -330,9 +330,11 @@ function Home(): React.JSX.Element {
       </View>
       {show && (
         <Dialog.Container visible={show}>
-          <Dialog.Title>下載報告</Dialog.Title>
-          <Dialog.Description>請輸入年月</Dialog.Description>
+          <Dialog.Description style={{ color: "black", fontSize: 25 }}>
+            請輸入年月
+          </Dialog.Description>
           <Dialog.Input
+            style={{ color: "black" }}
             placeholder="西元年"
             onChangeText={(e: string) => {
               setYear(e);
@@ -341,6 +343,7 @@ function Home(): React.JSX.Element {
           ></Dialog.Input>
           <Dialog.Input
             placeholder="月份"
+            style={{ color: "black" }}
             onChangeText={(e: string) => {
               setMonth(e);
             }}

@@ -1,4 +1,4 @@
-import { NullInt16, NullString } from "./JobItemT";
+import { NullInt16, NullInt32, NullString } from "./JobItemT";
 
 export type NewUser={
   Name: string;
@@ -35,7 +35,7 @@ export type inUserT={
   Username: string; 
   Cmpname: string; 
   Nationalidnumber?: string;
-  Percentage?: NullInt16;
+  Percentage?: NullInt32;
   Phonenum: string; 
   Registration?: NullString; 
   Role: number; 

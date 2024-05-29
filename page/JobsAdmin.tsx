@@ -25,8 +25,11 @@ import GoodModal from "../components/GoodModal";
 import { StyleSheet } from "nativewind";
 import { Dropdown } from "react-native-element-dropdown";
 import { cmpInfo } from "../types/userT";
+import { useColorScheme as usc } from "react-native";
 
 function JobsAdmin(): React.JSX.Element {
+  const cS = usc();
+
   const getData = useCallback(async () => {
     try {
       const cmpList: cmpInfo[] = await (
@@ -184,17 +187,26 @@ function JobsAdmin(): React.JSX.Element {
         <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
       </View>
       <GoodModal visible={visible} hideModal={hideModal}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback
+          onPress={Keyboard.dismiss}
+          style={{
+            backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
+          }}
+        >
           <KeyboardAvoidingView
             behavior="padding"
             keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-            style={styles.container}
+            style={{
+              display: "flex",
+              paddingHorizontal: 10,
+              backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
+            }}
           >
             <ScrollView>
               <View className="mx-4 my-2 ">
                 <View className="flex my-1 flex-row">
                   <Text
-                    className="text-2xl"
+                    className="text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     出發地:
@@ -211,7 +223,7 @@ function JobsAdmin(): React.JSX.Element {
                 </View>
                 <View className="flex my-1 flex-row">
                   <Text
-                    className="text-2xl"
+                    className="text-2xl  dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     經過:
@@ -233,7 +245,7 @@ function JobsAdmin(): React.JSX.Element {
 
                 <View className="flex my-1 flex-row">
                   <Text
-                    className=" text-2xl"
+                    className=" text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     終點:
@@ -250,7 +262,7 @@ function JobsAdmin(): React.JSX.Element {
 
                 <View className="flex my-1 flex-row">
                   <Text
-                    className="text-2xl"
+                    className="text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     甲方:
@@ -267,7 +279,7 @@ function JobsAdmin(): React.JSX.Element {
 
                 <View className="flex my-1 flex-row">
                   <Text
-                    className=" text-2xl"
+                    className=" text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     注意事項:
@@ -287,7 +299,7 @@ function JobsAdmin(): React.JSX.Element {
                 </View>
                 <View className="flex my-1 flex-row">
                   <Text
-                    className=" text-2xl"
+                    className=" text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     價格:
@@ -308,7 +320,7 @@ function JobsAdmin(): React.JSX.Element {
                 {/* <View className="flex flex-row w-full bg-blue-300"> */}
                 <Text
                   style={{ textAlignVertical: "center" }}
-                  className=" text-2xl"
+                  className=" text-2xl dark:text-white"
                 >
                   所屬公司:
                 </Text>
@@ -346,7 +358,7 @@ function JobsAdmin(): React.JSX.Element {
 
                 <View className="flex my-1 flex-row mt-2">
                   <Text
-                    className=" text-2xl"
+                    className=" text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     剩餘趟數:
@@ -365,7 +377,7 @@ function JobsAdmin(): React.JSX.Element {
                 </View>
                 <View className="flex my-1 flex-row">
                   <Text
-                    className=" text-2xl"
+                    className=" text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     工作開始日:
@@ -400,7 +412,7 @@ function JobsAdmin(): React.JSX.Element {
 
                 <View className="flex my-1 flex-row">
                   <Text
-                    className=" text-2xl"
+                    className=" text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     工作結束日:
@@ -463,6 +475,7 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     paddingHorizontal: 10,
+    // backgroundColor: usc() == "light" ? "#fff" : "#000",
   },
   fab: {
     position: "absolute",

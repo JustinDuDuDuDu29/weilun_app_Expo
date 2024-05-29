@@ -75,28 +75,30 @@ function ClaimJobP({
     <SafeAreaView className="mx-4 px-1 my-2">
       <View>
         <View>
-          <Text className="my-2 text-xl">
+          <Text className="my-2 text-xl dark:text-white">
             公司： {CJ?.Cmpname}（{CJ?.Cmpid}）
           </Text>
-          <Text className="my-2 text-xl">
+          <Text className="my-2 text-xl dark:text-white">
             駕駛： {CJ?.Username}（{CJ?.Userid}）
           </Text>
-          <Text className="my-2 text-xl">
+          <Text className="my-2 text-xl dark:text-white">
             工作資訊： {CJ?.FromLoc} ➡{" "}
             {CJ?.Mid.Valid ? `${CJ?.Mid.String} ➡ ` : ""}
             {CJ?.ToLoc}
           </Text>
-          <Text className="my-2 text-xl">
+          <Text className="my-2 text-xl dark:text-white">
             接取日期： {CJ?.CreateDate.split("T")[0]}
           </Text>
-          <Text className="my-2 text-xl">工作金額： {CJ?.Price}</Text>
+          <Text className="my-2 text-xl dark:text-white">
+            工作金額： {CJ?.Price}
+          </Text>
           {CJ?.Approveddate.Valid ? (
             <>
-              <Text className="my-2 text-xl">
-                核可時比率：{CJ.Percentage.Int16}
+              <Text className="my-2 text-xl dark:text-white">
+                核可時比率：{CJ.Percentage.Int32}
               </Text>
-              <Text className="my-2 text-xl">
-                駕駛賺取金額：{(CJ.Percentage.Int16 / 100) * CJ.Price}
+              <Text className="my-2 text-xl dark:text-white">
+                駕駛賺取金額：{(CJ.Percentage.Int32 / 100) * CJ.Price}
               </Text>
             </>
           ) : (
@@ -104,7 +106,7 @@ function ClaimJobP({
           )}
 
           <View className="my-2">
-            <Text className="text-xl">完工照片：</Text>
+            <Text className="text-xl dark:text-white">完工照片：</Text>
             <UploadPicFCJob src={jobPic} />
           </View>
         </View>
@@ -114,7 +116,7 @@ function ClaimJobP({
               <></>
             ) : (
               <Pressable
-                className="bg-cyan-200 rounded-xl px-20 py-3 "
+                className="bg-cyan-200 dark:bg-cyan-400 rounded-xl px-20 py-3 "
                 onPress={() => {
                   Alert.alert(
                     "注意",
@@ -138,11 +140,11 @@ function ClaimJobP({
                   );
                 }}
               >
-                <Text>核可</Text>
+                <Text className="text-lg">核可</Text>
               </Pressable>
             )}
             <Pressable
-              className="bg-red-200 rounded-xl px-20 py-3 "
+              className="bg-red-200 dark:bg-red-400 rounded-xl px-20 py-3 "
               onPress={() => {
                 Alert.alert(
                   "注意",
@@ -159,7 +161,7 @@ function ClaimJobP({
                 );
               }}
             >
-              <Text>刪除</Text>
+              <Text className="text-lg">刪除</Text>
             </Pressable>
           </View>
         ) : (

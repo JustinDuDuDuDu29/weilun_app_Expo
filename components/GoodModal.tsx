@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useColorScheme as usc } from "react-native";
 
 function GoodModal({
   children,
@@ -16,6 +17,8 @@ function GoodModal({
   visible: boolean;
   hideModal: Function;
 }): React.JSX.Element {
+  const cS = usc();
+
   return (
     <Modal
       animationType="slide"
@@ -41,7 +44,25 @@ function GoodModal({
           activeOpacity={1}
           className="w-screen flex justify-end"
         >
-          <View style={styles.modalView}>{children}</View>
+          <View
+            style={{
+              maxHeight: wh * 0.8,
+              backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
+              padding: 5,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            {children}
+          </View>
         </TouchableOpacity>
       </TouchableOpacity>
     </Modal>
@@ -50,22 +71,5 @@ function GoodModal({
 
 const ww = Dimensions.get("window").width;
 const wh = Dimensions.get("window").height;
-const styles = StyleSheet.create({
-  modalView: {
-    maxHeight: wh * 0.8,
-    backgroundColor: "white",
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    padding: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-});
 
 export default GoodModal;

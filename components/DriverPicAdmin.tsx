@@ -83,7 +83,7 @@ function DriverPicAdmin({
 
   return (
     <SafeAreaView>
-      {showOption ? (
+      {/* {showOption ? (
         <Button
           onPress={() => {
             setCanPress(!canPress);
@@ -93,7 +93,7 @@ function DriverPicAdmin({
         </Button>
       ) : (
         <></>
-      )}
+      )} */}
 
       <View className="flex flex-col ">
         <View className="flex flex-row justify-around my-3">

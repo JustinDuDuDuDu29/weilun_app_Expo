@@ -77,11 +77,15 @@ export type CJInfo = {
     Cmpid: number,
     Approveddate: NullDate,
     Driverpercentage: number,
-    Percentage:NullInt16,
+    Percentage:NullInt32,
     Price: number  
 }
 
 export type NullInt16 = {
     Int16: number,
+    Valid: boolean
+}
+export type NullInt32 = {
+    Int32: number,
     Valid: boolean
 }

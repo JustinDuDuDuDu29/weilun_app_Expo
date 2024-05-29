@@ -35,6 +35,7 @@ function UserInfoAdmin({
       const data = await res.json();
 
       setOInfo(data);
+      console.log(data);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -56,54 +57,73 @@ function UserInfoAdmin({
             setEditable={setEditable}
           />
         )}
-        <Pressable
-          onPress={() => {
-            // navigation.navigate("changePasswordP");
-            Alert.alert("注意！", "即將核可此用戶資料", [
-              {
-                text: "確定",
-                onPress: async () => {
-                  const res = await callAPI(
-                    `/api/user/approve/${OInfo?.ID}`,
-                    "POST",
-                    { id: OInfo?.ID, pwd: OInfo?.Phonenum, oldPwd: "" },
-                    true
-                  );
-                  if (res.status == 200) {
-                    Alert.alert("成功!", "已核可此用戶");
-                  }
+        <View className="flex flex-col items-center">
+          {OInfo?.Role === 300 && !OInfo.ApprovedDate?.Valid && (
+            <Pressable
+              className="bg-green-300 rounded-xl py-1 w-1/2 my-2"
+              onPress={() => {
+                // navigation.navigate("changePasswordP");
+                Alert.alert("注意！", "即將核可此用戶資料", [
+                  {
+                    text: "確定",
+                    onPress: async () => {
+                      const res = await callAPI(
+                        `/api/user/approve/${OInfo?.ID}`,
+                        "POST",
+                        { id: OInfo?.ID, pwd: OInfo?.Phonenum, oldPwd: "" },
+                        true
+                      );
+                      if (res.status == 200) {
+                        Alert.alert("成功!", "已核可此用戶");
+                      }
+                    },
+                  },
+                  { text: "取消" },
+                ]);
+              }}
+            >
+              <Text
+                style={{ textAlign: "center", textAlignVertical: "center" }}
+                className="text-xl"
+              >
+                核可
+              </Text>
+            </Pressable>
+          )}
+          <Pressable
+            className="bg-red-300 rounded-xl py-1 w-1/2 my-2"
+            onPress={() => {
+              // navigation.navigate("changePasswordP");
+              Alert.alert("注意！", "此用戶的密碼將重置成手機號碼", [
+                {
+                  text: "確定",
+                  onPress: async () => {
+                    const res = await callAPI(
+                      "/api/user/pwdreset",
+                      "POST",
+                      { id: OInfo?.ID },
+                      true
+                    );
+                    if (res.status == 200) {
+                      Alert.alert(
+                        "成功!",
+                        "請通知該使用者，不然他真的會哭出來"
+                      );
+                    }
+                  },
                 },
-              },
-              { text: "取消" },
-            ]);
-          }}
-        >
-          <Text>核可</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => {
-            // navigation.navigate("changePasswordP");
-            Alert.alert("注意！", "此用戶的密碼將重置成手機號碼", [
-              {
-                text: "確定",
-                onPress: async () => {
-                  const res = await callAPI(
-                    "/api/user/pwdreset",
-                    "POST",
-                    { id: OInfo?.ID },
-                    true
-                  );
-                  if (res.status == 200) {
-                    Alert.alert("成功!", "請通知該使用者，不然他真的會哭出來");
-                  }
-                },
-              },
-              { text: "取消" },
-            ]);
-          }}
-        >
-          <Text>重置密碼</Text>
-        </Pressable>
+                { text: "取消" },
+              ]);
+            }}
+          >
+            <Text
+              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className="text-xl"
+            >
+              重置密碼
+            </Text>
+          </Pressable>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

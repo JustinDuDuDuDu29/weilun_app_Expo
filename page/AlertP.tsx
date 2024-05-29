@@ -9,11 +9,12 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   View,
+  Text,
 } from "react-native";
 import { callAPI } from "../util/callAPIUtil";
 import { alertT, newAlertT } from "../types/alertT";
 import AlertBlock from "../components/AlertBlock";
-import { FAB, Text, TextInput } from "react-native-paper";
+import { FAB, TextInput } from "react-native-paper";
 import GoodModal from "../components/GoodModal";
 import { StyleSheet } from "nativewind";
 import { cmpInfo } from "../types/userT";
@@ -21,8 +22,11 @@ import { useAtom } from "jotai";
 import { userInfo } from "./Home";
 import { Dropdown } from "react-native-element-dropdown";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useColorScheme as usc } from "react-native";
 
 function AlertP(): React.JSX.Element {
+  const cS = usc();
+
   const getData = useCallback(async () => {
     try {
       const res = await callAPI("/api/alert", "GET", {}, true);
@@ -114,11 +118,20 @@ function AlertP(): React.JSX.Element {
             className=" h-64 flex flex-col justify-between"
             behavior="padding"
             keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-            style={styles.container}
+            style={{
+              display: "flex",
+              paddingHorizontal: 10,
+              backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
+            }}
           >
             <View>
               <View className="flex flex-row w-full my-3 ">
-                <Text style={{ textAlignVertical: "center" }}>通知內容</Text>
+                <Text
+                  style={{ textAlignVertical: "center" }}
+                  className="dark:text-white"
+                >
+                  通知內容
+                </Text>
                 <View className="mx-2 flex-1">
                   <TextInput
                     className="w-full"

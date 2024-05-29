@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -24,20 +24,19 @@ import { userInfo } from "./Home";
 
 function Maintain(): React.JSX.Element {
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  const getData = useCallback(async () => {
+    try {
+      const res = await callAPI("/api/repair", "GET", {}, true);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await callAPI("/api/repair", "GET", {}, true);
-
-        if (res.status == 200) {
-          const data: maintainInfoT[] = await res.json();
-          setData(data.res);
-        }
-      } catch (error) {
-        console.log(error);
+      if (res.status == 200) {
+        const data: maintainInfoT[] = await res.json();
+        setData(data.res);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  useEffect(() => {
     getData();
   }, []);
 
@@ -125,6 +124,7 @@ function Maintain(): React.JSX.Element {
         setVisible(false);
         setModalVisible(false);
         setGasLiter([]);
+        getData();
       }
     } catch (error) {
       console.log(error);

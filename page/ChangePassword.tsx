@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { Alert, SafeAreaView } from "react-native";
+import {
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Pressable,
+  SafeAreaView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { callAPI } from "../util/callAPIUtil";
 import { useAtom } from "jotai";
@@ -53,50 +64,80 @@ function ChangePassword(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView>
-      <TextInput
-        value={oldPassword}
-        onChangeText={(e) => {
-          setOldPassword(e);
-        }}
-        right={<TextInput.Icon icon="eye" onPress={() => setSecure(!secure)} />}
-        label="舊密碼"
-        mode="outlined"
-        secureTextEntry={secure}
-      />
-      <TextInput
-        value={newPassword}
-        onChangeText={(e) => {
-          setNewPassword(e);
-        }}
-        right={
-          <TextInput.Icon icon="eye" onPress={() => setSecure1(!secure1)} />
-        }
-        label="新密碼"
-        mode="outlined"
-        secureTextEntry={secure1}
-      />
-      <TextInput
-        value={passwordA}
-        onChangeText={(e) => {
-          setPasswordA(e);
-        }}
-        right={
-          <TextInput.Icon icon="eye" onPress={() => setSecure2(!secure2)} />
-        }
-        label="再次輸入新密碼"
-        mode="outlined"
-        secureTextEntry={secure2}
-      />
-      <Button
-        onPress={async () => {
-          await setPwd();
-        }}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+        style={styles.container}
       >
-        送出
-      </Button>
-    </SafeAreaView>
+        <View style={styles.form}>
+          <TextInput
+            value={oldPassword}
+            onChangeText={(e) => {
+              setOldPassword(e);
+            }}
+            right={
+              <TextInput.Icon icon="eye" onPress={() => setSecure(!secure)} />
+            }
+            label="舊密碼"
+            mode="outlined"
+            secureTextEntry={secure}
+          />
+          <TextInput
+            value={newPassword}
+            onChangeText={(e) => {
+              setNewPassword(e);
+            }}
+            right={
+              <TextInput.Icon icon="eye" onPress={() => setSecure1(!secure1)} />
+            }
+            label="新密碼"
+            mode="outlined"
+            secureTextEntry={secure1}
+          />
+          <TextInput
+            value={passwordA}
+            onChangeText={(e) => {
+              setPasswordA(e);
+            }}
+            right={
+              <TextInput.Icon icon="eye" onPress={() => setSecure2(!secure2)} />
+            }
+            label="再次輸入新密碼"
+            mode="outlined"
+            secureTextEntry={secure2}
+          />
+          <Pressable
+            className=" border border-purple-400 bg-purple-300 rounded-xl py-1 my-2"
+            onPress={async () => {
+              await setPwd();
+            }}
+          >
+            <Text
+              className="text-xl text-stone-800"
+              style={{ verticalAlign: "middle", textAlign: "center" }}
+            >
+              送出
+            </Text>
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontWeight: "bold",
+  },
+  input: {
+    borderRadius: 5,
+  },
+});
 export default ChangePassword;
