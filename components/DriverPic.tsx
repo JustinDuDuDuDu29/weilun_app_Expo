@@ -159,7 +159,6 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             if (insurances && !("headers" in insurances!)) {
               f.append("Insurances", insurances!);
             }
-            console.log("TrYd");
 
             if (registration && !("headers" in registration!)) {
               f.append("Registration", registration!);

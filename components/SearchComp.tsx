@@ -88,7 +88,6 @@ function SearchComp(props: {
           signal
         )
       ).json();
-      // console.log(data);
       props.setUsetList(data);
     } catch (error) {
       console.log(error);
@@ -111,7 +110,7 @@ function SearchComp(props: {
     PhoneNum: "",
     BelongCmp: NaN,
     driverInfo: {
-      percentage: 0,
+      // percentage: 0,
       nationalIdNumber: "",
       plateNum: "",
     },
@@ -152,7 +151,7 @@ function SearchComp(props: {
         if (
           user.Role == "driver" &&
           (user.driverInfo?.nationalIdNumber == "" ||
-            user.driverInfo?.percentage == 0)
+            user.driverInfo?.plateNum == "")
         ) {
           Alert.alert("注意！", "請確認資料是否完整", [{ text: "OK" }]);
           return;
@@ -170,7 +169,7 @@ function SearchComp(props: {
             PhoneNum: "",
             BelongCmp: NaN,
             driverInfo: {
-              percentage: 0,
+              // percentage: 0,
               nationalIdNumber: "",
               plateNum: "",
             },
@@ -179,7 +178,6 @@ function SearchComp(props: {
 
           Alert.alert("成功！", "新增成功", [{ text: "OK" }]);
         }
-        // console.log(res);
       }
       await getData();
       await getCmp();
@@ -417,8 +415,9 @@ function SearchComp(props: {
                                 setUser({
                                   ...user,
                                   driverInfo: {
-                                    percentage: user.driverInfo?.percentage!,
+                                    // percentage: user.driverInfo?.percentage!,
                                     nationalIdNumber: e,
+                                    plateNum: user.driverInfo?.plateNum,
                                   },
                                 });
                               }}
@@ -431,7 +430,7 @@ function SearchComp(props: {
                                 setUser({
                                   ...user,
                                   driverInfo: {
-                                    percentage: user.driverInfo?.percentage!,
+                                    // percentage: user.driverInfo?.percentage!,
                                     nationalIdNumber:
                                       user.driverInfo?.nationalIdNumber,
                                     plateNum: e,
@@ -451,7 +450,7 @@ function SearchComp(props: {
                                     plateNum: user.driverInfo?.plateNum,
                                     nationalIdNumber:
                                       user.driverInfo?.nationalIdNumber!,
-                                    percentage: parseInt(e),
+                                    // percentage: parseInt(e),
                                   },
                                 });
                               }}

@@ -34,7 +34,7 @@ function EditUserInfoP({
     PhoneNum: route.params.OInfo?.Phonenum,
     BelongCmp: route.params.OInfo?.Belongcmp,
     driverInfo: {
-      percentage: route.params.OInfo?.Percentage?.Int32,
+      // percentage: route.params.OInfo?.Percentage?.Int32,
       nationalIdNumber: route.params.OInfo?.Nationalidnumber,
       plateNum: route.params.OInfo?.Platenum?.String,
     },
@@ -150,7 +150,7 @@ function EditUserInfoP({
               driverInfo: {
                 plateNum: route.params.OInfo?.Platenum?.String,
                 nationalIdNumber: route.params.OInfo?.Nationalidnumber,
-                percentage: route.params.OInfo?.Percentage?.Int32,
+                // percentage: route.params.OInfo?.Percentage?.Int32,
               },
             });
           }}
@@ -205,7 +205,7 @@ function EditUserInfoP({
                 setUser({
                   ...user,
                   driverInfo: {
-                    percentage: user.driverInfo?.percentage!,
+                    // percentage: user.driverInfo?.percentage!,
                     plateNum: user.driverInfo?.plateNum,
                     nationalIdNumber: e,
                   },
@@ -229,7 +229,7 @@ function EditUserInfoP({
                 setUser({
                   ...user,
                   driverInfo: {
-                    percentage: user.driverInfo?.percentage!,
+                    // percentage: user.driverInfo?.percentage!,
                     plateNum: e,
                     nationalIdNumber: user.driverInfo?.nationalIdNumber!,
                   },
@@ -239,7 +239,7 @@ function EditUserInfoP({
               {route.params.OInfo.Platenum?.String}
             </TextInput>
           </View>
-          <View className="my-3 flex flex-row">
+          {/* <View className="my-3 flex flex-row">
             <Text
               className="text-xl dark:text-white"
               style={{ textAlign: "center", textAlignVertical: "center" }}
@@ -257,14 +257,14 @@ function EditUserInfoP({
                     // ...user.driverInfo,
                     nationalIdNumber: user.driverInfo?.nationalIdNumber!,
                     plateNum: user.driverInfo?.plateNum!,
-                    percentage: parseInt(e),
+                    // percentage: parseInt(e),
                   },
                 });
               }}
             >
               {route.params.OInfo?.Percentage?.Int32}
             </TextInput>
-          </View>
+          </View> */}
         </>
       ) : (
         <></>

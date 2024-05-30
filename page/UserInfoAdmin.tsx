@@ -35,7 +35,7 @@ function UserInfoAdmin({
       const data = await res.json();
 
       setOInfo(data);
-      console.log(data);
+      data;
     } catch (error) {
       console.log("error: ", error);
     }

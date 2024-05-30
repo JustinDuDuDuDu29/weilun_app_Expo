@@ -49,41 +49,6 @@ export async function download(year:string, month:string){
       }
     
 
-// export async function download(year:string, month:string) {
-
-//     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
-//     const response = await fetch(process.env.EXPO_PUBLIC_HOST+`/api/revenue/excel?year=${year}&month=${month}`, {
-//         headers:{
-//             'Authorization': bearer,
-//         },
-//         method:"GET"
-//     })
-//     const data = await response.blob()
-
-// const reader = new FileReader();
-// reader.onload = async () => {
-//   const fileUri = FileSystem.documentDirectory + "file";
-//   console.log(reader.result)
-//   await FileSystem.writeAsStringAsync(
-//     fileUri, reader.result.split(',')[1], 
-//     { encoding: FileSystem.EncodingType.Base64 }
-//   );
-// };
-// reader.readAsDataURL(data);
-//     // console.log(FileSystem.documentDirectory)
-//     // try{
-//     // const result = await FileSystem.downloadAsync( process.env.EXPO_PUBLIC_HOST+`/api/revenue/excel?year=${year}&month=${month}`, 
-//     //  FileSystem.documentDirectory + 'small.xlsx',{headers:{
-//     //     'Authorization': bearer,
-//     // }})
-    
-    
-//     // await saveFile(result.uri, "small", "application/vnd.ms-excel");
-
-// // }catch (error) {
-// //     console.log(error);
-// //   }
-// }
 
 export async function callAPI(route: string, method: string, body:object, useAuth:boolean) {
     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()

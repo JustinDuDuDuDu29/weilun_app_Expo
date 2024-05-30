@@ -73,8 +73,8 @@ export type CJInfo = {
     Cmpname: string,
     Cmpid: number,
     Approveddate: NullDate,
-    Driverpercentage: number,
-    Percentage:NullInt32,
+    // Driverpercentage: number,
+    // Percentage:NullInt32,
     Price: number  
 }
 

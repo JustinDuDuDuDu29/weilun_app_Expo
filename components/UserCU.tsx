@@ -40,7 +40,7 @@ function UserCU({
     PhoneNum: "",
     BelongCmp: NaN,
     driverInfo: {
-      percentage: 0,
+      // percentage: 0,
       nationalIdNumber: "",
       plateNum: "",
     },
@@ -68,7 +68,7 @@ function UserCU({
         BelongCmp: OInfo.Belongcmp,
         driverInfo: {
           plateNum: OInfo.Platenum?.String ?? "",
-          percentage: OInfo.Percentage?.Int32 ?? 0,
+          // percentage: OInfo.Percentage?.Int32 ?? 0,
           nationalIdNumber: OInfo.Nationalidnumber ?? "",
         },
       });
@@ -185,7 +185,7 @@ function UserCU({
                 {OInfo.Platenum?.String}
               </Text>
             </View>
-            <View className="my-3 flex flex-row">
+            {/* <View className="my-3 flex flex-row">
               <Text
                 className="text-xl dark:text-white"
                 style={{ textAlign: "center", textAlignVertical: "center" }}
@@ -197,7 +197,7 @@ function UserCU({
               >
                 {OInfo?.Percentage?.Int32}
               </Text>
-            </View>
+            </View> */}
           </>
         ) : (
           <></>

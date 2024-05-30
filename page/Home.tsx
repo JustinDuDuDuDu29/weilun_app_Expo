@@ -131,11 +131,6 @@ function Home(): React.JSX.Element {
     setData();
   }, [isFocused]);
 
-  // useEffect(() => {
-  //   console.log("call");
-  //   getCur();
-  // }, [getUserInfo]);
-
   if (getUserInfo == null) {
     return <></>;
   }
@@ -360,7 +355,6 @@ function Home(): React.JSX.Element {
               // );
 
               const res = await download(year!, month!);
-              // console.log(res.)
               // download(year!, month!);
               setShow(false);
             }}

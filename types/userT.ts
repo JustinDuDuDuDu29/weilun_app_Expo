@@ -7,7 +7,7 @@ export type NewUser={
   BelongCmp: number;
   driverInfo?: {
       plateNum?:string;
-      percentage?: number;
+      // percentage?: number;
       nationalIdNumber?: string;
   }
 }
@@ -35,7 +35,7 @@ export type inUserT={
   Username: string; 
   Cmpname: string; 
   Nationalidnumber?: string;
-  Percentage?: NullInt32;
+  // Percentage?: NullInt32;
   Phonenum: string; 
   Registration?: NullString; 
   Role: number; 

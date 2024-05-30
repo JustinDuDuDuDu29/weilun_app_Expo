@@ -120,11 +120,7 @@ function ClaimJobP({
                 onPress={() => {
                   Alert.alert(
                     "注意",
-                    `即將核可駕駛 ${CJ?.Username} 之工作編號${
-                      CJ?.ID
-                    }\n當前該駕駛之比率為${CJ?.Driverpercentage}%，他將獲得${
-                      (CJ!.Driverpercentage / 100) * CJ!.Price
-                    }元`,
+                    `即將核可駕駛 ${CJ?.Username} 之工作編號${CJ?.ID}`,
                     [
                       {
                         text: "確定",

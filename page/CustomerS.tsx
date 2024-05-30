@@ -33,7 +33,7 @@ function CustomerS(): React.JSX.Element {
         />
         <Pressable
           onPress={() => {
-            Linking.openURL("tel:123");
+            Linking.openURL("tel:0928976176");
           }}
           className="flex flex-col justify-self-center justify-center "
         >
