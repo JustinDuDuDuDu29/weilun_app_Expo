@@ -27,4 +27,5 @@ export type RootStackParamList = {
     maintainInfoP: { maintainID: number};
     userInfoAdminP: { uid: number};
     editUserInfoP: { OInfo: inUserT};
+    CreateJobP: undefined;
 };

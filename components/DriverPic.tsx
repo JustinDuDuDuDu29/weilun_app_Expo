@@ -6,6 +6,7 @@ import {
   Pressable,
   SafeAreaView,
   View,
+  Text,
 } from "react-native";
 import UploadPic from "./UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
@@ -91,7 +92,9 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             setCanPress(!canPress);
           }}
         >
-          {canPress ? "取消" : "編輯"}
+          <Text style={{ textAlign: "center", verticalAlign: "middle" }}>
+            {canPress ? "取消" : "編輯照片"}
+          </Text>
         </Pressable>
       ) : (
         <></>
@@ -175,7 +178,9 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             }
           }}
         >
-          儲存
+          <Text style={{ textAlign: "center", verticalAlign: "middle" }}>
+            儲存
+          </Text>
         </Pressable>
       ) : (
         <></>

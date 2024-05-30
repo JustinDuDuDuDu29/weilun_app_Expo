@@ -92,7 +92,7 @@ function ClaimJobP({
           <Text className="my-2 text-xl dark:text-white">
             工作金額： {CJ?.Price}
           </Text>
-          {CJ?.Approveddate.Valid ? (
+          {/* {CJ?.Approveddate.Valid ? (
             <>
               <Text className="my-2 text-xl dark:text-white">
                 核可時比率：{CJ.Percentage.Int32}
@@ -103,7 +103,7 @@ function ClaimJobP({
             </>
           ) : (
             <></>
-          )}
+          )} */}
 
           <View className="my-2">
             <Text className="text-xl dark:text-white">完工照片：</Text>

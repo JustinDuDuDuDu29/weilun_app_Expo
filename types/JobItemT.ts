@@ -12,11 +12,10 @@ export type jobItemT = {
     Source: string;
     Jobdate: string;
     Memo: NullString ;
-    CloseDate: NullDate | string;
-    DeleteDate: NullDate | string;
+    // CloseDate: NullDate | string;
+    // DeleteDate: NullDate | string;
 };
 export type jobItemTS = {
-    ID: number;
     FromLoc: string;
     Mid: string;
     ToLoc: string;
@@ -25,9 +24,7 @@ export type jobItemTS = {
     Belongcmp: number;
     Source: string;
     Jobdate: string;
-    Memo: NullString | string;
-    CloseDate: NullDate | string;
-    DeleteDate: NullDate | string;
+    Memo:  string;
 };
 
 export type currentJob = {

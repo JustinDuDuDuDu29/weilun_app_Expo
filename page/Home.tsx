@@ -264,7 +264,7 @@ function Home(): React.JSX.Element {
               <View className="w-1/6">
                 <Icon
                   color={cS == "light" ? "black" : "white"}
-                  source="head-outline"
+                  source="vector-polygon"
                   size={0.12 * ww}
                 />
               </View>
@@ -279,7 +279,7 @@ function Home(): React.JSX.Element {
               <View className="w-1/6">
                 <Icon
                   color={cS == "light" ? "black" : "white"}
-                  source="head-outline"
+                  source="file-download-outline"
                   size={0.12 * ww}
                 />
               </View>

@@ -120,7 +120,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
           )}
           {jobItem.Source ? (
             <View className="my-1">
-              <Text className="text-xl">甲方：{jobItem.Source}</Text>
+              <Text className="text-xl">業主：{jobItem.Source}</Text>
             </View>
           ) : (
             <></>
