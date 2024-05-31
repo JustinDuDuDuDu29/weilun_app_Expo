@@ -13,7 +13,7 @@ import { pendingJob } from "../page/Home";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
-import { NullString, currentJob, jobItemT } from "../types/JobItemT";
+import { currentJob } from "../types/JobItemT";
 
 function JobBlockPJ({
   jobItem,
@@ -38,7 +38,7 @@ function JobBlockPJ({
               text: "確定取消",
               onPress: async () => {
                 try {
-                  const res = await await callAPI(
+                  const res = await callAPI(
                     `/api/claimed/${jobItem.Claimid}`,
                     "DELETE",
                     {},

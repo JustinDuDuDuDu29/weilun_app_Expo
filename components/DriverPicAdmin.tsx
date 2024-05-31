@@ -98,6 +98,7 @@ function DriverPicAdmin({
       <View className="flex flex-col ">
         <View className="flex flex-row justify-around my-3">
           <UploadPic
+            type="small"
             showOption={showOption}
             pressFun={pressFun1}
             canPress={canPress}
@@ -107,6 +108,7 @@ function DriverPicAdmin({
             showText="拖車照"
           />
           <UploadPic
+            type="small"
             showOption={showOption}
             pressFun={pressFun2}
             canPress={canPress}
@@ -118,6 +120,7 @@ function DriverPicAdmin({
         </View>
         <View className="flex flex-row justify-around my-3">
           <UploadPic
+            type="small"
             showOption={showOption}
             pressFun={pressFun3}
             canPress={canPress}
@@ -127,6 +130,7 @@ function DriverPicAdmin({
             showText="駕照"
           />
           <UploadPic
+            type="small"
             showOption={showOption}
             pressFun={pressFun}
             canPress={canPress}

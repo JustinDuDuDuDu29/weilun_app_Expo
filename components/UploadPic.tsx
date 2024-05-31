@@ -15,6 +15,7 @@ const UploadPic = ({
   tarFun,
   showText,
   showOption,
+  type,
 }: {
   pressFun: Function;
   canPress: boolean;
@@ -23,6 +24,7 @@ const UploadPic = ({
   tarFun: Function;
   showText: string;
   showOption: boolean;
+  type: string;
 }): React.JSX.Element => {
   useEffect(() => {}, [src]);
   const wh = Dimensions.get("window").height;
@@ -39,7 +41,11 @@ const UploadPic = ({
       {src ? (
         <Pressable
           className="flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200"
-          style={{ height: wh * 0.3, width: ww * 0.4, overflow: "hidden" }}
+          style={{
+            width: type == "big" ? ww * 0.7 : ww * 0.4,
+            height: type == "big" ? wh * 0.6 : wh * 0.3,
+            overflow: "hidden",
+          }}
           onPress={() => {
             if (!canPress) {
               setVisible(true);
@@ -53,7 +59,11 @@ const UploadPic = ({
       ) : (
         <Pressable
           className="flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200 "
-          style={{ height: wh * 0.3, width: ww * 0.4 }}
+          style={{
+            width: type == "big" ? ww * 0.7 : ww * 0.4,
+            height: type == "big" ? wh * 0.6 : wh * 0.3,
+            overflow: "hidden",
+          }}
           onPress={() => {
             if (!canPress) {
               return;

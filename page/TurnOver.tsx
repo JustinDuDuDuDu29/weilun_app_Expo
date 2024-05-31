@@ -45,7 +45,6 @@ function TurnOver(): React.JSX.Element {
           true
         )
       ).json();
-
       setData(data);
       let max = -100;
       const aa = data?.map((d: revT, i: number) => {
@@ -117,7 +116,7 @@ function TurnOver(): React.JSX.Element {
               style={{ textAlign: "center", textAlignVertical: "center" }}
               className=" text-2xl dark:text-white"
             >
-              (比上個月{data ? data[2].Earn - data[1].Earn : 0})
+              (比上個月多{data ? data[2].Earn - data[1].Earn : 0})
             </Text>
             <Text
               style={{ textAlign: "center", textAlignVertical: "center" }}
@@ -137,7 +136,7 @@ function TurnOver(): React.JSX.Element {
               style={{ textAlign: "center", textAlignVertical: "center" }}
               className=" text-2xl dark:text-white"
             >
-              (比上個月{data ? data[2].Count - data[1].Count : 0})
+              (比上個月多{data ? data[2].Count - data[1].Count : 0})
             </Text>
             <Text
               style={{ textAlign: "center", textAlignVertical: "center" }}

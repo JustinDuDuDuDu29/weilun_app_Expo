@@ -92,7 +92,10 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             setCanPress(!canPress);
           }}
         >
-          <Text style={{ textAlign: "center", verticalAlign: "middle" }}>
+          <Text
+            className="text-xl text-stone-800"
+            style={{ verticalAlign: "middle", textAlign: "center" }}
+          >
             {canPress ? "取消" : "編輯照片"}
           </Text>
         </Pressable>
@@ -110,8 +113,10 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             actionSheetRef={actionSheetRef1}
             tarFun={setTruckLicense}
             showText="拖車照"
+            type="small"
           />
           <UploadPic
+            type="small"
             showOption={showOption}
             pressFun={pressFun2}
             canPress={canPress}
@@ -123,6 +128,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
         </View>
         <View className="flex flex-row justify-around my-3">
           <UploadPic
+            type="small"
             showOption={showOption}
             pressFun={pressFun3}
             canPress={canPress}
@@ -132,6 +138,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             showText="駕照"
           />
           <UploadPic
+            type="small"
             showOption={showOption}
             pressFun={pressFun}
             canPress={canPress}
@@ -144,7 +151,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
       </View>
       {canPress ? (
         <Pressable
-          className=" border border-purple-400 bg-purple-300 rounded-xl py-1"
+          className=" border border-purple-400 bg-purple-300 rounded-xl py-1 my-2"
           onPress={async () => {
             const f = new FormData();
 
@@ -177,7 +184,10 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             }
           }}
         >
-          <Text style={{ textAlign: "center", verticalAlign: "middle" }}>
+          <Text
+            className="text-xl text-stone-800"
+            style={{ textAlign: "center", verticalAlign: "middle" }}
+          >
             儲存
           </Text>
         </Pressable>

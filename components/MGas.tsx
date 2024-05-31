@@ -45,40 +45,42 @@ function MGas(
             value={tmpNew.name!}
           >
             <View>
-              <Text>請選擇種類：</Text>
+              <Text className="text-2xl dark:text-white">請選擇種類：</Text>
               <View className="flex flex-col">
                 <View className="flex flex-row  items-center align-middle">
                   <RadioButton value="92汽油" />
-                  <Text>92汽油</Text>
+                  <Text className="text-xl dark:text-white">92汽油</Text>
                 </View>
 
                 <View className="flex flex-row  items-center align-middle">
                   <RadioButton value="95汽油" />
-                  <Text>95汽油</Text>
+                  <Text className="text-xl dark:text-white">95汽油</Text>
                 </View>
 
                 <View className="flex flex-row  items-center align-middle">
                   <RadioButton value="98汽油" />
-                  <Text>98汽油</Text>
+                  <Text className="text-xl dark:text-white">98汽油</Text>
                 </View>
 
                 <View className="flex flex-row  items-center align-middle">
                   <RadioButton value="超級柴油" />
-                  <Text>超級柴油</Text>
+                  <Text className="text-xl dark:text-white">超級柴油</Text>
                 </View>
               </View>
             </View>
           </RadioButton.Group>
 
           <View>
-            <Text>公升數:</Text>
+            <Text className="text-xl dark:text-white">公升數:</Text>
             <TextInput
+              keyboardType="number-pad"
               onChangeText={(e) => {
                 setTmpNew({ ...tmpNew, quantity: parseInt(e) });
               }}
             />
-            <Text>總價:</Text>
+            <Text className="text-xl dark:text-white">總價:</Text>
             <TextInput
+              keyboardType="number-pad"
               onChangeText={(e) => {
                 setTmpNew({ ...tmpNew, price: parseInt(e) });
               }}
@@ -96,8 +98,8 @@ function MGas(
             showsVerticalScrollIndicator
             renderItem={(item) => {
               return (
-                <Pressable className="flex flex-row w-full py-3">
-                  <View className="flex flex-row justify-between w-full ">
+                <Pressable className="flex flex-row w-full py-2">
+                  <View className="flex flex-row justify-between w-full bg-neutral-300 rounded-lg px-4 py-2">
                     <View className="flex flex-col">
                       <Text className="text-xl">品名：{item.item.name}</Text>
                       <Text className="text-xl">

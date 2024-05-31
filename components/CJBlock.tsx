@@ -6,10 +6,13 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 
 function CJBlock({ CJ }: { CJ: ClaimedJob }): React.JSX.Element {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(CJ);
+  }, [CJ]);
 
   const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
+
   return (
     <SafeAreaView>
       <Pressable

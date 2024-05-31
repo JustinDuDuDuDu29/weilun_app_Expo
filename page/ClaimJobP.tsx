@@ -22,22 +22,23 @@ function ClaimJobP({
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(
-        `/api/claimed/${route.params.claimedJob}`,
+        // `/api/claimed/${route.params.claimedJob}`,
+        `/api/claimed?cjID=${route.params.claimedJob}`,
         "GET",
         {},
         true
       );
 
       if (res.status == 200) {
-        const data: CJInfo = await res.json();
-
-        if (data.Finishpic.Valid) {
+        const data: CJInfo[] = await res.json();
+        console.log("DATA: ", data[0]);
+        if (data[0].Finishpic.Valid) {
           const src = await GIBEDEIMGB0SS(
-            `/api/static/img/${data.Finishpic.String}`
+            `/api/static/img/${data[0].Finishpic.String}`
           );
           setJobPic(src);
         }
-        setCJ(data);
+        setCJ(data[0]);
       }
     } catch (error) {}
   }, []);
@@ -75,6 +76,8 @@ function ClaimJobP({
     <SafeAreaView className="mx-4 px-1 my-2">
       <View>
         <View>
+          <Text>sdf:{JSON.stringify(CJ)}</Text>
+
           <Text className="my-2 text-xl dark:text-white">
             公司： {CJ?.Cmpname}（{CJ?.Cmpid}）
           </Text>

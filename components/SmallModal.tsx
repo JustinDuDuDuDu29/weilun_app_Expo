@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
+  useColorScheme as usc,
   Alert,
   Modal,
   Platform,
@@ -9,9 +10,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import {TextInput} from 'react-native-paper';
-import {mInfoT} from '../types/maintainT';
+} from "react-native";
+import { TextInput } from "react-native-paper";
+import { mInfoT } from "../types/maintainT";
 
 function SmallModal({
   modalVisible,
@@ -26,6 +27,8 @@ function SmallModal({
   tmpNew: mInfoT;
   setTmpNew: Function;
 }): React.JSX.Element {
+  const cS = usc();
+
   return (
     <View>
       <Modal
@@ -34,7 +37,8 @@ function SmallModal({
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
-        }}>
+        }}
+      >
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
@@ -42,35 +46,51 @@ function SmallModal({
           }}
           className="flex justify-center content-center"
           style={{
-            backgroundColor: 'rgba(0,0,0,0.5)',
+            backgroundColor: "rgba(0,0,0,0.5)",
             flex: 1,
-          }}>
+          }}
+        >
           <TouchableOpacity activeOpacity={1} className="w-screen">
-            <View style={styles.modalView}>
+            <View
+              style={{
+                margin: 20,
+                backgroundColor: cS == "light" ? "white" : "#3A3B3C",
+                borderRadius: 20,
+                padding: 35,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 5,
+              }}
+            >
               <View className="py-2">
                 <TextInput
                   label="品名"
                   mode="outlined"
                   value={tmpNew.name!}
-                  onChangeText={e => {
+                  onChangeText={(e) => {
                     setTmpNew((prev: mInfoT) => {
-                      return {...prev, name: e};
+                      return { ...prev, name: e };
                     });
                   }}
                 />
               </View>
               <View className="py-2">
                 <TextInput
-                  onChangeText={e => {
+                  onChangeText={(e) => {
                     setTmpNew((prev: mInfoT) => {
-                      return {...prev, quantity: parseInt(e)};
+                      return { ...prev, quantity: parseInt(e) };
                     });
                   }}
                   keyboardType={
-                    Platform.OS === 'android' ? 'numeric' : 'number-pad'
+                    Platform.OS === "android" ? "numeric" : "number-pad"
                   }
                   defaultValue={
-                    tmpNew.quantity! ? tmpNew.quantity!.toString() : ''
+                    tmpNew.quantity! ? tmpNew.quantity!.toString() : ""
                   }
                   label="數量"
                   mode="outlined"
@@ -78,15 +98,15 @@ function SmallModal({
               </View>
               <View className="py-2">
                 <TextInput
-                  onChangeText={e => {
+                  onChangeText={(e) => {
                     setTmpNew((prev: mInfoT) => {
-                      return {...prev, price: parseInt(e)};
+                      return { ...prev, price: parseInt(e) };
                     });
                   }}
-                  defaultValue={tmpNew.price! ? tmpNew.price!.toString() : ''}
+                  defaultValue={tmpNew.price! ? tmpNew.price!.toString() : ""}
                   label="總價"
                   keyboardType={
-                    Platform.OS === 'android' ? 'numeric' : 'number-pad'
+                    Platform.OS === "android" ? "numeric" : "number-pad"
                   }
                   mode="outlined"
                 />
@@ -96,27 +116,31 @@ function SmallModal({
                   className="flex-1 h-full py-4"
                   onPress={() => {
                     addToGasLiter();
-                  }}>
+                  }}
+                >
                   <Text
-                    className="text-center"
-                    style={{textAlignVertical: 'center'}}>
+                    className="text-center text-xl dark:text-white"
+                    style={{ textAlignVertical: "center" }}
+                  >
                     送出
                   </Text>
                 </Pressable>
                 <View
                   style={{
                     borderLeftWidth: 1,
-                    borderLeftColor: 'black',
+                    borderLeftColor: cS == "light" ? "black" : "white",
                   }}
                 />
                 <Pressable
                   className="flex-1  py-4"
                   onPress={() => {
                     setModalVisible(false);
-                  }}>
+                  }}
+                >
                   <Text
-                    className="text-center"
-                    style={{textAlignVertical: 'center'}}>
+                    className="text-center text-xl dark:text-white"
+                    style={{ textAlignVertical: "center" }}
+                  >
                     取消
                   </Text>
                 </Pressable>
@@ -132,10 +156,10 @@ function SmallModal({
 const styles = StyleSheet.create({
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,

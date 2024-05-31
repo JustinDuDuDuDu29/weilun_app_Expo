@@ -64,6 +64,7 @@ function FinishJob(): React.JSX.Element {
         className="flex flex-col justify-around"
       >
         <UploadPic
+          type="big"
           showOption={true}
           showText="完工證明"
           pressFun={pressFun}
@@ -73,13 +74,19 @@ function FinishJob(): React.JSX.Element {
           tarFun={setFinishImg}
         />
         <View className="my-5">
-          <Button
+          <Pressable
+            className="bg-blue-300 rounded-lg py-2"
             onPress={async () => {
               await finishJobf();
             }}
           >
-            <Text className=" text-xl font-bold">完成工作</Text>
-          </Button>
+            <Text
+              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className=" text-xl font-bold"
+            >
+              完成工作
+            </Text>
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>

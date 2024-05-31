@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -6,11 +6,19 @@ import {
   View,
   Pressable,
   Alert,
+  Text,
+  useColorScheme as usc,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Modal,
+  TouchableOpacity,
 } from "react-native";
 import _data from "../asset/fakeData/_maintain.json";
 import MaintainBlock from "../components/MaintainBlock";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
-import { FAB, Icon, RadioButton, Text } from "react-native-paper";
+import { FAB, Icon, RadioButton } from "react-native-paper";
 import { StyleSheet } from "nativewind";
 import GoodModal from "../components/GoodModal";
 import MGas from "../components/MGas";
@@ -21,16 +29,23 @@ import giveMeDate from "../util/giveMeDate";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
 import { useAtom } from "jotai";
 import { userInfo } from "./Home";
+import MaintainM from "../components/MaintainM";
+import UploadPic from "../components/UploadPic";
+import { ActionSheetRef } from "react-native-actions-sheet";
+import { ImgT, imgUrl } from "../types/ImgT";
 
 function Maintain(): React.JSX.Element {
+  const cS = usc();
+
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const getData = useCallback(async () => {
     try {
       const res = await callAPI("/api/repair", "GET", {}, true);
+      // console.log("res is ", res);
 
       if (res.status == 200) {
-        const data: maintainInfoT[] = await res.json();
-        setData(data.res);
+        const data: maintainInfoT[] = (await res.json()).res;
+        setData(data);
       }
     } catch (error) {
       console.log(error);
@@ -43,10 +58,16 @@ function Maintain(): React.JSX.Element {
   const [data, setData] = useState<maintainInfoT[]>([]);
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [picModalV, setPicModalV] = useState(false);
   const [type, setType] = useState<string>("gas");
   const [gasLiter, setGasLiter] = useState<mInfoT[]>([]);
-  const [date, setDate] = useState(new giveMeDate().now_yyyymmdd());
+  // const [date, setDate] = useState(new giveMeDate().now_yyyymmdd());
+  const actionSheetRef = useRef<ActionSheetRef>(null);
+  const [repairP, setRepairP] = useState<ImgT | imgUrl>();
 
+  const pressFun = () => {
+    actionSheetRef.current?.show();
+  };
   const [tmpNew, setTmpNew] = useState<mInfoT>({
     id: uuidv4(),
     price: 0,
@@ -90,7 +111,24 @@ function Maintain(): React.JSX.Element {
   };
 
   const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const clearD = () => {
+    setType("gas");
+    setTmpNew({
+      id: uuidv4(),
+      price: 0,
+      quantity: 0,
+      name: "92汽油",
+    });
+    setVisible(false);
+    setModalVisible(false);
+    setRepairP(undefined);
+    setGasLiter([]);
+    setPicModalV(false);
+  };
+  const hideModal = () => {
+    clearD();
+    setVisible(false);
+  };
 
   const handleSubmit = async () => {
     const f = new FormData();
@@ -105,13 +143,12 @@ function Maintain(): React.JSX.Element {
       setGasLiter(arr);
     }
     if (gasLiter.length == 0) {
-      setVisible(false);
-      setModalVisible(false);
-      setGasLiter([]);
+      clearD();
       return;
     }
 
     f.append("repairInfo", JSON.stringify(gasLiter));
+    f.append("repairPic", repairP);
     try {
       const res = await callAPIForm(
         `/api/repair?type=${type}`,
@@ -121,9 +158,7 @@ function Maintain(): React.JSX.Element {
       );
 
       if (res.status == 200) {
-        setVisible(false);
-        setModalVisible(false);
-        setGasLiter([]);
+        clearD();
         getData();
       }
     } catch (error) {
@@ -153,98 +188,137 @@ function Maintain(): React.JSX.Element {
       </View>
 
       <GoodModal visible={visible} hideModal={hideModal}>
-        <View className="px-3 py-3">
-          <View className="flex flex-col justify-between">
-            <Text>請選擇類別：</Text>
-            <View className="flex flex-row justify-between">
-              <View>
-                <RadioButton.Group
-                  onValueChange={(newValue) => {
-                    setType(newValue);
-                    setGasLiter([]);
-
-                    if (newValue == "gas") {
-                      setTmpNew({
-                        id: uuidv4(),
-                        price: 0,
-                        quantity: 0,
-                        name: "92汽油",
-                      });
-                      return;
+        <TouchableWithoutFeedback
+          onPress={Keyboard.dismiss}
+          style={{
+            backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
+          }}
+        >
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+            style={{
+              display: "flex",
+              paddingHorizontal: 10,
+              backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
+            }}
+          >
+            <View className="px-3 py-3">
+              <MaintainM
+                type={type}
+                setType={setType}
+                setGasLiter={setGasLiter}
+                setTmpNew={setTmpNew}
+                setModalVisible={setModalVisible}
+                tmpNew={tmpNew}
+                removeByUUID={removeByUUID}
+                gasLiter={gasLiter}
+              />
+              <View className="bg-blue-400 py-3 mt-3 rounded-xl">
+                <Pressable
+                  onPress={async () => {
+                    // handle sumit
+                    if (type === "gas") {
+                      if (
+                        tmpNew.name == "" ||
+                        tmpNew.price == 0 ||
+                        tmpNew.quantity == 0
+                      ) {
+                        Alert.alert("注意", "好像有東西沒填齊唷", [
+                          { text: "OK" },
+                        ]);
+                        return;
+                      }
                     }
-                    setTmpNew({
-                      id: uuidv4(),
-                      price: 0,
-                      quantity: 0,
-                      name: "",
-                    });
+                    setPicModalV(true);
+                    // await handleSubmit();
                   }}
-                  value={type}
                 >
-                  <View className="flex flex-col">
-                    <View className="flex flex-row  items-center align-middle">
-                      <RadioButton value="gas" />
-                      <Text>加油</Text>
-                    </View>
-                    <View className="flex flex-row  items-center align-middle">
-                      <RadioButton value="maintain" />
-                      <Text>保養及維修</Text>
-                    </View>
-                  </View>
-                </RadioButton.Group>
-              </View>
-              {type === "gas" ? (
-                <></>
-              ) : (
-                <View className="h-full flex  items-center align-middle content-center justify-center flex-row">
-                  <Pressable
-                    className="bg-blue-300 flex rounded-full"
-                    onPress={(e) => {
-                      setTmpNew({
-                        id: uuidv4(),
-                        price: 0,
-                        quantity: 0,
-                        name: "",
-                      });
-                      setModalVisible(true);
-                    }}
+                  <Text
+                    style={{ textAlign: "center", textAlignVertical: "center" }}
                   >
-                    <Icon source={"plus"} size={ww * 0.15} />
-                  </Pressable>
-                </View>
-              )}
-            </View>
-          </View>
-          <MGas
-            type={type}
-            tmpNew={tmpNew}
-            setTmpNew={setTmpNew}
-            removeByUUID={removeByUUID}
-            gasLiter={gasLiter}
-            setModalVisible={setModalVisible}
-          />
-          <View className="bg-blue-400 py-3 mt-3 rounded-xl">
-            <Pressable
-              onPress={async () => {
-                // handle sumit
-                await handleSubmit();
-              }}
-            >
-              <Text
-                style={{ textAlign: "center", textAlignVertical: "center" }}
+                    下一步
+                  </Text>
+                </Pressable>
+              </View>
+              <SmallModal
+                tmpNew={tmpNew}
+                setTmpNew={setTmpNew}
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                addToGasLiter={addToGasLiter}
+              />
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={picModalV}
+                onRequestClose={() => {
+                  setPicModalV(!picModalV);
+                }}
               >
-                送出
-              </Text>
-            </Pressable>
-          </View>
-          <SmallModal
-            tmpNew={tmpNew}
-            setTmpNew={setTmpNew}
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            addToGasLiter={addToGasLiter}
-          />
-        </View>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => {
+                    setPicModalV(false);
+                  }}
+                  className="flex justify-center content-center"
+                  style={{
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    flex: 1,
+                  }}
+                >
+                  <TouchableOpacity activeOpacity={1} className="w-screen">
+                    <View
+                      className="flex flex-col  items-center h-5/6"
+                      style={{
+                        margin: 20,
+                        backgroundColor: cS == "light" ? "white" : "#3A3B3C",
+                        borderRadius: 20,
+                        padding: 25,
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 4,
+                        elevation: 5,
+                      }}
+                    >
+                      <UploadPic
+                        type="big"
+                        pressFun={pressFun}
+                        canPress={true}
+                        src={repairP}
+                        actionSheetRef={actionSheetRef}
+                        tarFun={setRepairP}
+                        showText={"收據"}
+                        showOption={false}
+                      />
+                      {repairP && (
+                        <Pressable
+                          onPress={async () => {
+                            await handleSubmit();
+                          }}
+                          className="my-4 bg-lime-200 w-2/3 rounded-xl py-2 "
+                        >
+                          <Text
+                            style={{
+                              verticalAlign: "middle",
+                              textAlign: "center",
+                            }}
+                          >
+                            送出
+                          </Text>
+                        </Pressable>
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              </Modal>
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </GoodModal>
     </SafeAreaView>
   );
