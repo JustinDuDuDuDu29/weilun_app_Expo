@@ -126,7 +126,7 @@ function ClaimJobP({
               <View className="flex flex-row justify-around">
                 {!CJ.Approveddate.Valid && (
                   <Pressable
-                    className="bg-cyan-200 dark:bg-cyan-400 rounded-xl px-20 py-3"
+                    className="bg-cyan-200 dark:bg-cyan-400 rounded-xl w-1/3 py-3"
                     onPress={() => {
                       Alert.alert(
                         "注意",
@@ -146,11 +146,20 @@ function ClaimJobP({
                       );
                     }}
                   >
-                    <Text className="text-lg">核可</Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+
+                        textAlignVertical: "center",
+                      }}
+                      className="text-lg"
+                    >
+                      核可
+                    </Text>
                   </Pressable>
                 )}
                 <Pressable
-                  className="bg-red-200 dark:bg-red-400 rounded-xl px-20 py-3"
+                  className="bg-red-200 dark:bg-red-400 rounded-xl w-1/3 py-3"
                   onPress={() => {
                     Alert.alert(
                       "注意",
@@ -167,7 +176,15 @@ function ClaimJobP({
                     );
                   }}
                 >
-                  <Text className="text-lg">刪除</Text>
+                  <Text
+                    style={{
+                      textAlignVertical: "center",
+                      textAlign: "center",
+                    }}
+                    className="text-lg"
+                  >
+                    刪除
+                  </Text>
                 </Pressable>
               </View>
             )}

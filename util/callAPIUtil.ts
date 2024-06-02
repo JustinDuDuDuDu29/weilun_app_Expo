@@ -36,7 +36,7 @@ export async function download(year:string, month:string){
             await StorageAccessFramework.createFileAsync(permissions.directoryUri, fileName+".xls", 'application/vnd.ms-excel')
               .then(async (uri) => {
                 await FileSystem.writeAsStringAsync(uri, fileString, { encoding: FileSystem.EncodingType.Base64 });
-                alert('Report Downloaded Successfully')
+                alert('成功～')
               })
               .catch((e) => {
               });

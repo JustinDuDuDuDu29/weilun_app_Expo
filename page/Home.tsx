@@ -78,26 +78,27 @@ function Home(): React.JSX.Element {
     try {
       if (!getUserInfo) {
         const res = await callAPI("/api/user/me", "POST", {}, true);
-
+        if (!res.ok) {
+        }
         const me: inUserT = await res.json();
         setUserInfo(me);
-        if (res.status == 451) {
-          Alert.alert(
-            "糟糕！",
-            "您本次的登入資訊已無效\n可能是在其他地方登入了，或是個人資料已被修改\n如有需要，請洽管理人員！",
-            [
-              {
-                text: "OK",
-                onPress: async () => {
-                  await logout();
-                  setIsLoggedIn(false);
-                  setPendingJob(null);
-                  setUserInfo(null);
-                },
-              },
-            ]
-          );
-        }
+        // if (res.status == 451) {
+        //   Alert.alert(
+        //     "糟糕！",
+        //     "您本次的登入資訊已無效\n可能是在其他地方登入了，或是個人資料已被修改\n如有需要，請洽管理人員！",
+        //     [
+        //       {
+        //         text: "OK",
+        //         onPress: async () => {
+        //           await logout();
+        //           setIsLoggedIn(false);
+        //           setPendingJob(null);
+        //           setUserInfo(null);
+        //         },
+        //       },
+        //     ]
+        //   );
+        // }
         if (me.Role == 300) {
           const currentJob = await (
             await callAPI("/api/claimed/current", "POST", {}, true)
@@ -206,21 +207,25 @@ function Home(): React.JSX.Element {
             </View>
           </Pressable>
         )}
-        <Pressable
-          className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-          onPress={() => navigation.navigate("mainTainP")}
-        >
-          <View className="w-1/6">
-            <Icon
-              source="tools"
-              color={cS == "light" ? "black" : "white"}
-              size={0.12 * ww}
-            />
-          </View>
-          <View className="flex content-center justify-center">
-            <Text className="text-3xl dark:text-white">維修保養</Text>
-          </View>
-        </Pressable>
+        {getUserInfo.Role === 100 ? (
+          <></>
+        ) : (
+          <Pressable
+            className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+            onPress={() => navigation.navigate("mainTainP")}
+          >
+            <View className="w-1/6">
+              <Icon
+                source="tools"
+                color={cS == "light" ? "black" : "white"}
+                size={0.12 * ww}
+              />
+            </View>
+            <View className="flex content-center justify-center">
+              <Text className="text-3xl dark:text-white">維修保養</Text>
+            </View>
+          </Pressable>
+        )}
         <Pressable
           className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
           onPress={() => navigation.navigate("alertP")}
@@ -266,7 +271,22 @@ function Home(): React.JSX.Element {
                 />
               </View>
               <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">已接取的任務</Text>
+                <Text className="text-3xl dark:text-white">進行中的任務</Text>
+              </View>
+            </Pressable>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              onPress={() => navigation.navigate("adminMainTainP")}
+            >
+              <View className="w-1/6">
+                <Icon
+                  source="tools"
+                  color={cS == "light" ? "black" : "white"}
+                  size={0.12 * ww}
+                />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl dark:text-white">待核可維修保養</Text>
               </View>
             </Pressable>
             <Pressable

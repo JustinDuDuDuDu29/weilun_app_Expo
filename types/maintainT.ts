@@ -1,3 +1,4 @@
+import { NullString } from "./JobItemT";
 import { NullDate } from "./userT";
 
 export type mInfoT = {
@@ -37,9 +38,9 @@ export type maintainInfoT = {
   Repairinfo: mInfoT[];
   Cmpname:string;
   // name: string;
-  plateNum: string;
+  Platenum: string;
   Createdate: string;
   Approveddate: NullDate;
-  place: string;
-  
+  Place: string;
+  Pic:NullString;
 };

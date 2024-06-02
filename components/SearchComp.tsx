@@ -168,27 +168,30 @@ function SearchComp(props: {
           user,
           true
         );
-        if (res.status == 200) {
-          setUser({
-            Name: "",
-            Role: newUserType,
-            PhoneNum: "",
-            BelongCmp: NaN,
-            driverInfo: {
-              // percentage: 0,
-              nationalIdNumber: "",
-              plateNum: "",
-            },
-          });
-          props.setVisible(false);
-
-          Alert.alert("成功！", "新增成功", [{ text: "OK" }]);
+        if (!res.ok) {
+          throw new Error(res.status.toString());
         }
+        setUser({
+          Name: "",
+          Role: newUserType,
+          PhoneNum: "",
+          BelongCmp: NaN,
+          driverInfo: {
+            // percentage: 0,
+            nationalIdNumber: "",
+            plateNum: "",
+          },
+        });
+        props.setVisible(false);
+
+        Alert.alert("成功！", "新增成功", [{ text: "OK" }]);
       }
       await getData();
       await getCmp();
     } catch (error) {
-      console.log(error);
+      if (error.message == "400") {
+        Alert.alert("歐不", "資料似乎不完整呢，再確認一下吧");
+      }
     }
   }
 
@@ -202,9 +205,9 @@ function SearchComp(props: {
     getCmp();
   }, []);
 
-  useEffect(() => {
-    console.log("ww");
-  }, []);
+  // useEffect(() => {
+  //   console.log("ww");
+  // }, []);
   return (
     <SafeAreaView>
       {/* <Text>{JSON.stringify(props.userList)}</Text> */}

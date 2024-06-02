@@ -82,7 +82,6 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
             true
           );
           const data = await res.json();
-          console.log("Fetched data for key:", key, data);
           setJobInfo({ ...jobInfo, [key]: data.res });
         } catch (error) {
           console.log("error: ", error);

@@ -26,15 +26,18 @@ import { v4 as uuidv4 } from "uuid";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
 import { useAtom } from "jotai";
 import { userInfo } from "./Home";
+import { useIsFocused } from "@react-navigation/native";
 
 function Maintain(): React.JSX.Element {
+  const focused = useIsFocused();
+
   const cS = usc();
-  const [jobInfo, setJobInfo] = useState();
+  const [jobInfo, setJobInfo] = useState<maintainInfoT[]>();
   const getData = useCallback(async () => {
     try {
-      const res = await callAPI(`/api/repair/cj?cat=pending`, "GET", {}, true);
+      const res = await callAPI(`/api/repair?cat=pending`, "GET", {}, true);
       if (res.status == 200) {
-        console.log(await res.json());
+        setJobInfo((await res.json()).res);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -43,24 +46,26 @@ function Maintain(): React.JSX.Element {
 
   useEffect(() => {
     getData();
-  }, [getData]);
+  }, [focused]);
 
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
 
   return (
     <SafeAreaView>
-      <FlatList
-        className="h-full"
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={jobInfo}
-        keyExtractor={(item) => {
-          return item.ID!.toString();
-        }}
-        renderItem={({ item }: { item: maintainInfoT }) => (
-          <MaintainBlock maintainInfo={item} />
-        )}
-      />
+      <View className="py-4 px-3">
+        <FlatList
+          className="h-full"
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={jobInfo}
+          keyExtractor={(item) => {
+            return item.ID!.toString();
+          }}
+          renderItem={({ item }: { item: maintainInfoT }) => (
+            <MaintainBlock maintainInfo={item} />
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 }

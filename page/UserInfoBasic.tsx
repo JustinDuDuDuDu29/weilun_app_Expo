@@ -117,6 +117,36 @@ function UserInfoBasic({
               重置密碼
             </Text>
           </Pressable>
+          <Pressable
+            className="bg-red-300 rounded-xl py-1 w-1/2 my-2"
+            onPress={() => {
+              // navigation.navigate("changePasswordP");
+              Alert.alert("注意！", "即將刪除此用戶", [
+                {
+                  text: "確定",
+                  onPress: async () => {
+                    const res = await callAPI(
+                      "/api/user/",
+                      "DELETE",
+                      { id: OInfo?.ID },
+                      true
+                    );
+                    if (res.status == 200) {
+                      Alert.alert("成功!", "已刪除此用戶");
+                    }
+                  },
+                },
+                { text: "取消" },
+              ]);
+            }}
+          >
+            <Text
+              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className="text-xl"
+            >
+              刪除用戶
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
     </SafeAreaView>
