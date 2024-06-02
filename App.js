@@ -17,7 +17,7 @@ import { colorScheme, useColorScheme } from "nativewind";
 import Home from "./page/Home";
 import CustomerS from "./page/CustomerS";
 import Jobs from "./page/Jobs";
-import { atom, useAtom } from "jotai";
+import { Provider, atom, createStore, useAtom } from "jotai";
 import { isLoggedIn } from "./util/loginInfo";
 import {
   useColorScheme as usc,
@@ -45,11 +45,18 @@ import AdminMaintain from "./page/AdminMaintain";
 
 export const isLoggedInAtom = atom(false);
 export const isLoading = atom(false);
+export const fnAtom = atom({});
 
 const Stack = createNativeStackNavigator();
 colorScheme.set("system");
 
 function App() {
+  const myStore = createStore();
+  myStore.set(fnAtom, {
+    fn: () => {
+      console.log("PPP");
+    },
+  });
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -76,6 +83,8 @@ function App() {
   }
   return (
     <SafeAreaProvider>
+    <Provider store={myStore}>
+
       <StatusBar
         backgroundColor={cS == "light" ? "#fff" : "#000"}
         barStyle={cS == "light" ? "dark-content" : "light-content"}
@@ -121,6 +130,7 @@ function App() {
           )}
         </Stack.Navigator>
       </NavigationContainer>
+      </Provider>
     </SafeAreaProvider>
   );
 }

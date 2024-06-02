@@ -13,7 +13,7 @@ import {
 import { Icon } from "react-native-paper";
 import { getSecureValue, logout } from "../util/loginInfo";
 import { isLoggedInAtom } from "../App";
-import { atom, useAtom } from "jotai";
+import { Provider, atom, createStore, useAtom } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
@@ -23,7 +23,6 @@ import { currentJob } from "../types/JobItemT";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
-import MonthPicker from "react-native-month-year-picker";
 
 export const pendingJob = atom<currentJob | null>(null);
 export const userInfo = atom<inUserT | null>(null);

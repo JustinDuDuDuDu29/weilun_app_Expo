@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, SafeAreaView, View } from "react-native";
+import {
+  FlatList,
+  Pressable,
+  RefreshControl,
+  SafeAreaView,
+  View,
+  Text,
+} from "react-native";
 import _data from "../asset/fakeData/_jobs.json";
 import { jobItemT } from "../types/JobItemT";
 import JobBlock from "../components/JobBlock";
-import { useAtom } from "jotai";
+import { useAtom, useStore } from "jotai";
 import { pendingJob } from "./Home";
 import { callAPI } from "../util/callAPIUtil";
 import { NullDate } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
+import { fnAtom } from "../App";
 
 function Jobs(): React.JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
@@ -37,9 +45,21 @@ function Jobs(): React.JSX.Element {
       }, 2000);
     });
   };
+  const store = useStore();
+
+  useEffect(() => {
+    console.log(store);
+  }, []);
 
   return (
     <SafeAreaView>
+      <Pressable
+        onPress={() => {
+          store.get(fnAtom).fn();
+        }}
+      >
+        <Text>fdsfds</Text>
+      </Pressable>
       <View className="px-4">
         <FlatList
           data={data}
