@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Pressable, SafeAreaView, View, Text, Dimensions } from "react-native";
-import { RadioButton, Icon } from "react-native-paper";
+import { RadioButton, Icon, TextInput } from "react-native-paper";
 import MGas from "./MGas";
 import { v4 as uuidv4 } from "uuid";
 import { mInfoT } from "../types/maintainT";
@@ -14,6 +14,7 @@ function MaintainM({
   tmpNew,
   removeByUUID,
   gasLiter,
+  setPlace,
 }: {
   type: string;
   setType: Function;
@@ -23,6 +24,7 @@ function MaintainM({
   tmpNew: mInfoT;
   removeByUUID: Function;
   gasLiter: mInfoT[];
+  setPlace: Function;
 }): React.JSX.Element {
   const ww = Dimensions.get("window").width;
 
@@ -97,6 +99,16 @@ function MaintainM({
         gasLiter={gasLiter}
         setModalVisible={setModalVisible}
       />
+      {/* <Text className="text-xl dark:text-white">地點：</Text> */}
+      <View className="my-2">
+        <TextInput
+          label={"地點"}
+          className="text-xl"
+          onChangeText={(e) => {
+            setPlace(e);
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 }

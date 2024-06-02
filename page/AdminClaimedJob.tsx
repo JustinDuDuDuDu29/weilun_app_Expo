@@ -13,7 +13,7 @@ function AdminClaimedJob(): React.JSX.Element {
 
   const getData = useCallback(async () => {
     try {
-      const res = await callAPI("/api/claimed", "GET", {}, true);
+      const res = await callAPI("/api/claimed?cat=pending", "GET", {}, true);
       if (res.status == 200) {
         const data = await res.json();
         setClaimedList(data);

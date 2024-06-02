@@ -4,8 +4,11 @@ export type mInfoT = {
   id: string;
   name: string | null;
   price: number | null;
+  place: string | null;
   quantity: number | null;
 };
+
+
 
 // export type maintainInfoDT = {
 //   ApprovedDate: NullDate;
@@ -32,9 +35,11 @@ export type maintainInfoT = {
   Drivername: string;
   type: string;
   Repairinfo: mInfoT[];
+  Cmpname:string;
   // name: string;
-  // plateNum: string;
+  plateNum: string;
   Createdate: string;
   Approveddate: NullDate;
-  // place: string;
+  place: string;
+  
 };

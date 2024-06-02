@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import Dialog from "react-native-dialog";
 import { Icon } from "react-native-paper";
+import { callAPI } from "../util/callAPIUtil";
 
 export function SmallEL({
   driverInfo,
@@ -106,8 +107,17 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
           />
           <Dialog.Button
             label="確定"
-            onPress={() => {
-              console.log(newCmpName);
+            onPress={async () => {
+              // console.log(newCmpName);
+              await callAPI(
+                "/api/cmp",
+                "PUT",
+                {
+                  id: info.cmpid,
+                  cmpName: newCmpName,
+                },
+                true
+              );
             }}
           />
           <Dialog.Button

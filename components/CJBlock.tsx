@@ -6,9 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 
 function CJBlock({ CJ }: { CJ: ClaimedJob }): React.JSX.Element {
-  useEffect(() => {
-    console.log(CJ);
-  }, [CJ]);
+  useEffect(() => {}, [CJ]);
 
   const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;

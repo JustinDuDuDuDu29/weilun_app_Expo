@@ -19,8 +19,7 @@ import UserCU from "../components/UserCU";
 import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import UserInfoBasic from "./UserInfoBasic";
 import UserInfoJobs from "./UserInfoJobs";
-
-const SecondRoute = () => <View style={{ flex: 1 }} />;
+import Maintain from "./Maintain";
 
 const renderTabBar = (props) => {
   const layout = useWindowDimensions();
@@ -73,7 +72,7 @@ function UserInfoAdmin({
           return <UserInfoJobs uid={uid} />;
 
         case "third":
-          return <SecondRoute />;
+          return <Maintain uid={uid} />;
 
         default:
           return null;
@@ -86,18 +85,7 @@ function UserInfoAdmin({
     setUid(route.params.uid);
     // console.log(route);
   }, []);
-  // const renderScene = SceneMap({
-  //   first: () => {
-  //     return <UserInfoBasic uid={route.params.uid} />;
-  //   },
-  //   second: () => {
-  //     return <UserInfoJobs uid={route.params.uid} />;
-  //   },
-  //   third: SecondRoute,
-  // });
-
   const navigation = useNavigation<ScreenProp>();
-  // const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([

@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
   Text,
+  useColorScheme as usc,
 } from "react-native";
 import { NewUser, cmpInfo, inUserT } from "../types/userT";
 import { Dropdown } from "react-native-element-dropdown";
@@ -22,6 +23,7 @@ function EditUserInfoP({
 }: {
   route: RouteProp<{ params: { OInfo: inUserT } }, "params">;
 }): React.JSX.Element {
+  const cS = usc();
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
   const [isFocus, setIsFocus] = useState(false);
   const [value, setValue] = useState(null);
@@ -96,6 +98,7 @@ function EditUserInfoP({
         <TextInput
           className={`flex-1 text-xl px-3 color-black rounded-xl  border-b-2  border-fuchsia-300 dark:text-white`}
           keyboardType="numeric"
+          placeholderTextColor={cS == "light" ? "black" : "#ffffff"}
           placeholder="電話號碼"
           onChangeText={(e) => {
             setUser({ ...user, PhoneNum: e });

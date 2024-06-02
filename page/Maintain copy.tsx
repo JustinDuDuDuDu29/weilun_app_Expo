@@ -15,14 +15,17 @@ import {
   Modal,
   TouchableOpacity,
 } from "react-native";
+import _data from "../asset/fakeData/_maintain.json";
 import MaintainBlock from "../components/MaintainBlock";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
-import { FAB, Icon } from "react-native-paper";
+import { FAB, Icon, RadioButton } from "react-native-paper";
 import { StyleSheet } from "nativewind";
 import GoodModal from "../components/GoodModal";
+import MGas from "../components/MGas";
 import SmallModal from "../components/SmallModal";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import giveMeDate from "../util/giveMeDate";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
 import { useAtom } from "jotai";
 import { userInfo } from "./Home";
@@ -30,102 +33,66 @@ import MaintainM from "../components/MaintainM";
 import UploadPic from "../components/UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ImgT, imgUrl } from "../types/ImgT";
-import { useNavigation } from "@react-navigation/native";
-import { ScreenProp } from "../types/navigationT";
 
-function Maintain({ uid }: { uid: number }): React.JSX.Element {
+function Maintain(): React.JSX.Element {
   const cS = usc();
-  const [jobInfo, setJobInfo] = useState<{ [key: string]: maintainInfoT[] }>(
-    {}
-  );
-  const [dd, setData] = useState<string[]>([]);
-  const [visibility, setVisibility] = useState<{ [key: string]: boolean }>({});
-
-  const getData = useCallback(async () => {
-    try {
-      const res = await callAPI(
-        `/api/repair/cj?id=${
-          getUserInfo?.Role === 100 ? uid : getUserInfo?.ID
-        }`,
-        "GET",
-        {},
-        true
-      );
-      const data: string[] = await res.json();
-
-      setData(data);
-      data.forEach((e) => {
-        setJobInfo((oldArray) => ({ ...oldArray, [e]: [] }));
-        setVisibility((oldVisibility) => ({ ...oldVisibility, [e]: false }));
-      });
-    } catch (error) {
-      console.log("error: ", error);
-    }
-  }, [uid]);
-
-  useEffect(() => {
-    getData();
-  }, [getData]);
-
-  const navigation = useNavigation<ScreenProp>();
-
-  const toggleVisibility = async (key: string) => {
-    if (!visibility[key]) {
-      if (jobInfo[key].length === 0) {
-        try {
-          const res = await callAPI(
-            `/api/repair?uid=${
-              getUserInfo?.Role === 100 ? uid : getUserInfo?.ID
-            }&ym=${key}`,
-            "GET",
-            {},
-            true
-          );
-          const data = await res.json();
-          console.log("Fetched data for key:", key, data);
-          setJobInfo({ ...jobInfo, [key]: data.res });
-        } catch (error) {
-          console.log("error: ", error);
-        }
-      }
-    }
-    setVisibility({ ...visibility, [key]: !visibility[key] });
-  };
 
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  const getData = useCallback(async () => {
+    try {
+      const res = await callAPI("/api/repair", "GET", {}, true);
+      // console.log("res is ", res);
+
+      if (res.status == 200) {
+        const data: maintainInfoT[] = (await res.json()).res;
+        setData(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const [data, setData] = useState<maintainInfoT[]>([]);
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [picModalV, setPicModalV] = useState(false);
   const [type, setType] = useState<string>("gas");
   const [gasLiter, setGasLiter] = useState<mInfoT[]>([]);
+  // const [date, setDate] = useState(new giveMeDate().now_yyyymmdd());
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const [repairP, setRepairP] = useState<ImgT | imgUrl>();
 
   const pressFun = () => {
     actionSheetRef.current?.show();
   };
-  const [place, setPlace] = useState<string>("");
-
   const [tmpNew, setTmpNew] = useState<mInfoT>({
     id: uuidv4(),
     price: 0,
     quantity: 0,
     name: "92汽油",
-    place: "",
   });
 
   const removeByUUID = (id: string) => {
-    setGasLiter(gasLiter.filter((el: mInfoT) => el.id !== id));
+    setGasLiter(
+      gasLiter.filter((el: mInfoT) => {
+        return el.id != id;
+      })
+    );
   };
 
   const addToGasLiter = () => {
-    if (tmpNew.name === "" || tmpNew.price === 0 || tmpNew.quantity === 0) {
+    if (tmpNew.name == "" || tmpNew.price == 0 || tmpNew.quantity == 0) {
       Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
       return;
     }
 
     const arr = gasLiter;
-    const index = arr.findIndex((el) => el.id === tmpNew.id);
+    const index = arr.findIndex((el) => {
+      return el.id == tmpNew.id;
+    });
 
     if (index >= 0) {
       arr[index] = tmpNew;
@@ -157,9 +124,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     setRepairP(undefined);
     setGasLiter([]);
     setPicModalV(false);
-    setPlace("");
   };
-
   const hideModal = () => {
     clearD();
     setVisible(false);
@@ -169,7 +134,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     const f = new FormData();
 
     if (type === "gas") {
-      if (tmpNew.name === "" || tmpNew.price === 0 || tmpNew.quantity === 0) {
+      if (tmpNew.name == "" || tmpNew.price == 0 || tmpNew.quantity == 0) {
         Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
         return;
       }
@@ -177,14 +142,13 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
       arr.push(tmpNew);
       setGasLiter(arr);
     }
-    if (gasLiter.length === 0) {
+    if (gasLiter.length == 0) {
       clearD();
       return;
     }
 
     f.append("repairInfo", JSON.stringify(gasLiter));
     f.append("repairPic", repairP);
-    f.append("place", place);
     try {
       const res = await callAPIForm(
         `/api/repair?type=${type}`,
@@ -193,7 +157,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
         true
       );
 
-      if (res.status === 200) {
+      if (res.status == 200) {
         clearD();
         getData();
       }
@@ -207,46 +171,18 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
 
   return (
     <SafeAreaView>
-      <View className="mx-5 relative h-screen">
+      <View className="mx-5 relative">
         <FlatList
-          data={dd}
-          keyExtractor={(item) => item}
-          renderItem={({ item: key }) => (
-            <View key={key}>
-              <Pressable
-                className="my-1 rounded-lg px-4 py-2 bg-red-200 flex flex-row justify-between"
-                onPress={() => toggleVisibility(key)}
-              >
-                <View>
-                  <Text>{key}</Text>
-                </View>
-                <View
-                  className={`${visibility[key] ? "rotate-180" : "rotate-90"}`}
-                >
-                  <Icon source={"triangle"} size={15} />
-                </View>
-              </Pressable>
-              {visibility[key] && (
-                <>
-                  <Text>hjlk</Text>
-                  <FlatList
-                    className="h-full"
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={jobInfo[key]}
-                    keyExtractor={(item) => {
-                      return item.ID!.toString();
-                    }}
-                    renderItem={({ item }: { item: maintainInfoT }) => (
-                      <MaintainBlock maintainInfo={item} />
-                    )}
-                  />
-                </>
-              )}
-            </View>
+          className="h-full"
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={data}
+          keyExtractor={(item) => item.ID!.toString()}
+          renderItem={({ item }: { item: maintainInfoT }) => (
+            <MaintainBlock maintainInfo={item} />
           )}
         />
-        {getUserInfo?.Role === 300 && (
+        {getUserInfo?.Role == 300 && (
           <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
         )}
       </View>
@@ -255,7 +191,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
         <TouchableWithoutFeedback
           onPress={Keyboard.dismiss}
           style={{
-            backgroundColor: cS === "light" ? "#fff" : "#3A3B3C",
+            backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
           }}
         >
           <KeyboardAvoidingView
@@ -264,12 +200,11 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
             style={{
               display: "flex",
               paddingHorizontal: 10,
-              backgroundColor: cS === "light" ? "#fff" : "#3A3B3C",
+              backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
             }}
           >
             <View className="px-3 py-3">
               <MaintainM
-                setPlace={setPlace}
                 type={type}
                 setType={setType}
                 setGasLiter={setGasLiter}
@@ -282,11 +217,12 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
               <View className="bg-blue-400 py-3 mt-3 rounded-xl">
                 <Pressable
                   onPress={async () => {
+                    // handle sumit
                     if (type === "gas") {
                       if (
-                        tmpNew.name === "" ||
-                        tmpNew.price === 0 ||
-                        tmpNew.quantity === 0
+                        tmpNew.name == "" ||
+                        tmpNew.price == 0 ||
+                        tmpNew.quantity == 0
                       ) {
                         Alert.alert("注意", "好像有東西沒填齊唷", [
                           { text: "OK" },
@@ -295,6 +231,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                       }
                     }
                     setPicModalV(true);
+                    // await handleSubmit();
                   }}
                 >
                   <Text
@@ -335,7 +272,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                       className="flex flex-col  items-center h-5/6"
                       style={{
                         margin: 20,
-                        backgroundColor: cS === "light" ? "white" : "#3A3B3C",
+                        backgroundColor: cS == "light" ? "white" : "#3A3B3C",
                         borderRadius: 20,
                         padding: 25,
                         shadowColor: "#000",

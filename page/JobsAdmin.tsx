@@ -17,10 +17,12 @@ import { FAB, TextInput } from "react-native-paper";
 import { StyleSheet } from "nativewind";
 import { cmpInfo } from "../types/userT";
 import { useColorScheme as usc } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 
 function JobsAdmin(): React.JSX.Element {
+  const isFocused = useIsFocused();
+
   const cS = usc();
   const navigation = useNavigation<ScreenProp>();
 
@@ -33,7 +35,7 @@ function JobsAdmin(): React.JSX.Element {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [isFocused]);
 
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState();

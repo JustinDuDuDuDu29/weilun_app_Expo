@@ -8,7 +8,7 @@ import { Image } from "expo-image";
 import ShowMeMorePic from "./ShowMeMorePic";
 const UploadPicFCJob = ({ src }: { src: null | imgUrl }): React.JSX.Element => {
   useEffect(() => {
-    console.log(src);
+    // console.log(src);
   }, []);
 
   const [visible, setVisible] = useState<boolean>(false);

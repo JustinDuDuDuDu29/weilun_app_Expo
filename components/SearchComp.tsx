@@ -311,7 +311,7 @@ function SearchComp(props: {
           >
             <View className="flex flex-col justify-between">
               <View>
-                <Text className=" dark:text-white">請選擇類別：</Text>
+                <Text className=" dark:text-white text-xl">請選擇類別：</Text>
                 <View className="flex flex-row justify-between">
                   <RadioButton.Group
                     onValueChange={(newValue) => {
@@ -323,11 +323,15 @@ function SearchComp(props: {
                     <View className="flex flex-col">
                       <View className="flex flex-row  items-center align-middle">
                         <RadioButton value="user" />
-                        <Text className=" dark:text-white">新增使用者</Text>
+                        <Text className=" dark:text-white text-xl">
+                          新增使用者
+                        </Text>
                       </View>
                       <View className="flex flex-row  items-center align-middle">
                         <RadioButton value="cmp" />
-                        <Text className=" dark:text-white">新增公司</Text>
+                        <Text className=" dark:text-white text-xl">
+                          新增公司
+                        </Text>
                       </View>
                     </View>
                   </RadioButton.Group>
@@ -339,7 +343,11 @@ function SearchComp(props: {
                     <View>
                       <View>
                         <TextInput
+                          className={` text-xl dark:text-white border-b border-violet-200 my-2`}
                           placeholder="姓名"
+                          placeholderTextColor={
+                            cS == "light" ? "black" : "#ffffff"
+                          }
                           onChangeText={(e) => {
                             setUser({ ...user, Name: e });
                           }}
@@ -347,6 +355,10 @@ function SearchComp(props: {
                       </View>
                       <View>
                         <TextInput
+                          className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                          placeholderTextColor={
+                            cS == "light" ? "black" : "#ffffff"
+                          }
                           placeholder="電話號碼"
                           onChangeText={(e) => {
                             setUser({ ...user, PhoneNum: e });
@@ -391,18 +403,22 @@ function SearchComp(props: {
                       >
                         <View className="flex flex-row">
                           <Text
-                            className=" dark:text-white"
+                            className=" dark:text-white text-xl"
                             style={{ textAlignVertical: "center" }}
                           >
                             職位：
                           </Text>
                           <View className="flex flex-row  items-center align-middle">
                             <RadioButton value="cmpAdmin" />
-                            <Text className=" dark:text-white">公司負責人</Text>
+                            <Text className=" dark:text-white text-xl">
+                              公司負責人
+                            </Text>
                           </View>
                           <View className="flex flex-row  items-center align-middle">
                             <RadioButton value="driver" />
-                            <Text className=" dark:text-white">司機</Text>
+                            <Text className=" dark:text-white text-xl">
+                              司機
+                            </Text>
                           </View>
                         </View>
                       </RadioButton.Group>
@@ -410,6 +426,10 @@ function SearchComp(props: {
                         <>
                           <View>
                             <TextInput
+                              className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                              placeholderTextColor={
+                                cS == "light" ? "black" : "#ffffff"
+                              }
                               placeholder="身份證"
                               onChangeText={(e) => {
                                 setUser({
@@ -425,6 +445,10 @@ function SearchComp(props: {
                           </View>
                           <View>
                             <TextInput
+                              className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                              placeholderTextColor={
+                                cS == "light" ? "black" : "#ffffff"
+                              }
                               placeholder="車牌號碼"
                               onChangeText={(e) => {
                                 setUser({
@@ -439,8 +463,12 @@ function SearchComp(props: {
                               }}
                             />
                           </View>
-                          <View>
+                          {/* <View>
                             <TextInput
+                              className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                              placeholderTextColor={
+                                cS == "light" ? "black" : "#ffffff"
+                              }
                               placeholder="比率"
                               onChangeText={(e) => {
                                 setUser({
@@ -455,7 +483,7 @@ function SearchComp(props: {
                                 });
                               }}
                             />
-                          </View>
+                          </View> */}
                         </>
                       ) : (
                         <></>
@@ -465,6 +493,8 @@ function SearchComp(props: {
                 ) : (
                   <>
                     <TextInput
+                      className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                      placeholderTextColor={cS == "light" ? "black" : "#ffffff"}
                       placeholder="公司名稱"
                       onChangeText={(e) => {
                         setCmpName(e);
@@ -473,7 +503,7 @@ function SearchComp(props: {
                   </>
                 )}
               </View>
-              <View className="bg-blue-400 py-3 mt-3">
+              <View className="bg-blue-400 py-3 mt-3 rounded-xl my-2">
                 <Pressable
                   onPress={() => {
                     // handle sumit
@@ -481,7 +511,7 @@ function SearchComp(props: {
                   }}
                 >
                   <Text
-                    className=" dark:text-white"
+                    className=" dark:text-white text-xl"
                     style={{ textAlign: "center", textAlignVertical: "center" }}
                   >
                     送出

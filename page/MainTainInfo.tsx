@@ -11,12 +11,11 @@ function MaintainInfo({
   const [mInfo, setMInfo] = useState();
   const getData = useCallback(async () => {
     const res = await callAPI(
-      `/api/repair/${route.params.maintainID}`,
+      `/api/repair?id=${route.params.maintainID}`,
       "GET",
       {},
       true
     );
-    console.log(res.status);
     const data = await res.json();
     console.log(data);
   }, []);

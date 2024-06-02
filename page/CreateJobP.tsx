@@ -169,7 +169,7 @@ function CreateJobP(): React.JSX.Element {
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
-                    className="text-2xl"
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     // value={jobItem.FromLoc}
                     onChangeText={(e) => {
                       setJobItem({ ...jobItem, FromLoc: e });
@@ -186,7 +186,7 @@ function CreateJobP(): React.JSX.Element {
                 </Text>
                 <View className="flex-1 py-3 px-2">
                   <TextInput
-                    className="text-2xl "
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     // value={jobItem.Mid}
                     onChangeText={(e) => {
                       setJobItem({ ...jobItem, Mid: e });
@@ -204,6 +204,7 @@ function CreateJobP(): React.JSX.Element {
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     // value={jobItem.ToLoc}
                     onChangeText={(e) => {
                       setJobItem({ ...jobItem, ToLoc: e });
@@ -221,6 +222,7 @@ function CreateJobP(): React.JSX.Element {
                 </Text>
                 <View className="flex-1 py-3 px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     // value={jobItem.Source}
                     onChangeText={(e) => {
                       setJobItem({ ...jobItem, Source: e });
@@ -229,7 +231,7 @@ function CreateJobP(): React.JSX.Element {
                 </View>
               </View>
 
-              <View className="flex my-1 flex-row mt-2">
+              <View className="flex flex-row my-2">
                 <Text
                   className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
@@ -238,13 +240,14 @@ function CreateJobP(): React.JSX.Element {
                 </Text>
                 <View className="flex-1  px-2 mt-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     onChangeText={(e) => {
                       setJobItem({ ...jobItem, Memo: e });
                     }}
                   />
                 </View>
               </View>
-              <View className="flex my-1 flex-row mt-2">
+              <View className="flex my-2 flex-row mt-2">
                 <Text
                   className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
@@ -253,6 +256,7 @@ function CreateJobP(): React.JSX.Element {
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     keyboardType="numeric"
                     // value={jobItem.Price?.toString()}
                     onChangeText={(e) => {
@@ -306,7 +310,7 @@ function CreateJobP(): React.JSX.Element {
                 }}
               />
 
-              <View className="flex my-1 flex-row mt-2">
+              <View className="flex my-1 flex-row mt-3">
                 <Text
                   className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
@@ -315,6 +319,7 @@ function CreateJobP(): React.JSX.Element {
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     keyboardType="numeric"
                     // value={jobItem.Remaining?.toString()}
                     onChangeText={(e) => {

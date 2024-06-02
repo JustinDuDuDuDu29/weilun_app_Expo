@@ -70,16 +70,20 @@ function MGas(
             </View>
           </RadioButton.Group>
 
-          <View>
-            <Text className="text-xl dark:text-white">公升數:</Text>
+          <View className="my-2">
+            {/* <Text className="text-xl dark:text-white">公升數:</Text> */}
             <TextInput
+              label={"公升數"}
               keyboardType="number-pad"
               onChangeText={(e) => {
                 setTmpNew({ ...tmpNew, quantity: parseInt(e) });
               }}
             />
-            <Text className="text-xl dark:text-white">總價:</Text>
+          </View>
+          <View className="my-2">
+            {/* <Text className="text-xl dark:text-white">總價:</Text> */}
             <TextInput
+              label={"總價"}
               keyboardType="number-pad"
               onChangeText={(e) => {
                 setTmpNew({ ...tmpNew, price: parseInt(e) });

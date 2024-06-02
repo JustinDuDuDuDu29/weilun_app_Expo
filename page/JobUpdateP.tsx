@@ -130,7 +130,6 @@ function JobUpdateP({
         >
           <ScrollView>
             <View className="mx-4 my-2 ">
-              <Text>{JSON.stringify(jobItem)}</Text>
               <Pressable
                 className="bg-blue-200 w-full rounded-lg py-2 my-2"
                 onPress={() => {
@@ -143,22 +142,22 @@ function JobUpdateP({
                 }}
               >
                 <Text
-                  className=" text-2xl"
+                  className=" text-2xl "
                   style={{ textAlign: "center", textAlignVertical: "center" }}
                 >
                   {editable ? "取消" : "編輯"}
                 </Text>
               </Pressable>
-              <View className="flex my-1 flex-row">
+              <View className="flex my-1 flex-row mt-3">
                 <Text
-                  className="text-2xl"
+                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   出發地:
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
-                    className="text-2xl"
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
                     // value={jobItem.FromLoc}
                     onChangeText={(e) => {
@@ -169,16 +168,16 @@ function JobUpdateP({
                   </TextInput>
                 </View>
               </View>
-              <View className="flex my-1 flex-row">
+              <View className="flex my-1 flex-row mt-3">
                 <Text
-                  className="text-2xl"
+                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   經過:
                 </Text>
                 <View className="flex-1 py-3 px-2">
                   <TextInput
-                    className="text-2xl "
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
                     // value={
                     //   jobItem.Mid instanceof String
@@ -194,15 +193,16 @@ function JobUpdateP({
                 </View>
               </View>
 
-              <View className="flex my-1 flex-row">
+              <View className="flex my-1 flex-row mt-3">
                 <Text
-                  className=" text-2xl"
+                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   終點:
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
                     // value={jobItem.ToLoc}
                     onChangeText={(e) => {
@@ -214,15 +214,16 @@ function JobUpdateP({
                 </View>
               </View>
 
-              <View className="flex my-1 flex-row">
+              <View className="flex my-1 flex-row mt-3">
                 <Text
-                  className="text-2xl"
+                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   業主:
                 </Text>
                 <View className="flex-1 py-3 px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
                     // value={jobItem.Source}
                     onChangeText={(e) => {
@@ -234,32 +235,35 @@ function JobUpdateP({
                 </View>
               </View>
 
-              <View className="flex my-1 flex-row">
+              <View className="flex my-1 flex-row mt-3">
                 <Text
-                  className=" text-2xl"
+                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   注意事項:
                 </Text>
-                <View className="flex-1  px-2">
+                <View className="flex-1  px-2 my-3">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
                     onChangeText={(e) => {
                       setJobItem({ ...jobItem, Memo: e });
                     }}
-                  />
-                  <Text>{route.params.jobItem.Memo.String}</Text>
+                  >
+                    <Text>{route.params.jobItem.Memo.String}</Text>
+                  </TextInput>
                 </View>
               </View>
-              <View className="flex my-1 flex-row">
+              <View className="flex my-1 flex-row my-3">
                 <Text
-                  className=" text-2xl"
+                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   價格:
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     keyboardType="numeric"
                     editable={editable}
                     onChangeText={(e) => {
@@ -277,7 +281,7 @@ function JobUpdateP({
               {/* <View className="flex flex-row w-full bg-blue-300"> */}
               <Text
                 style={{ textAlignVertical: "center" }}
-                className=" text-2xl"
+                className=" text-2xl dark:text-white"
               >
                 所屬公司:
               </Text>
@@ -314,15 +318,16 @@ function JobUpdateP({
                 }}
               />
 
-              <View className="flex my-1 flex-row mt-2">
+              <View className="flex my-4 flex-row">
                 <Text
-                  className=" text-2xl"
+                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   剩餘趟數:
                 </Text>
                 <View className="flex-1  px-2">
                   <TextInput
+                    className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
                     // value={jobItem.Remaining?.toString()}
                     onChangeText={(e) => {
@@ -336,9 +341,11 @@ function JobUpdateP({
                   </TextInput>
                 </View>
               </View>
-              {/* <View className="flex my-1 flex-row">
+              {/*               <View className="flex my-1 flex-row mt-3">
+
               <Text
-                className=" text-2xl"
+                                  className=" text-2xl dark:text-white"
+
                 style={{ textAlignVertical: "center" }}
               >
                 工作開始日:
@@ -364,9 +371,11 @@ function JobUpdateP({
               )}
             </View>
 
-            <View className="flex my-1 flex-row">
+                          <View className="flex my-1 flex-row mt-3">
+
               <Text
-                className=" text-2xl"
+                                  className=" text-2xl dark:text-white"
+
                 style={{ textAlignVertical: "center" }}
               >
                 工作結束日:
@@ -420,7 +429,7 @@ function JobUpdateP({
                     }}
                   >
                     <Text
-                      className="text-2xl"
+                      className=" text-2xl"
                       style={{
                         textAlignVertical: "center",
                         textAlign: "center",
@@ -431,7 +440,7 @@ function JobUpdateP({
                   </Pressable>
                   <Pressable className=" w-1/3  bg-red-500 py-2 rounded-xl">
                     <Text
-                      className="text-2xl"
+                      className=" text-2xl dark:text-white"
                       style={{
                         textAlignVertical: "center",
                         textAlign: "center",
