@@ -10,6 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
+  FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { callAPI, callAPIAbort } from "../util/callAPIUtil";
@@ -18,15 +20,17 @@ import { StyleSheet } from "nativewind";
 import { RadioButton } from "react-native-paper";
 import GoodModal from "./GoodModal";
 import { useColorScheme as usc, StatusBar } from "react-native";
+import UseListEl from "./UserListEl";
 
 function SearchComp(props: {
   setUsetList: Function;
   visible: boolean;
   hideModal: Function;
   setVisible: Function;
+  userList: userLS[];
 }): React.JSX.Element {
   const cS = usc();
-
+  const [loading, setLoading] = useState<boolean>(true);
   const [isFocus1, setIsFocus1] = useState(false);
   const [searchVal, setSearchVal] = useState<{
     Name: string;
@@ -72,6 +76,7 @@ function SearchComp(props: {
 
   const getData = useCallback(async () => {
     try {
+      setLoading(true);
       let str = "";
       search.forEach((e) => {
         if (e.canSearch) {
@@ -89,6 +94,7 @@ function SearchComp(props: {
         )
       ).json();
       props.setUsetList(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -195,8 +201,13 @@ function SearchComp(props: {
   useEffect(() => {
     getCmp();
   }, []);
+
+  useEffect(() => {
+    console.log("ww");
+  }, []);
   return (
     <SafeAreaView>
+      {/* <Text>{JSON.stringify(props.userList)}</Text> */}
       <View className="flex flex-row w-full my-2 px-1">
         <View className=" w-1/4">
           <Dropdown
@@ -302,6 +313,21 @@ function SearchComp(props: {
           return;
         })}
       </View>
+      {loading ? (
+        <SafeAreaView className="mx-4 px-1 my-2 flex justify-center items-center">
+          <ActivityIndicator size="large" color="#0000ff" />
+        </SafeAreaView>
+      ) : (
+        // {props.userList && (
+        <View className="mx-5 relative">
+          <FlatList
+            data={props.userList}
+            renderItem={({ item }) => <UseListEl info={item} />}
+            keyExtractor={(item) => item.cmpid.toString()}
+          />
+        </View>
+        // )}
+      )}
       <GoodModal visible={props.visible} hideModal={props.hideModal}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <KeyboardAvoidingView

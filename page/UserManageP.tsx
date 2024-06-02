@@ -46,14 +46,16 @@ function UserManageP(): React.JSX.Element {
         setUsetList={setUsetList}
         visible={visible}
         hideModal={hideModal}
+        userList={userList}
       />
-      <View className="px-3 py-2 flex-1 ">
+
+      {/* <View className="px-3 py-2 flex-1 ">
         <FlatList
           data={userList}
           renderItem={({ item }) => <UseListEl info={item} />}
           keyExtractor={(item) => item.cmpid.toString()}
         />
-      </View>
+      </View> */}
       <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
     </SafeAreaView>
   );

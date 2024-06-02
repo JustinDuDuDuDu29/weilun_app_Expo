@@ -189,21 +189,23 @@ function Home(): React.JSX.Element {
             <Text className="text-3xl dark:text-white">營業額查詢</Text>
           </View>
         </Pressable>
-        <Pressable
-          className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-          onPress={() => navigation.navigate("customerSP")}
-        >
-          <View className="w-1/6">
-            <Icon
-              source="phone-classic"
-              color={cS == "light" ? "black" : "white"}
-              size={0.12 * ww}
-            />
-          </View>
-          <View className="flex content-center justify-center">
-            <Text className="text-3xl dark:text-white">24H客服</Text>
-          </View>
-        </Pressable>
+        {getUserInfo.Role != 100 && (
+          <Pressable
+            className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+            onPress={() => navigation.navigate("customerSP")}
+          >
+            <View className="w-1/6">
+              <Icon
+                source="phone-classic"
+                color={cS == "light" ? "black" : "white"}
+                size={0.12 * ww}
+              />
+            </View>
+            <View className="flex content-center justify-center">
+              <Text className="text-3xl dark:text-white">24H客服</Text>
+            </View>
+          </Pressable>
+        )}
         <Pressable
           className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
           onPress={() => navigation.navigate("mainTainP")}

@@ -207,50 +207,52 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
 
   return (
     <SafeAreaView>
-      <View className="mx-5 relative h-screen">
-        <FlatList
-          data={dd}
-          keyExtractor={(item) => item}
-          renderItem={({ item: key }) => (
-            <View key={key}>
-              <Pressable
-                className="my-1 rounded-lg px-4 py-2 bg-red-200 flex flex-row justify-between"
-                onPress={() => toggleVisibility(key)}
-              >
-                <View>
-                  <Text>{key}</Text>
-                </View>
-                <View
-                  className={`${visibility[key] ? "rotate-180" : "rotate-90"}`}
+      <View className="py-4 px-3">
+        <View className="mx-5 relative h-full">
+          <FlatList
+            data={dd}
+            keyExtractor={(item) => item}
+            renderItem={({ item: key }) => (
+              <View key={key}>
+                <Pressable
+                  className="my-1 rounded-lg px-4 py-2 bg-red-200 flex flex-row justify-between"
+                  onPress={() => toggleVisibility(key)}
                 >
-                  <Icon source={"triangle"} size={15} />
-                </View>
-              </Pressable>
-              {visibility[key] && (
-                <>
-                  <Text>hjlk</Text>
-                  <FlatList
-                    className="h-full"
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={jobInfo[key]}
-                    keyExtractor={(item) => {
-                      return item.ID!.toString();
-                    }}
-                    renderItem={({ item }: { item: maintainInfoT }) => (
-                      <MaintainBlock maintainInfo={item} />
-                    )}
-                  />
-                </>
-              )}
-            </View>
+                  <View>
+                    <Text>{key}</Text>
+                  </View>
+                  <View
+                    className={`${
+                      visibility[key] ? "rotate-180" : "rotate-90"
+                    }`}
+                  >
+                    <Icon source={"triangle"} size={15} />
+                  </View>
+                </Pressable>
+                {visibility[key] && (
+                  <>
+                    <FlatList
+                      className="h-full"
+                      showsVerticalScrollIndicator={false}
+                      showsHorizontalScrollIndicator={false}
+                      data={jobInfo[key]}
+                      keyExtractor={(item) => {
+                        return item.ID!.toString();
+                      }}
+                      renderItem={({ item }: { item: maintainInfoT }) => (
+                        <MaintainBlock maintainInfo={item} />
+                      )}
+                    />
+                  </>
+                )}
+              </View>
+            )}
+          />
+          {getUserInfo?.Role === 300 && (
+            <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
           )}
-        />
-        {getUserInfo?.Role === 300 && (
-          <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
-        )}
+        </View>
       </View>
-
       <GoodModal visible={visible} hideModal={hideModal}>
         <TouchableWithoutFeedback
           onPress={Keyboard.dismiss}

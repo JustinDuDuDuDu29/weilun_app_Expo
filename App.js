@@ -40,6 +40,7 @@ import { SplashScreen } from "./components/Aplash";
 import UserInfoAdmin from "./page/UserInfoAdmin";
 import EditUserInfoP from "./page/EditUserInfoP";
 import CreateJobP from "./page/CreateJobP";
+import AdminMaintain from "./page/AdminMaintain";
 // import { setBackgroundColorAsync } from 'expo-system-ui';
 
 export const isLoggedInAtom = atom(false);
@@ -95,6 +96,7 @@ function App() {
               <Stack.Screen name="customerSP" component={CustomerS} />
               <Stack.Screen name="finishJobP" component={FinishJob} />
               <Stack.Screen name="turnOverP" component={TurnOver} />
+              <Stack.Screen name="adminMainTainP" component={AdminMaintain} />
               <Stack.Screen name="mainTainP" component={Maintain} />
               <Stack.Screen name="userInfoP" component={UserInfo} />
               <Stack.Screen name="changePasswordP" component={ChangePassword} />

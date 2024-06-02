@@ -15,6 +15,7 @@ export type RootStackParamList = {
     accountInfoP: undefined;
     customerSP: undefined;
     mainTainP: undefined;
+    AdminMaintain: undefined;
     finishJobP: undefined;
     userInfoP:undefined;
     changePasswordP:undefined;

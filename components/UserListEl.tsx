@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -64,6 +64,7 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
   };
 
   const navigation = useNavigation<ScreenProp>();
+  useEffect(() => {});
 
   return (
     <SafeAreaView>
