@@ -9,15 +9,18 @@ import {
 } from "react-native";
 import { NullString, jobItemT } from "../types/JobItemT";
 import { Icon } from "react-native-paper";
-import { useAtom } from "jotai";
-import { pendingJob, userInfo } from "../page/Home";
+import { useAtom, useStore } from "jotai";
+// import { pendingJob, userInfo } from "../page/Home";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
+import { fnAtom, userInfo } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
+  const store = useStore();
   const ww = Dimensions.get("window").width;
-  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
+  // const [getPendingJob, setPendingJob] = useAtom(pendingJob);
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const navigation = useNavigation<ScreenProp>();
 
@@ -52,9 +55,30 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
                   "快去進行工作吧\n注意，如要取消，請於接取後的五分鐘內取消，或是通知管理人員處例",
                   [{ text: "OK" }]
                 );
+              } else throw res;
+            } catch (err) {
+              if (err instanceof Response) {
+                switch (err.status) {
+                  case 451:
+                    store.get(fnAtom).codefn();
+                    break;
+
+                  default:
+                    AlertMe(err);
+                    break;
+                }
               }
-            } catch (error) {
-              console.log(error);
+              if (err instanceof TypeError) {
+                if (err.message == "Network request failed") {
+                  Alert.alert("糟糕！", "請檢察網路有沒有開", [
+                    { text: "OK", onPress: () => {} },
+                  ]);
+                }
+              } else {
+                Alert.alert("GG", `怪怪\n${err}`, [
+                  { text: "OK", onPress: () => {} },
+                ]);
+              }
             }
           } else if (getUserInfo?.Role == 100) {
             navigation.navigate("jobUpdateP", { jobItem: jobItem });

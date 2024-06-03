@@ -18,11 +18,12 @@ import { FAB, TextInput } from "react-native-paper";
 import GoodModal from "../components/GoodModal";
 import { StyleSheet } from "nativewind";
 import { cmpInfo } from "../types/userT";
-import { useAtom } from "jotai";
+import { useAtom, useStore } from "jotai";
 import { Dropdown } from "react-native-element-dropdown";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useColorScheme as usc } from "react-native";
-import { userInfo } from "../App";
+import { fnAtom, userInfo } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function AlertP(): React.JSX.Element {
   const cS = usc();
@@ -66,11 +67,13 @@ function AlertP(): React.JSX.Element {
 
   const [alertList, setAlertList] = useState<alertT[]>([]);
   const [newAlert, setNewAlert] = useState<newAlertT>();
-
+  const store = useStore();
   const handleSubmit = async () => {
     try {
       const res = await callAPI("/api/alert", "POST", newAlert!, true);
-
+      if (!res.ok) {
+        throw res;
+      }
       if (res.status == 200) {
         Alert.alert("成功", "已新增通知", [{ text: "OK" }]);
         setValue(undefined);
@@ -78,8 +81,27 @@ function AlertP(): React.JSX.Element {
         setVisible(false);
         getData();
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   };
   const insets = useSafeAreaInsets();

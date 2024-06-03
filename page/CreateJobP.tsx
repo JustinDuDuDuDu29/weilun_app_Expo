@@ -22,8 +22,12 @@ import { mode } from "d3";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { callAPI } from "../util/callAPIUtil";
 import { cmpInfo } from "../types/userT";
+import { useStore } from "jotai";
+import { fnAtom } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function CreateJobP(): React.JSX.Element {
+  const store = useStore();
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
 
   const getData = useCallback(async () => {
@@ -137,8 +141,27 @@ function CreateJobP(): React.JSX.Element {
         return;
       }
       throw new Error("QQ");
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   };
   return (

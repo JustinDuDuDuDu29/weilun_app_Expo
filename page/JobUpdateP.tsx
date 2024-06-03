@@ -22,6 +22,9 @@ import { NullDate, cmpInfo } from "../types/userT";
 import { callAPI } from "../util/callAPIUtil";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { ScreenProp } from "../types/navigationT";
+import { useStore } from "jotai";
+import { fnAtom } from "../App";
+import { AlertMe } from "../util/AlertMe";
 // import {} from "react-native-paper";
 
 // import {TextInput} from "react-native-paper";
@@ -31,15 +34,39 @@ function JobUpdateP({
 }: {
   route: RouteProp<{ params: { jobItem: jobItemT } }, "params">;
 }): React.JSX.Element {
+  const store = useStore();
   useEffect(() => {
     const getData = async () => {
       try {
-        const cmpList: cmpInfo[] = await (
-          await callAPI("/api/cmp/all", "GET", {}, true)
-        ).json();
+        const res = await callAPI("/api/cmp/all", "GET", {}, true);
+        if (!res.ok) {
+          throw res;
+        }
+        const cmpList: cmpInfo[] = await res.json();
         setCmpList(cmpList);
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        if (err instanceof Response) {
+          switch (err.status) {
+            case 451:
+              store.get(fnAtom).codefn();
+              break;
+
+            default:
+              AlertMe(err);
+              break;
+          }
+        }
+        if (err instanceof TypeError) {
+          if (err.message == "Network request failed") {
+            Alert.alert("糟糕！", "請檢察網路有沒有開", [
+              { text: "OK", onPress: () => {} },
+            ]);
+          }
+        } else {
+          Alert.alert("GG", `怪怪\n${err}`, [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
       }
     };
     getData();

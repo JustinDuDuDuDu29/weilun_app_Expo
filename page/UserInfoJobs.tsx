@@ -28,6 +28,9 @@ function UserInfoJobs({ uid }: { uid: number }): React.JSX.Element {
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(`/api/claimed/cj?id=${uid}`, "GET", {}, true);
+      if (!res.ok) {
+        throw res;
+      }
       const data: string[] = await res.json();
 
       setData(data);
@@ -35,8 +38,27 @@ function UserInfoJobs({ uid }: { uid: number }): React.JSX.Element {
         setJobInfo((oldArray) => ({ ...oldArray, [e]: [] }));
         setVisibility((oldVisibility) => ({ ...oldVisibility, [e]: false }));
       });
-    } catch (error) {
-      console.log("error: ", error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, [uid]);
 

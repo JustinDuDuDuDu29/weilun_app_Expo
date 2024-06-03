@@ -21,6 +21,9 @@ import { RadioButton } from "react-native-paper";
 import GoodModal from "./GoodModal";
 import { useColorScheme as usc, StatusBar } from "react-native";
 import UseListEl from "./UserListEl";
+import { useStore } from "jotai";
+import { fnAtom } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function SearchComp(props: {
   setUsetList: Function;
@@ -29,6 +32,8 @@ function SearchComp(props: {
   setVisible: Function;
   userList: userLS[];
 }): React.JSX.Element {
+  const store = useStore();
+
   const cS = usc();
   const [loading, setLoading] = useState<boolean>(true);
   const [isFocus1, setIsFocus1] = useState(false);
@@ -83,20 +88,40 @@ function SearchComp(props: {
           str = str + e.ID + "=" + e.searchQ + "&";
         }
       });
-
-      const data: userLS[] = await (
-        await callAPIAbort(
-          "/api/user?" + str.replace(/&$/, ""),
-          "GET",
-          {},
-          true,
-          signal
-        )
-      ).json();
+      const res = await callAPIAbort(
+        "/api/user?" + str.replace(/&$/, ""),
+        "GET",
+        {},
+        true,
+        signal
+      );
+      if (!res.ok) {
+        throw res;
+      }
+      const data: userLS[] = await res.json();
       props.setUsetList(data);
       setLoading(false);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, [search]);
 
@@ -150,8 +175,8 @@ function SearchComp(props: {
           Alert.alert("成功！", "新增公司成功", [{ text: "OK" }]);
         }
       } else {
-        if (user.Name == "" || user.PhoneNum == "" || user.BelongCmp == null) {
-          Alert.alert("注意！", "請確認資料是否完整", [{ text: "OK" }]);
+        if (user.Name == "" || user.PhoneNum == "" || !user.BelongCmp) {
+          Alert.alert("注意！", "請確認資料是否完整!!", [{ text: "OK" }]);
           return;
         }
         if (
@@ -159,7 +184,7 @@ function SearchComp(props: {
           (user.driverInfo?.nationalIdNumber == "" ||
             user.driverInfo?.plateNum == "")
         ) {
-          Alert.alert("注意！", "請確認資料是否完整", [{ text: "OK" }]);
+          Alert.alert("注意！", "請確認資料是否完整~", [{ text: "OK" }]);
           return;
         }
         const res = await callAPI(

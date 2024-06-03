@@ -20,6 +20,9 @@ import { SceneMap, TabBar, TabView } from "react-native-tab-view";
 import UserInfoBasic from "./UserInfoBasic";
 import UserInfoJobs from "./UserInfoJobs";
 import Maintain from "./Maintain";
+import { AlertMe } from "../util/AlertMe";
+import { fnAtom } from "../App";
+import { useStore } from "jotai";
 
 const renderTabBar = (props) => {
   const layout = useWindowDimensions();
@@ -48,16 +51,39 @@ function UserInfoAdmin({
 }: {
   route: RouteProp<{ params: { uid: number } }, "params">;
 }): React.JSX.Element {
+  const store = useStore();
   const [OInfo, setOInfo] = useState<inUserT>();
 
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(`/api/user/${uid}`, "GET", {}, true);
+      if (!res.ok) {
+        throw res;
+      }
       const data = await res.json();
 
       setOInfo(data);
-    } catch (error) {
-      console.log("error: ", error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, []);
   const [uid, setUid] = useState(route.params.uid);

@@ -6,16 +6,18 @@ import {
   Text,
   useColorScheme as usc,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { callAPI } from "../util/callAPIUtil";
 import { revT } from "../types/revenueT";
 import { LineChart } from "react-native-gifted-charts";
 import CJBlock from "../components/CJBlock";
-import { useAtom } from "jotai";
+import { useAtom, useStore } from "jotai";
 import { ClaimedJob } from "../types/JobItemT";
 import { SplashScreen } from "../components/Aplash";
-import { userInfo } from "../App";
+import { fnAtom, userInfo } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function TurnOver(): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,22 +31,24 @@ function TurnOver(): React.JSX.Element {
   const [cj, setCJ] = useState<ClaimedJob[]>();
 
   const cS = usc();
-
+  const store = useStore();
   const getData = useCallback(async () => {
     try {
       setIsLoading(true);
-      const data = await (
-        await callAPI(
-          `/api/revenue?${
-            getUserInfo?.Role === 300
-              ? "id=" + getUserInfo?.ID
-              : "cmp=" + getUserInfo?.Belongcmp
-          }`,
-          "GET",
-          {},
-          true
-        )
-      ).json();
+      const res = await callAPI(
+        `/api/revenue?${
+          getUserInfo?.Role === 300
+            ? "id=" + getUserInfo?.ID
+            : "cmp=" + getUserInfo?.Belongcmp
+        }`,
+        "GET",
+        {},
+        true
+      );
+      const data = await res.json();
+      if (!res.ok) {
+        throw res;
+      }
       setData(data);
       let max = -100;
       const aa = data?.map((d: revT, i: number) => {
@@ -57,22 +61,41 @@ function TurnOver(): React.JSX.Element {
       });
 
       setGData(aa);
-      const cj = await (
-        await callAPI(
-          `/api/claimed/list?${
-            getUserInfo?.Role === 300
-              ? "id=" + getUserInfo?.ID
-              : "cmp=" + getUserInfo?.Belongcmp
-          }`,
-          "GET",
-          {},
-          true
-        )
-      ).json();
+      const ll = await callAPI(
+        `/api/claimed/list?${
+          getUserInfo?.Role === 300
+            ? "id=" + getUserInfo?.ID
+            : "cmp=" + getUserInfo?.Belongcmp
+        }`,
+        "GET",
+        {},
+        true
+      );
+      if (!ll.ok) throw ll;
+      const cj = await ll.json();
       setCJ(cj);
       setIsLoading(false);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, []);
 

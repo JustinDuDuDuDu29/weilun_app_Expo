@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   View,
   Text,
+  Alert,
 } from "react-native";
 import _data from "../asset/fakeData/_jobs.json";
 import { jobItemT } from "../types/JobItemT";
@@ -16,6 +17,7 @@ import { callAPI } from "../util/callAPIUtil";
 import { NullDate } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
 import { fnAtom, pendingJob } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function Jobs(): React.JSX.Element {
   const store = useStore();
@@ -27,13 +29,32 @@ function Jobs(): React.JSX.Element {
     const fetchData = async () => {
       try {
         const res = await callAPI("/api/jobs/all", "POST", {}, true);
-        if (!res.ok) throw res.status;
+        if (!res.ok) throw res;
         const allJobs = await res.json();
 
         setData(allJobs);
-      } catch (error) {
-        if (error instanceof Number) {
-          store.get(fnAtom).codefn(error);
+      } catch (err) {
+        if (err instanceof Response) {
+          switch (err.status) {
+            case 451:
+              store.get(fnAtom).codefn();
+              break;
+
+            default:
+              AlertMe(err);
+              break;
+          }
+        }
+        if (err instanceof TypeError) {
+          if (err.message == "Network request failed") {
+            Alert.alert("糟糕！", "請檢察網路有沒有開", [
+              { text: "OK", onPress: () => {} },
+            ]);
+          }
+        } else {
+          Alert.alert("GG", `怪怪\n${err}`, [
+            { text: "OK", onPress: () => {} },
+          ]);
         }
       }
     };

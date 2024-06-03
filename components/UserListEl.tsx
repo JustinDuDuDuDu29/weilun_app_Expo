@@ -14,6 +14,9 @@ import { ScreenProp } from "../types/navigationT";
 import Dialog from "react-native-dialog";
 import { Icon } from "react-native-paper";
 import { callAPI } from "../util/callAPIUtil";
+import { useStore } from "jotai";
+import { fnAtom } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 export function SmallEL({
   driverInfo,
@@ -52,6 +55,8 @@ export function SmallEL({
 }
 
 function UseListEl({ info }: { info: userLS }): React.JSX.Element {
+  const store = useStore();
+
   const [visible, setVisible] = useState(false);
   const [dVisible, setDVisible] = useState(false);
   const [newCmpName, setNewCmpName] = useState("");
@@ -64,7 +69,6 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
   };
 
   const navigation = useNavigation<ScreenProp>();
-  useEffect(() => {});
 
   return (
     <SafeAreaView>
@@ -109,16 +113,43 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
           <Dialog.Button
             label="確定"
             onPress={async () => {
-              // console.log(newCmpName);
-              await callAPI(
-                "/api/cmp",
-                "PUT",
-                {
-                  id: info.cmpid,
-                  cmpName: newCmpName,
-                },
-                true
-              );
+              try {
+                const res = await callAPI(
+                  "/api/cmp",
+                  "PUT",
+                  {
+                    id: info.cmpid,
+                    cmpName: newCmpName,
+                  },
+                  true
+                );
+                if (!res.ok) {
+                  throw res;
+                }
+              } catch (err) {
+                if (err instanceof Response) {
+                  switch (err.status) {
+                    case 451:
+                      store.get(fnAtom).codefn();
+                      break;
+
+                    default:
+                      AlertMe(err);
+                      break;
+                  }
+                }
+                if (err instanceof TypeError) {
+                  if (err.message == "Network request failed") {
+                    Alert.alert("糟糕！", "請檢察網路有沒有開", [
+                      { text: "OK", onPress: () => {} },
+                    ]);
+                  }
+                } else {
+                  Alert.alert("GG", `怪怪\n${err}`, [
+                    { text: "OK", onPress: () => {} },
+                  ]);
+                }
+              }
             }}
           />
           <Dialog.Button

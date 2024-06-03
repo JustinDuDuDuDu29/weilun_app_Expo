@@ -1,16 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, SafeAreaView, Text } from "react-native";
+import { Alert, FlatList, SafeAreaView, Text } from "react-native";
 import { callAPI } from "../util/callAPIUtil";
 import { ClaimedJob } from "../types/JobItemT";
 import AlertBlock from "../components/AlertBlock";
 import CJBlock from "../components/CJBlock";
 import { useIsFocused } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useStore } from "jotai";
+import { AlertMe } from "../util/AlertMe";
+import { fnAtom } from "../App";
 
 function AdminClaimedJob(): React.JSX.Element {
   const [claimedList, setClaimedList] = useState<ClaimedJob[]>([]);
   const focused = useIsFocused();
-
+  const store = useStore();
   const getData = useCallback(async () => {
     try {
       const res = await callAPI("/api/claimed?cat=pending", "GET", {}, true);
@@ -18,8 +21,29 @@ function AdminClaimedJob(): React.JSX.Element {
         const data = await res.json();
         setClaimedList(data);
       }
-    } catch (error) {
-      console.log(error);
+      if (!res.ok) {
+      }
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, []);
 

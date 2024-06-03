@@ -24,14 +24,15 @@ import SmallModal from "../components/SmallModal";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
-import { useAtom } from "jotai";
+import { useAtom, useStore } from "jotai";
 import MaintainM from "../components/MaintainM";
 import UploadPic from "../components/UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ImgT, imgUrl } from "../types/ImgT";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
-import { userInfo } from "../App";
+import { fnAtom, userInfo } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function Maintain({ uid }: { uid: number }): React.JSX.Element {
   const cS = usc();
@@ -40,7 +41,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   );
   const [dd, setData] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<{ [key: string]: boolean }>({});
-
+  const store = useStore();
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(
@@ -51,6 +52,9 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
         {},
         true
       );
+      if (!res.ok) {
+        throw res;
+      }
       const data: string[] = await res.json();
 
       setData(data);
@@ -58,8 +62,27 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
         setJobInfo((oldArray) => ({ ...oldArray, [e]: [] }));
         setVisibility((oldVisibility) => ({ ...oldVisibility, [e]: false }));
       });
-    } catch (error) {
-      console.log("error: ", error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, [uid]);
 
@@ -81,10 +104,34 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
             {},
             true
           );
+          if (!res.ok) {
+            throw res;
+          }
           const data = await res.json();
           setJobInfo({ ...jobInfo, [key]: data.res });
-        } catch (error) {
-          console.log("error: ", error);
+        } catch (err) {
+          if (err instanceof Response) {
+            switch (err.status) {
+              case 451:
+                store.get(fnAtom).codefn();
+                break;
+
+              default:
+                AlertMe(err);
+                break;
+            }
+          }
+          if (err instanceof TypeError) {
+            if (err.message == "Network request failed") {
+              Alert.alert("糟糕！", "請檢察網路有沒有開", [
+                { text: "OK", onPress: () => {} },
+              ]);
+            }
+          } else {
+            Alert.alert("GG", `怪怪\n${err}`, [
+              { text: "OK", onPress: () => {} },
+            ]);
+          }
         }
       }
     }

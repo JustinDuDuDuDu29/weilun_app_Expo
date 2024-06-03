@@ -13,10 +13,11 @@ import {
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { callAPI } from "../util/callAPIUtil";
-import { useAtom } from "jotai";
-import { pendingJob, userInfo } from "./Home";
+import { useAtom, useStore } from "jotai";
+// import { userInfo } from "./Home";
 import { logout } from "../util/loginInfo";
-import { isLoggedInAtom } from "../App";
+import { fnAtom, isLoggedInAtom, userInfo } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function ChangePassword(): React.JSX.Element {
   const [oldPassword, setOldPassword] = useState("");
@@ -27,8 +28,7 @@ function ChangePassword(): React.JSX.Element {
   const [secure2, setSecure2] = useState(true);
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
-  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
-
+  const store = useStore();
   const setPwd = async () => {
     if (newPassword != passwordA) {
       Alert.alert("糟糕！", "新密碼不相符！", [{ text: "OK" }]);
@@ -40,26 +40,42 @@ function ChangePassword(): React.JSX.Element {
         { id: getUserInfo?.ID, pwd: newPassword, oldPwd: oldPassword },
         true
       );
-
-      if (res.status == 406) {
-        Alert.alert("糟糕！", "舊密碼似乎不對唷～", [{ text: "OK" }]);
-      } else if (res.status == 200) {
-        Alert.alert("成功", "成功修改密碼，即將登出！", [
-          {
-            text: "OK",
-            onPress: async () => {
-              await logout();
-              setIsLoggedIn(false);
-              setPendingJob(null);
-              setUserInfo(null);
-            },
-          },
-        ]);
-      } else {
-        Alert.alert("糟糕！", "出現錯誤！", [{ text: "OK" }]);
+      if (!res.ok) {
+        throw res;
       }
-    } catch (error) {
-      Alert.alert("糟糕！", "出現錯誤！", [{ text: "OK" }]);
+
+      Alert.alert("成功", "成功修改密碼，即將登出！", [
+        {
+          text: "OK",
+          onPress: async () => {
+            store.get(fnAtom).logoutfn;
+          },
+        },
+      ]);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+          case 406:
+            Alert.alert("糟糕！", "舊密碼似乎不對唷～", [{ text: "OK" }]);
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   };
 

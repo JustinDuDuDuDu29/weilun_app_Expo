@@ -37,8 +37,9 @@ function Login(): React.JSX.Element {
         { phoneNum: phoneNum, pwd: password },
         false
       );
-
-      if (result.ok == false) throw result.status;
+      if (!result.ok) {
+        throw result;
+      }
 
       const res = await result.json();
 
@@ -52,7 +53,11 @@ function Login(): React.JSX.Element {
           case 451:
             store.get(fnAtom).codefn();
             break;
-
+          case 404:
+            Alert.alert("糟糕！", "查無相關帳號資訊，請聯絡相關人員協助確認", [
+              { text: "OK", onPress: () => {} },
+            ]);
+            break;
           default:
             AlertMe(err);
             break;
@@ -64,12 +69,8 @@ function Login(): React.JSX.Element {
             { text: "OK", onPress: () => {} },
           ]);
         }
-      }
-      if (err == 404) {
-        // console.log(err);
-        Alert.alert("糟糕！", "查無相關帳號資訊，請聯絡相關人員協助確認", [
-          { text: "OK", onPress: () => {} },
-        ]);
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
     }
   };

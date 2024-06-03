@@ -12,6 +12,9 @@ import { callAPI } from "../util/callAPIUtil";
 import { inUserT } from "../types/userT";
 import { enableFreeze } from "react-native-screens";
 import { useIsFocused } from "@react-navigation/native";
+import { AlertMe } from "../util/AlertMe";
+import { fnAtom } from "../App";
+import { useStore } from "jotai";
 
 function UserInfoBasic({
   // uid,
@@ -21,25 +24,79 @@ function UserInfoBasic({
   OInfo: inUserT;
 }): React.JSX.Element {
   const [editable, setEditable] = useState(false);
-  // const [OInfo, setOInfo] = useState<inUserT>();
 
-  // const getData = useCallback(async () => {
-  //   try {
-  //     const res = await callAPI(`/api/user/${uid}`, "GET", {}, true);
-  //     const data = await res.json();
+  const store = useStore();
+  const approveUser = async () => {
+    try {
+      const res = await callAPI(
+        `/api/user/approve/${OInfo?.ID}`,
+        "POST",
+        { id: OInfo?.ID, pwd: OInfo?.Phonenum, oldPwd: "" },
+        true
+      );
+      if (!res.ok) {
+        throw res;
+      }
+      Alert.alert("成功!", "已核可此用戶");
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
 
-  //     setOInfo(data);
-  //   } catch (error) {
-  //     console.log("error: ", error);
-  //   }
-  // }, []);
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
+    }
+  };
 
-  //   enableFreeze(true);
-  // const isFocused = useIsFocused();
-  // useEffect(() => {
-  //   // console.log(uid);
-  //   getData();
-  // }, []);
+  const deleteUser = async () => {
+    try {
+      const res = await callAPI(
+        "/api/user/",
+        "DELETE",
+        { id: OInfo?.ID },
+        true
+      );
+      if (!res.ok) {
+        throw res;
+      }
+      Alert.alert("成功!", "已刪除此用戶");
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -61,15 +118,7 @@ function UserInfoBasic({
                   {
                     text: "確定",
                     onPress: async () => {
-                      const res = await callAPI(
-                        `/api/user/approve/${OInfo?.ID}`,
-                        "POST",
-                        { id: OInfo?.ID, pwd: OInfo?.Phonenum, oldPwd: "" },
-                        true
-                      );
-                      if (res.status == 200) {
-                        Alert.alert("成功!", "已核可此用戶");
-                      }
+                      await approveUser();
                     },
                   },
                   { text: "取消" },
@@ -125,15 +174,7 @@ function UserInfoBasic({
                 {
                   text: "確定",
                   onPress: async () => {
-                    const res = await callAPI(
-                      "/api/user/",
-                      "DELETE",
-                      { id: OInfo?.ID },
-                      true
-                    );
-                    if (res.status == 200) {
-                      Alert.alert("成功!", "已刪除此用戶");
-                    }
+                    await deleteUser();
                   },
                 },
                 { text: "取消" },

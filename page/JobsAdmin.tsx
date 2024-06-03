@@ -19,21 +19,45 @@ import { cmpInfo } from "../types/userT";
 import { useColorScheme as usc } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
+import { useStore } from "jotai";
+import { fnAtom } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function JobsAdmin(): React.JSX.Element {
   const isFocused = useIsFocused();
-
+  const store = useStore();
   const cS = usc();
   const navigation = useNavigation<ScreenProp>();
 
   const getData = useCallback(async () => {
     try {
-      const allJobs = await (
-        await callAPI("/api/jobs/all", "POST", {}, true)
-      ).json();
+      const res = await callAPI("/api/jobs/all", "POST", {}, true);
+      if (!res.ok) {
+        throw res;
+      }
+      const allJobs = await res.json();
       setData(allJobs);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, [isFocused]);
 

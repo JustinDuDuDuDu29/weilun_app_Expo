@@ -17,12 +17,16 @@ import { callAPI } from "../util/callAPIUtil";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useStore } from "jotai";
+import { fnAtom } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function EditUserInfoP({
   route,
 }: {
   route: RouteProp<{ params: { OInfo: inUserT } }, "params">;
 }): React.JSX.Element {
+  const store = useStore();
   const cS = usc();
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
   const [isFocus, setIsFocus] = useState(false);
@@ -60,7 +64,39 @@ function EditUserInfoP({
   }, []);
   const navigation = useNavigation<ScreenProp>();
   const insets = useSafeAreaInsets();
+  const submitFun = async () => {
+    try {
+      const res = await callAPI(
+        `/api/user/${route.params.OInfo.ID}`,
+        "PUT",
+        user,
+        true
+      );
 
+      Alert.alert("完成", "成功修改資料", [{ text: "OK" }]);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
+    }
+  };
   return (
     <SafeAreaView
       className="flex flex-col relative flex-1 mx-4 my-3"
@@ -275,20 +311,7 @@ function EditUserInfoP({
       <View className="flex flex-row justify-center">
         <Pressable
           className="border w-1/3 rounded-lg bg-violet-300 px-3 py-2"
-          onPress={async () => {
-            if (
-              (
-                await callAPI(
-                  `/api/user/${route.params.OInfo.ID}`,
-                  "PUT",
-                  user,
-                  true
-                )
-              ).status == 200
-            ) {
-              Alert.alert("完成", "成功修改資料", [{ text: "OK" }]);
-            }
-          }}
+          onPress={submitFun}
         >
           <Text
             style={{ verticalAlign: "middle", textAlign: "center" }}

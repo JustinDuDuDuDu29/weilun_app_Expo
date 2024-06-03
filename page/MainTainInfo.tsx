@@ -11,17 +11,19 @@ import {
 import { GIBEDEIMGB0SS, callAPI } from "../util/callAPIUtil";
 import UserCU from "../components/UserCU";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
-import { useAtom } from "jotai";
+import { useAtom, useStore } from "jotai";
 import { ScreenProp } from "../types/navigationT";
 import UploadPicFCJob from "../components/UploadPicFCJob";
 import { imgUrl } from "../types/ImgT";
-import { userInfo } from "../App";
+import { fnAtom, userInfo } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function MaintainInfo({
   route,
 }: {
   route: RouteProp<{ params: { maintainID: number } }, "params">;
 }): React.JSX.Element {
+  const store = useStore();
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const navigation = useNavigation<ScreenProp>();
   const [jobPic, setJobPic] = useState<imgUrl | null>(null);
@@ -30,26 +32,52 @@ function MaintainInfo({
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const getData = useCallback(async () => {
-    const res = await callAPI(
-      `/api/repair?id=${route.params.maintainID}`,
-      "GET",
-      {},
-      true
-    );
-    const data = await res.json();
-
-    setMInfo(data.res[0]);
-    console.log(data.res[0].Pic.Valid);
-    let calculatedTotalPrice = 0;
-    data.res[0].Repairinfo.forEach((el) => {
-      calculatedTotalPrice += el.price!;
-    });
-    setTotalPrice(calculatedTotalPrice);
-    if (data.res[0].Pic.Valid) {
-      const src = await GIBEDEIMGB0SS(
-        `/api/static/img/${data.res[0].Pic.String}`
+    try {
+      const res = await callAPI(
+        `/api/repair?id=${route.params.maintainID}`,
+        "GET",
+        {},
+        true
       );
-      setJobPic(src);
+      if (!res.ok) {
+        throw res;
+      }
+      const data = await res.json();
+
+      setMInfo(data.res[0]);
+      console.log(data.res[0].Pic.Valid);
+      let calculatedTotalPrice = 0;
+      data.res[0].Repairinfo.forEach((el) => {
+        calculatedTotalPrice += el.price!;
+      });
+      setTotalPrice(calculatedTotalPrice);
+      if (data.res[0].Pic.Valid) {
+        const src = await GIBEDEIMGB0SS(
+          `/api/static/img/${data.res[0].Pic.String}`
+        );
+        setJobPic(src);
+      }
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     }
   }, [route.params.maintainID]);
 

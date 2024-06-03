@@ -8,13 +8,14 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { useAtom } from "jotai";
+import { useAtom, useStore } from "jotai";
 import { CJInfo } from "../types/JobItemT";
 import { GIBEDEIMGB0SS, callAPI } from "../util/callAPIUtil";
 import UploadPicFCJob from "../components/UploadPicFCJob";
 import { ScreenProp } from "../types/navigationT";
 import { imgUrl } from "../types/ImgT";
-import { userInfo } from "../App";
+import { fnAtom, userInfo } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function ClaimJobP({
   route,
@@ -26,7 +27,7 @@ function ClaimJobP({
   const [jobPic, setJobPic] = useState<imgUrl | null>(null);
   const [CJ, setCJ] = useState<CJInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const store = useStore();
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(
@@ -35,19 +36,39 @@ function ClaimJobP({
         {},
         true
       );
-
-      if (res.status == 200) {
-        const data: CJInfo[] = await res.json();
-        if (data[0].Finishpic.Valid) {
-          const src = await GIBEDEIMGB0SS(
-            `/api/static/img/${data[0].Finishpic.String}`
-          );
-          setJobPic(src);
-        }
-        setCJ(data[0]);
+      if (!res.ok) {
+        throw res;
       }
-    } catch (error) {
-      console.error("Error fetching data: ", error);
+
+      const data: CJInfo[] = await res.json();
+      if (data[0].Finishpic.Valid) {
+        const src = await GIBEDEIMGB0SS(
+          `/api/static/img/${data[0].Finishpic.String}`
+        );
+        setJobPic(src);
+      }
+      setCJ(data[0]);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
+      if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
     } finally {
       setLoading(false);
     }
