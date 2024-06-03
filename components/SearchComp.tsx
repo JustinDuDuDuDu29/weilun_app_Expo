@@ -24,6 +24,7 @@ import UseListEl from "./UserListEl";
 import { useStore } from "jotai";
 import { fnAtom } from "../App";
 import { AlertMe } from "../util/AlertMe";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 function SearchComp(props: {
   setUsetList: Function;
@@ -112,8 +113,7 @@ function SearchComp(props: {
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },
@@ -124,10 +124,11 @@ function SearchComp(props: {
       }
     }
   }, [search]);
+  const FocusPage = useIsFocused();
 
   useEffect(() => {
     getData();
-  }, [search]);
+  }, [search, FocusPage]);
   const inp = useRef();
 
   const [newUserType, setNewUserType] = useState("cmpAdmin");
@@ -413,6 +414,7 @@ function SearchComp(props: {
                           placeholderTextColor={
                             cS == "light" ? "black" : "#ffffff"
                           }
+                          keyboardType="number-pad"
                           placeholder="電話號碼"
                           onChangeText={(e) => {
                             setUser({ ...user, PhoneNum: e });

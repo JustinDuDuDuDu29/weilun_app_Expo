@@ -55,8 +55,7 @@ function JobUpdateP({
               AlertMe(err);
               break;
           }
-        }
-        if (err instanceof TypeError) {
+        } else if (err instanceof TypeError) {
           if (err.message == "Network request failed") {
             Alert.alert("糟糕！", "請檢察網路有沒有開", [
               { text: "OK", onPress: () => {} },
@@ -81,50 +80,15 @@ function JobUpdateP({
   const [value, setValue] = useState(route.params.jobItem.Belongcmp);
   const [isFocus, setIsFocus] = useState(false);
 
-  // const [mode, setMode] = useState("date");
-  // const [show, setShow] = useState(false);
-  // const [showC, setShowC] = useState(false);
-
-  // const onChange = (event, selectedDate: Date) => {
-  //   const currentDate = selectedDate;
-  //   setShow(false);
-  //   setJobItem({ ...jobItem, Jobdate: currentDate.toISOString() });
-  // };
-  // const onChangeClose = (event, selectedDate: Date) => {
-  //   const currentDate = selectedDate;
-  //   setShowC(false);
-  //   setJobItem({ ...jobItem, CloseDate: currentDate.toISOString() });
-  // };
-
-  // const showMode = (currentMode: string) => {
-  //   setShow(true);
-  //   setMode(currentMode);
-  // };
-
-  // const showModeC = (currentMode: string) => {
-  //   setShowC(true);
-  //   setMode(currentMode);
-  // };
-
-  // const showDatepicker = () => {
-  //   showMode("date");
-  // };
-  // const showDatepickerC = () => {
-  //   showModeC("date");
-  // };
-
   const updateJob = async () => {
-    console.log({
-      ...route.params.jobItem,
-      ...jobItem,
-      id: route.params.jobItem.ID,
-    });
     try {
       const res = await callAPI(
         "/api/jobs",
         "PUT",
         {
           ...route.params.jobItem,
+          Mid: route.params.jobItem.Mid.String,
+
           ...jobItem,
           id: route.params.jobItem.ID,
         },
@@ -132,6 +96,7 @@ function JobUpdateP({
       );
       if (res.status == 200)
         Alert.alert("成功", "資料修改成功", [{ text: "OK" }]);
+      navigation.goBack();
     } catch (error) {
       console.log(error);
     }
@@ -162,8 +127,6 @@ function JobUpdateP({
                 onPress={() => {
                   if (editable) {
                     navigation.goBack();
-                    // setJobItem(route.params.jobItem);
-                    // setValue(route.params.jobItem.Belongcmp);
                   }
                   setEditable(!editable);
                 }}
@@ -368,85 +331,7 @@ function JobUpdateP({
                   </TextInput>
                 </View>
               </View>
-              {/*               <View className="flex my-1 flex-row mt-3">
 
-              <Text
-                                  className=" text-2xl dark:text-white"
-
-                style={{ textAlignVertical: "center" }}
-              >
-                工作開始日:
-              </Text>
-              <Text
-                style={{ textAlignVertical: "center" }}
-                className=" px-2 text-2xl"
-                onPress={() => {
-                  if (editable) {
-                    showDatepicker();
-                  }
-                }}
-              >
-                {jobItem.Jobdate.split("T")[0]}
-              </Text>
-
-              {show && (
-                <DateTimePicker
-                  value={new Date(jobItem.Jobdate)}
-                  mode={mode}
-                  onChange={onChange}
-                />
-              )}
-            </View>
-
-                          <View className="flex my-1 flex-row mt-3">
-
-              <Text
-                                  className=" text-2xl dark:text-white"
-
-                style={{ textAlignVertical: "center" }}
-              >
-                工作結束日:
-              </Text>
-              <Text
-                style={{ textAlignVertical: "center" }}
-                className="flex-1 text-2xl px-2"
-                onPress={() => {
-                  if (editable) {
-                    showDatepickerC();
-                  }
-                }}
-              >
-                {typeof jobItem.CloseDate === "string"
-                  ? jobItem.CloseDate.split("T")[0]
-                  : (jobItem.CloseDate as NullDate).Valid
-                  ? (jobItem.CloseDate as NullDate).Time.split("T")[0]
-                  : ""}
-              </Text>
-              {showC && (
-                <DateTimePicker
-                  value={
-                    typeof jobItem.CloseDate === "string"
-                      ? new Date(jobItem.CloseDate as string)
-                      : new Date()
-                  }
-                  mode={mode}
-                  onChange={onChangeClose}
-                />
-              )}
-              {editable && (
-                <Pressable
-                  className=" bg-blue-200 px-2 rounded-lg py-1"
-                  onPress={() => setJobItem({ ...jobItem, CloseDate: "" })}
-                >
-                  <Text
-                    className=" text-lg"
-                    style={{ textAlign: "center", textAlignVertical: "center" }}
-                  >
-                    清除
-                  </Text>
-                </Pressable>
-              )}
-            </View> */}
               {editable && (
                 <View className=" flex justify-around flex-row w-full mt-8">
                   <Pressable

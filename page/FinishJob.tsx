@@ -13,21 +13,22 @@ import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import plus from "../asset/plus.png";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useStore } from "jotai";
 import { RUEmpty } from "../util/RUEmpty";
 import { ImgT } from "../types/ImgT";
 import UploadPic from "../components/UploadPic";
 import ChoosePicDrawer from "../components/ChoosePicDrawer";
 import { ScreenProp } from "../types/navigationT";
 import { useNavigation } from "@react-navigation/native";
-import { pendingJob } from "../App";
+import { fnAtom, pendingJob } from "../App";
 
 function FinishJob(): React.JSX.Element {
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const ww = Dimensions.get("window").width;
   const [finishImg, setFinishImg] = useState<ImgT>();
-  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
+  // const [getPendingJob, setPendingJob] = useAtom(pendingJob);
   const navigation = useNavigation<ScreenProp>();
+  const store = useStore();
 
   const finishJobf = async () => {
     try {
@@ -36,7 +37,7 @@ function FinishJob(): React.JSX.Element {
         // const bb = await (await fetch(finishImg!.uri)).blob();
         fd.append("file", finishImg!);
         const res = await callAPIForm(
-          `/api/claimed/finish/${getPendingJob!.Claimid}`,
+          `/api/claimed/finish/${store.get(fnAtom).getPJfn()!.Claimid}`,
           "POST",
           fd,
           true

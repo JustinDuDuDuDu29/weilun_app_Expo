@@ -68,8 +68,7 @@ function MaintainInfo({
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },
@@ -232,49 +231,51 @@ function MaintainInfo({
 
   return (
     <SafeAreaView>
-      <FlatList
-        data={mInfo?.Repairinfo}
-        renderItem={({ item }) => (
-          <View className="flex flex-row">
-            <Text
-              className="dark:text-white text-xl"
-              style={{
-                flex: 1 / 3,
-                flexBasis: 1 / 3,
-                textAlign: "center",
-                textAlignVertical: "center",
-              }}
-            >
-              {item.name}
-            </Text>
-            <Text
-              className="dark:text-white text-xl"
-              style={{
-                flex: 1 / 3,
-                flexBasis: 1 / 3,
-                textAlign: "center",
-                textAlignVertical: "center",
-              }}
-            >
-              {item.quantity}
-            </Text>
-            <Text
-              className="dark:text-white text-xl"
-              style={{
-                flex: 1 / 3,
-                flexBasis: 1 / 3,
-                textAlign: "center",
-                textAlignVertical: "center",
-              }}
-            >
-              {item.price}
-            </Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={renderFooter}
-      />
+      <View className="px-5 py-3">
+        <FlatList
+          data={mInfo?.Repairinfo}
+          renderItem={({ item }) => (
+            <View className="flex flex-row">
+              <Text
+                className="dark:text-white text-xl"
+                style={{
+                  flex: 1 / 3,
+                  flexBasis: 1 / 3,
+                  textAlign: "center",
+                  textAlignVertical: "center",
+                }}
+              >
+                {item.name}
+              </Text>
+              <Text
+                className="dark:text-white text-xl"
+                style={{
+                  flex: 1 / 3,
+                  flexBasis: 1 / 3,
+                  textAlign: "center",
+                  textAlignVertical: "center",
+                }}
+              >
+                {item.quantity}
+              </Text>
+              <Text
+                className="dark:text-white text-xl"
+                style={{
+                  flex: 1 / 3,
+                  flexBasis: 1 / 3,
+                  textAlign: "center",
+                  textAlignVertical: "center",
+                }}
+              >
+                {item.price}
+              </Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          ListHeaderComponent={renderHeader}
+          ListFooterComponent={renderFooter}
+        />
+      </View>
     </SafeAreaView>
   );
 }

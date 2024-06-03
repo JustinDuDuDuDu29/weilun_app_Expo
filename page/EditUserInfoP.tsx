@@ -72,8 +72,17 @@ function EditUserInfoP({
         user,
         true
       );
+      if (!res.ok) throw res;
 
-      Alert.alert("完成", "成功修改資料", [{ text: "OK" }]);
+      Alert.alert("完成", "成功修改資料", [
+        {
+          text: "OK",
+          onPress: () => {
+            console.log("POPO");
+            navigation.pop(2);
+          },
+        },
+      ]);
     } catch (err) {
       if (err instanceof Response) {
         switch (err.status) {
@@ -85,8 +94,7 @@ function EditUserInfoP({
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },

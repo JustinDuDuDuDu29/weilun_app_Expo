@@ -75,6 +75,7 @@ function UserInfoAdmin({
                       );
                       if (res.status == 200) {
                         Alert.alert("成功!", "已核可此用戶");
+                        navigation.goBack();
                       }
                     },
                   },

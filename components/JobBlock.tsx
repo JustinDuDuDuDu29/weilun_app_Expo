@@ -67,8 +67,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
                     AlertMe(err);
                     break;
                 }
-              }
-              if (err instanceof TypeError) {
+              } else if (err instanceof TypeError) {
                 if (err.message == "Network request failed") {
                   Alert.alert("糟糕！", "請檢察網路有沒有開", [
                     { text: "OK", onPress: () => {} },

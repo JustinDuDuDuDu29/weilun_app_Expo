@@ -52,7 +52,7 @@ export async function download(year:string, month:string){
 
 export async function callAPI(route: string, method: string, body:object, useAuth:boolean) {
     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
-    console.log((await getSecureValue("jwtToken")).toString())
+    // console.log((await getSecureValue("jwtToken")).toString())
     const r = process.env.EXPO_PUBLIC_HOST+route
     return await fetch(r, {
         headers:{

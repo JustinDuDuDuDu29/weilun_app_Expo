@@ -11,35 +11,45 @@ import {
 import UploadPic from "./UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ImgT, imgUrl } from "../types/ImgT";
-import { useAtom } from "jotai";
+import { useAtom, useStore } from "jotai";
 import { GIBEDEIMGB0SS, callAPIForm } from "../util/callAPIUtil";
-import { userInfo } from "../App";
+import { fnAtom, userInfo } from "../App";
 
 function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
+  const store = useStore();
+
   useEffect(() => {
     const getData = async () => {
       try {
-        if (getUserInfo?.Trucklicense?.Valid) {
+        if (store.get(fnAtom).getUserInfofn()?.Trucklicense?.Valid) {
           const src = await GIBEDEIMGB0SS(
-            `/api/static/img/${getUserInfo!.Trucklicense!.String}`
+            `/api/static/img/${
+              store.get(fnAtom).getUserInfofn()!.Trucklicense!.String
+            }`
           );
           setTruckLicense(src);
         }
-        if (getUserInfo?.Driverlicense?.Valid) {
+        if (store.get(fnAtom).getUserInfofn()?.Driverlicense?.Valid) {
           const src = await GIBEDEIMGB0SS(
-            `/api/static/img/${getUserInfo!.Driverlicense!.String}`
+            `/api/static/img/${
+              store.get(fnAtom).getUserInfofn()!.Driverlicense!.String
+            }`
           );
           setDriverLicense(src);
         }
-        if (getUserInfo?.Insurances?.Valid) {
+        if (store.get(fnAtom).getUserInfofn()?.Insurances?.Valid) {
           const src = await GIBEDEIMGB0SS(
-            `/api/static/img/${getUserInfo!.Insurances!.String}`
+            `/api/static/img/${
+              store.get(fnAtom).getUserInfofn()!.Insurances!.String
+            }`
           );
           setInsurances(src);
         }
-        if (getUserInfo?.Registration?.Valid) {
+        if (store.get(fnAtom).getUserInfofn()?.Registration?.Valid) {
           const src = await GIBEDEIMGB0SS(
-            `/api/static/img/${getUserInfo!.Registration!.String}`
+            `/api/static/img/${
+              store.get(fnAtom).getUserInfofn()!.Registration!.String
+            }`
           );
           setRegistration(src);
         }
@@ -53,7 +63,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
 
   const ww = Dimensions.get("window").width;
 
-  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  // const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const [canPress, setCanPress] = useState<boolean>(false);
   const actionSheetRef1 = useRef<ActionSheetRef>(null);
   const actionSheetRef2 = useRef<ActionSheetRef>(null);

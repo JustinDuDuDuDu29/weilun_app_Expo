@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { getSecureValue } from "../util/loginInfo";
-import { fnAtom, userInfo } from "../App";
-import { atom, useAtom, useStore } from "jotai";
+import { fnAtom, pendingJob, userInfo } from "../App";
+import { useStore } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
@@ -26,8 +26,9 @@ import { AlertMe } from "../util/AlertMe";
 
 function Home(): React.JSX.Element {
   const store = useStore();
+  const isFocus = useIsFocused();
 
-  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  // const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
   const [year, setYear] = useState<string>();
@@ -69,32 +70,35 @@ function Home(): React.JSX.Element {
       };
     };
     ff();
-  }, []);
-  const isFocused = useIsFocused();
+  }, [isFocus]);
 
   const setData = useCallback(async () => {
     setLoading(true);
     try {
-      if (!store.get(fnAtom).getUserInfofn()) {
-        const res = await callAPI("/api/user/me", "POST", {}, true);
-        if (!res.ok) {
+      // if (!store.get(fnAtom).getUserInfofn()) {
+      // if (!store.get(userInfo)) {
+      console.log("IN");
+      const res = await callAPI("/api/user/me", "POST", {}, true);
+      if (!res.ok) {
+        throw res;
+      }
+      const me: inUserT = await res.json();
+      store.get(fnAtom).setUserInfofn(me);
+
+      if (me.Role == 300) {
+        const res2 = await callAPI("/api/claimed/current", "POST", {}, true);
+        if (!res2.ok) {
           throw res;
         }
-        const me: inUserT = await res.json();
-        store.get(fnAtom).setUserInfofn(me);
-
-        if (me.Role == 300) {
-          const res2 = await callAPI("/api/claimed/current", "POST", {}, true);
-          if (!res2.ok) {
-            throw res;
-          }
-          const currentJob = await res2.json();
-          if (!RUEmpty(currentJob)) {
-            store.get(fnAtom).setPJfn(currentJob);
-          } else {
-            store.get(fnAtom).setPJfn(null);
-          }
+        const currentJob = await res2.json();
+        if (!RUEmpty(currentJob)) {
+          console.log("SS");
+          store.get(fnAtom).setPJfn(currentJob);
+          store.set(pendingJob, currentJob);
+        } else {
+          store.get(fnAtom).setPJfn(null);
         }
+        // }
       }
     } catch (error) {
       if (error instanceof Response) {
@@ -122,15 +126,15 @@ function Home(): React.JSX.Element {
 
   useEffect(() => {
     setData();
-  }, [loading]);
+  }, [isFocus]);
 
+  // if (!store.get(userInfo)) {
   if (loading) {
-    return <Text>{JSON.stringify(getUserInfo)}</Text>;
+    return <Text>{JSON.stringify(store.get(pendingJob))}</Text>;
   }
 
   return (
     <SafeAreaView className="h-full flex justify-center">
-      <Text>{JSON.stringify(getUserInfo)}</Text>
       <View className="px-5 flex flex-col justify-around h-4/5">
         <View className="flex flex-row justify-around items-center">
           <Text className="text-xl dark:text-white">
@@ -233,7 +237,8 @@ function Home(): React.JSX.Element {
             <Text className="text-3xl dark:text-white">公告欄</Text>
           </View>
         </Pressable>
-        <JobBlockPJ jobItem={store.get(fnAtom).getPJfn()} />
+        <JobBlockPJ setData={setData} />
+
         {store.get(fnAtom).getUserInfofn().Role === 100 ? (
           <>
             <Pressable
@@ -315,6 +320,7 @@ function Home(): React.JSX.Element {
               登出
             </Text>
           </Pressable>
+          {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text> */}
         </View>
       </View>
       {show && (

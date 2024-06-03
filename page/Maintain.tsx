@@ -42,11 +42,14 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   const [dd, setData] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<{ [key: string]: boolean }>({});
   const store = useStore();
+  // store.get(fnAtom).getUserInfofn()
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(
         `/api/repair/cj?id=${
-          getUserInfo?.Role === 100 ? uid : getUserInfo?.ID
+          store.get(fnAtom).getUserInfofn()?.Role === 100
+            ? uid
+            : store.get(fnAtom).getUserInfofn()?.ID
         }`,
         "GET",
         {},
@@ -73,8 +76,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },
@@ -98,7 +100,9 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
         try {
           const res = await callAPI(
             `/api/repair?uid=${
-              getUserInfo?.Role === 100 ? uid : getUserInfo?.ID
+              store.get(fnAtom).getUserInfofn()?.Role === 100
+                ? uid
+                : store.get(fnAtom).getUserInfofn()?.ID
             }&ym=${key}`,
             "GET",
             {},
@@ -120,8 +124,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                 AlertMe(err);
                 break;
             }
-          }
-          if (err instanceof TypeError) {
+          } else if (err instanceof TypeError) {
             if (err.message == "Network request failed") {
               Alert.alert("糟糕！", "請檢察網路有沒有開", [
                 { text: "OK", onPress: () => {} },
@@ -138,7 +141,6 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     setVisibility({ ...visibility, [key]: !visibility[key] });
   };
 
-  const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [picModalV, setPicModalV] = useState(false);
@@ -294,7 +296,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
               </View>
             )}
           />
-          {getUserInfo?.Role === 300 && (
+          {store.get(fnAtom).getUserInfofn()?.Role === 300 && (
             <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
           )}
         </View>

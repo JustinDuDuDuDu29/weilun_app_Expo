@@ -11,10 +11,11 @@ import UserCU from "../components/UserCU";
 import { callAPI } from "../util/callAPIUtil";
 import { inUserT } from "../types/userT";
 import { enableFreeze } from "react-native-screens";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { AlertMe } from "../util/AlertMe";
 import { fnAtom } from "../App";
 import { useStore } from "jotai";
+import { ScreenProp } from "../types/navigationT";
 
 function UserInfoBasic({
   // uid,
@@ -24,6 +25,7 @@ function UserInfoBasic({
   OInfo: inUserT;
 }): React.JSX.Element {
   const [editable, setEditable] = useState(false);
+  const navigation = useNavigation<ScreenProp>();
 
   const store = useStore();
   const approveUser = async () => {
@@ -38,6 +40,7 @@ function UserInfoBasic({
         throw res;
       }
       Alert.alert("成功!", "已核可此用戶");
+      navigation.goBack();
     } catch (err) {
       if (err instanceof Response) {
         switch (err.status) {
@@ -49,8 +52,7 @@ function UserInfoBasic({
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },
@@ -74,6 +76,7 @@ function UserInfoBasic({
         throw res;
       }
       Alert.alert("成功!", "已刪除此用戶");
+      navigation.goBack();
     } catch (err) {
       if (err instanceof Response) {
         switch (err.status) {
@@ -85,8 +88,7 @@ function UserInfoBasic({
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },

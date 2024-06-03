@@ -25,6 +25,8 @@ import { cmpInfo } from "../types/userT";
 import { useStore } from "jotai";
 import { fnAtom } from "../App";
 import { AlertMe } from "../util/AlertMe";
+import { useNavigation } from "@react-navigation/native";
+import { ScreenProp } from "../types/navigationT";
 
 function CreateJobP(): React.JSX.Element {
   const store = useStore();
@@ -105,6 +107,7 @@ function CreateJobP(): React.JSX.Element {
   //   const showDatepickerC = () => {
   //     showModeC("date");
   //   };
+  const navigation = useNavigation<ScreenProp>();
 
   const updateJob = async () => {
     try {
@@ -123,24 +126,25 @@ function CreateJobP(): React.JSX.Element {
         },
         true
       );
-      if (res.status == 200) {
-        Alert.alert("成功", "資料新增成功", [{ text: "OK" }]);
-        // await getData();
-        // hideModal();
-        setJobItem({
-          FromLoc: "",
-          Mid: "",
-          ToLoc: "",
-          Price: 0,
-          Remaining: 0,
-          Belongcmp: 0,
-          Source: "",
-          Jobdate: "",
-          Memo: "",
-        });
-        return;
+      if (!res.ok) {
+        throw res;
       }
-      throw new Error("QQ");
+      Alert.alert("成功", "資料新增成功", [{ text: "OK" }]);
+      // await getData();
+      // hideModal();
+      setJobItem({
+        FromLoc: "",
+        Mid: "",
+        ToLoc: "",
+        Price: 0,
+        Remaining: 0,
+        Belongcmp: 0,
+        Source: "",
+        Jobdate: "",
+        Memo: "",
+      });
+
+      navigation.goBack();
     } catch (err) {
       if (err instanceof Response) {
         switch (err.status) {
@@ -152,8 +156,7 @@ function CreateJobP(): React.JSX.Element {
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },

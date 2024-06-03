@@ -37,9 +37,9 @@ function TurnOver(): React.JSX.Element {
       setIsLoading(true);
       const res = await callAPI(
         `/api/revenue?${
-          getUserInfo?.Role === 300
-            ? "id=" + getUserInfo?.ID
-            : "cmp=" + getUserInfo?.Belongcmp
+          store.get(fnAtom).getUserInfofn()?.Role === 300
+            ? "id=" + store.get(fnAtom).getUserInfofn()?.ID
+            : "cmp=" + store.get(fnAtom).getUserInfofn()?.Belongcmp
         }`,
         "GET",
         {},
@@ -63,9 +63,9 @@ function TurnOver(): React.JSX.Element {
       setGData(aa);
       const ll = await callAPI(
         `/api/claimed/list?${
-          getUserInfo?.Role === 300
-            ? "id=" + getUserInfo?.ID
-            : "cmp=" + getUserInfo?.Belongcmp
+          store.get(fnAtom).getUserInfofn()?.Role === 300
+            ? "id=" + store.get(fnAtom).getUserInfofn()?.ID
+            : "cmp=" + store.get(fnAtom).getUserInfofn()?.Belongcmp
         }`,
         "GET",
         {},
@@ -86,8 +86,7 @@ function TurnOver(): React.JSX.Element {
             AlertMe(err);
             break;
         }
-      }
-      if (err instanceof TypeError) {
+      } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },
