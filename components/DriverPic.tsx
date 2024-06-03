@@ -12,14 +12,8 @@ import UploadPic from "./UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ImgT, imgUrl } from "../types/ImgT";
 import { useAtom } from "jotai";
-import { userInfo } from "../page/Home";
-import {
-  GIBEDEIMGB0SS,
-  GIBEDETYPEB0SS,
-  GIBEDEURLB0SS,
-  callAPI,
-  callAPIForm,
-} from "../util/callAPIUtil";
+import { GIBEDEIMGB0SS, callAPIForm } from "../util/callAPIUtil";
+import { userInfo } from "../App";
 
 function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
   useEffect(() => {

@@ -11,23 +11,25 @@ import {
   useColorScheme as usc,
 } from "react-native";
 import { Icon } from "react-native-paper";
-import { getSecureValue, logout } from "../util/loginInfo";
-import { isLoggedInAtom } from "../App";
-import { Provider, atom, createStore, useAtom } from "jotai";
+import { getSecureValue } from "../util/loginInfo";
+import { fnAtom, isLoggedInAtom, pendingJob, userInfo } from "../App";
+import { atom, useAtom, useStore } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
 import JobBlockPJ from "../components/JobBlockPJ";
 import { callAPI, download } from "../util/callAPIUtil";
-import { currentJob } from "../types/JobItemT";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
+import { AlertMe } from "../util/AlertMe";
 
-export const pendingJob = atom<currentJob | null>(null);
-export const userInfo = atom<inUserT | null>(null);
+// export const pendingJob = atom<currentJob | null>(null);
+// export const userInfo = atom<inUserT | null>(null);
 
 function Home(): React.JSX.Element {
+  const store = useStore();
+
   const [show, setShow] = useState(false);
   const [year, setYear] = useState<string>();
   const [month, setMonth] = useState<string>();
@@ -35,9 +37,10 @@ function Home(): React.JSX.Element {
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
-  const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
-  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
+  // const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  // const [getPendingJob, setPendingJob] = useAtom(pendingJob);
   const cS = usc();
+
   useEffect(() => {
     const ff = async () => {
       const ws = new WebSocket("wss://apiweilun.imdu29.com/api/io");
@@ -78,56 +81,48 @@ function Home(): React.JSX.Element {
       if (!getUserInfo) {
         const res = await callAPI("/api/user/me", "POST", {}, true);
         if (!res.ok) {
+          throw res;
         }
         const me: inUserT = await res.json();
         setUserInfo(me);
-        // if (res.status == 451) {
-        //   Alert.alert(
-        //     "糟糕！",
-        //     "您本次的登入資訊已無效\n可能是在其他地方登入了，或是個人資料已被修改\n如有需要，請洽管理人員！",
-        //     [
-        //       {
-        //         text: "OK",
-        //         onPress: async () => {
-        //           await logout();
-        //           setIsLoggedIn(false);
-        //           setPendingJob(null);
-        //           setUserInfo(null);
-        //         },
-        //       },
-        //     ]
-        //   );
-        // }
+
         if (me.Role == 300) {
-          const currentJob = await (
-            await callAPI("/api/claimed/current", "POST", {}, true)
-          ).json();
+          const res2 = await callAPI("/api/claimed/current", "POST", {}, true);
+          if (!res.ok) {
+            throw res;
+          }
+          const currentJob = await res2.json();
           if (!RUEmpty(currentJob)) {
-            setPendingJob(currentJob);
+            store.get(fnAtom).setPJfn(currentJob);
           } else {
-            setPendingJob(null);
+            store.get(fnAtom).setPJfn(null);
           }
         }
       }
     } catch (error) {
-      console.log("error: ", error);
-    }
-  }, []);
+      if (error instanceof Response) {
+        switch (error.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
 
-  const getCur = useCallback(async () => {
-    if (getUserInfo?.Role == 300) {
-      const currentJob = await (
-        await callAPI("/api/claimed/current", "POST", {}, true)
-      ).json();
-      if (!RUEmpty(currentJob)) {
-        setPendingJob(currentJob);
-      } else {
-        setPendingJob(null);
+          default:
+            AlertMe(error);
+            break;
+        }
+      }
+      if (error instanceof TypeError) {
+        if (error.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
       }
     }
   }, []);
 
   useEffect(() => {
+    // console.log("it is ", store.get(fnAtom).getPJfn());
     setData();
   }, [isFocused]);
 
@@ -206,25 +201,21 @@ function Home(): React.JSX.Element {
             </View>
           </Pressable>
         )}
-        {getUserInfo.Role === 100 ? (
-          <></>
-        ) : (
-          <Pressable
-            className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-            onPress={() => navigation.navigate("mainTainP")}
-          >
-            <View className="w-1/6">
-              <Icon
-                source="tools"
-                color={cS == "light" ? "black" : "white"}
-                size={0.12 * ww}
-              />
-            </View>
-            <View className="flex content-center justify-center">
-              <Text className="text-3xl dark:text-white">維修保養</Text>
-            </View>
-          </Pressable>
-        )}
+        <Pressable
+          className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+          onPress={() => navigation.navigate("mainTainP")}
+        >
+          <View className="w-1/6">
+            <Icon
+              source="tools"
+              color={cS == "light" ? "black" : "white"}
+              size={0.12 * ww}
+            />
+          </View>
+          <View className="flex content-center justify-center">
+            <Text className="text-3xl dark:text-white">維修保養</Text>
+          </View>
+        </Pressable>
         <Pressable
           className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
           onPress={() => navigation.navigate("alertP")}
@@ -240,7 +231,7 @@ function Home(): React.JSX.Element {
             <Text className="text-3xl dark:text-white">公告欄</Text>
           </View>
         </Pressable>
-        <JobBlockPJ jobItem={getPendingJob} />
+        <JobBlockPJ jobItem={store.get(fnAtom).getPJfn()} />
         {getUserInfo.Role === 100 ? (
           <>
             <Pressable
@@ -270,22 +261,7 @@ function Home(): React.JSX.Element {
                 />
               </View>
               <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">進行中的任務</Text>
-              </View>
-            </Pressable>
-            <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-              onPress={() => navigation.navigate("adminMainTainP")}
-            >
-              <View className="w-1/6">
-                <Icon
-                  source="tools"
-                  color={cS == "light" ? "black" : "white"}
-                  size={0.12 * ww}
-                />
-              </View>
-              <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">待核可維修保養</Text>
+                <Text className="text-3xl dark:text-white">已接取的任務</Text>
               </View>
             </Pressable>
             <Pressable
@@ -311,10 +287,8 @@ function Home(): React.JSX.Element {
           <Pressable
             className=" dark:bg-rose-500 bg-green-200 w-1/4 rounded-xl py-2"
             onPress={async () => {
-              await logout();
-              setIsLoggedIn(false);
-              setPendingJob(null);
-              setUserInfo(null);
+              console.log("BYE");
+              store.get(fnAtom).logoutfn();
             }}
           >
             <Text
@@ -324,24 +298,6 @@ function Home(): React.JSX.Element {
               登出
             </Text>
           </Pressable>
-          {/* <Pressable
-            className="bg-red-200 w-1/4 rounded-xl py-2"
-            onPress={() => {
-              // if (colorScheme.get() == "dark") {
-              //   setMode("light");
-              // }
-              // if (colorScheme.get() == "light") {
-              //   setMode("dark");
-              // }
-            }}
-          >
-            <Text
-              className="text-xl dark:text-white"
-              style={{ verticalAlign: "middle", textAlign: "center" }}
-            >
-              {colorScheme.get()}
-            </Text>
-          </Pressable> */}
         </View>
       </View>
       {show && (

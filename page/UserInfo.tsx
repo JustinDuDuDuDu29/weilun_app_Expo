@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Pressable, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { atom, useAtom } from "jotai";
-import { userInfo } from "./Home";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import DriverPic from "../components/DriverPic";
+import { userInfo } from "../App";
 
 function UserInfo(): React.JSX.Element {
   const [getUserInfo, setUserInfo] = useAtom(userInfo);

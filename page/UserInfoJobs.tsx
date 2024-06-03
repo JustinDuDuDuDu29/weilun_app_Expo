@@ -6,6 +6,7 @@ import {
   View,
   FlatList,
   ListRenderItemInfo,
+  Alert,
 } from "react-native";
 import { callAPI } from "../util/callAPIUtil";
 import { Icon } from "react-native-paper";
@@ -13,8 +14,13 @@ import { ClaimedJob } from "../types/JobItemT";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import CJBlock from "../components/CJBlock";
+import { useStore } from "jotai";
+import { fnAtom } from "../App";
+import { AlertMe } from "../util/AlertMe";
 
 function UserInfoJobs({ uid }: { uid: number }): React.JSX.Element {
+  const store = useStore();
+
   const [jobInfo, setJobInfo] = useState<{ [key: string]: ClaimedJob[] }>({});
   const [dd, setData] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<{ [key: string]: boolean }>({});
@@ -50,10 +56,21 @@ function UserInfoJobs({ uid }: { uid: number }): React.JSX.Element {
             {},
             true
           );
+          if (!res.ok) throw res;
           const data = await res.json();
           setJobInfo({ ...jobInfo, [key]: data });
         } catch (error) {
-          console.log("error: ", error);
+          if (error instanceof Response) {
+            switch (error.status) {
+              case 451:
+                store.get(fnAtom).codefn();
+                break;
+
+              default:
+                AlertMe(error);
+                break;
+            }
+          }
         }
       }
     }

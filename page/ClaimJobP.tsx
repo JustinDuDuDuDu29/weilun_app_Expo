@@ -11,10 +11,10 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { useAtom } from "jotai";
 import { CJInfo } from "../types/JobItemT";
 import { GIBEDEIMGB0SS, callAPI } from "../util/callAPIUtil";
-import { userInfo } from "./Home";
 import UploadPicFCJob from "../components/UploadPicFCJob";
 import { ScreenProp } from "../types/navigationT";
 import { imgUrl } from "../types/ImgT";
+import { userInfo } from "../App";
 
 function ClaimJobP({
   route,

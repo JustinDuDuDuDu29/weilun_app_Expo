@@ -11,26 +11,30 @@ import _data from "../asset/fakeData/_jobs.json";
 import { jobItemT } from "../types/JobItemT";
 import JobBlock from "../components/JobBlock";
 import { useAtom, useStore } from "jotai";
-import { pendingJob } from "./Home";
+// import { pendingJob } from "./Home";
 import { callAPI } from "../util/callAPIUtil";
 import { NullDate } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
-import { fnAtom } from "../App";
+import { fnAtom, pendingJob } from "../App";
 
 function Jobs(): React.JSX.Element {
+  const store = useStore();
+
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState();
-  const [getPendingJob, setPendingJob] = useAtom(pendingJob);
   const isFocused = useIsFocused();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allJobs = await (
-          await callAPI("/api/jobs/all", "POST", {}, true)
-        ).json();
+        const res = await callAPI("/api/jobs/all", "POST", {}, true);
+        if (!res.ok) throw res.status;
+        const allJobs = await res.json();
+
         setData(allJobs);
       } catch (error) {
-        console.log(error);
+        if (error instanceof Number) {
+          store.get(fnAtom).codefn(error);
+        }
       }
     };
 
@@ -45,21 +49,9 @@ function Jobs(): React.JSX.Element {
       }, 2000);
     });
   };
-  const store = useStore();
-
-  useEffect(() => {
-    console.log(store);
-  }, []);
 
   return (
     <SafeAreaView>
-      <Pressable
-        onPress={() => {
-          store.get(fnAtom).fn();
-        }}
-      >
-        <Text>fdsfds</Text>
-      </Pressable>
       <View className="px-4">
         <FlatList
           data={data}

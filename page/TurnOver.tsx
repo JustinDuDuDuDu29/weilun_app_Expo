@@ -13,9 +13,9 @@ import { revT } from "../types/revenueT";
 import { LineChart } from "react-native-gifted-charts";
 import CJBlock from "../components/CJBlock";
 import { useAtom } from "jotai";
-import { userInfo } from "./Home";
 import { ClaimedJob } from "../types/JobItemT";
 import { SplashScreen } from "../components/Aplash";
+import { userInfo } from "../App";
 
 function TurnOver(): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);

@@ -19,10 +19,10 @@ import GoodModal from "../components/GoodModal";
 import { StyleSheet } from "nativewind";
 import { cmpInfo } from "../types/userT";
 import { useAtom } from "jotai";
-import { userInfo } from "./Home";
 import { Dropdown } from "react-native-element-dropdown";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useColorScheme as usc } from "react-native";
+import { userInfo } from "../App";
 
 function AlertP(): React.JSX.Element {
   const cS = usc();

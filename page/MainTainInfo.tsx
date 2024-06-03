@@ -12,10 +12,10 @@ import { GIBEDEIMGB0SS, callAPI } from "../util/callAPIUtil";
 import UserCU from "../components/UserCU";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
 import { useAtom } from "jotai";
-import { userInfo } from "./Home";
 import { ScreenProp } from "../types/navigationT";
 import UploadPicFCJob from "../components/UploadPicFCJob";
 import { imgUrl } from "../types/ImgT";
+import { userInfo } from "../App";
 
 function MaintainInfo({
   route,

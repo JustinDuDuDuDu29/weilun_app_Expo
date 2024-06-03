@@ -9,11 +9,11 @@ import {
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { useAtom } from "jotai";
-import { pendingJob } from "../page/Home";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { currentJob } from "../types/JobItemT";
+import { pendingJob } from "../App";
 
 function JobBlockPJ({
   jobItem,

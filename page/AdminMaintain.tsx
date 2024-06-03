@@ -25,8 +25,8 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
 import { useAtom } from "jotai";
-import { userInfo } from "./Home";
 import { useIsFocused } from "@react-navigation/native";
+import { userInfo } from "../App";
 
 function Maintain(): React.JSX.Element {
   const focused = useIsFocused();

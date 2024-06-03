@@ -13,11 +13,14 @@ import {
 } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { login } from "../util/loginInfo";
-import { useAtom } from "jotai";
-import { isLoggedInAtom } from "../App";
+import { useAtom, useStore } from "jotai";
+import { fnAtom, isLoggedInAtom } from "../App";
 import { callAPI } from "../util/callAPIUtil";
+import { AlertMe } from "../util/AlertMe";
 
 function Login(): React.JSX.Element {
+  const store = useStore();
+
   const [secure, setSecure] = useState(true);
   const [phoneNum, setPhoneNum] = useState("");
   const [password, setPassword] = useState("");
@@ -35,26 +38,38 @@ function Login(): React.JSX.Element {
         false
       );
 
-      if (result.ok == false) throw new Error("http not ok");
+      if (result.ok == false) throw result.status;
 
       const res = await result.json();
 
       await login({ jwtToken: res.Token });
+      store.get(fnAtom).loginfn(true);
 
-      setIsLoggedIn(true);
+      // setIsLoggedIn(true);
     } catch (err) {
-      console.log(err);
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      }
       if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },
           ]);
-        } else {
-          console.log(err);
-          Alert.alert("糟糕！", "查無相關帳號資訊，請聯絡相關人員協助確認", [
-            { text: "OK", onPress: () => {} },
-          ]);
         }
+      }
+      if (err == 404) {
+        // console.log(err);
+        Alert.alert("糟糕！", "查無相關帳號資訊，請聯絡相關人員協助確認", [
+          { text: "OK", onPress: () => {} },
+        ]);
       }
     }
   };

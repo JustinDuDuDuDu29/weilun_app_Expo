@@ -25,13 +25,13 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
 import { useAtom } from "jotai";
-import { userInfo } from "./Home";
 import MaintainM from "../components/MaintainM";
 import UploadPic from "../components/UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ImgT, imgUrl } from "../types/ImgT";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
+import { userInfo } from "../App";
 
 function Maintain({ uid }: { uid: number }): React.JSX.Element {
   const cS = usc();
