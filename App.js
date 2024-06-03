@@ -54,6 +54,7 @@ export const fnAtom = atom({
 export const pendingJob = atom();
 export const userInfo = atom();
 
+
 const Stack = createNativeStackNavigator();
 colorScheme.set("system");
 
@@ -133,7 +134,7 @@ function App() {
   }
   return (
     <SafeAreaProvider>
-      {/* <Text>loginState:{JSON.stringify(loginState)}</Text> */}
+      <Text>loginState:{JSON.stringify(getUserInfo)}</Text>
       <Provider store={myStore}>
         <StatusBar
           backgroundColor={cS == "light" ? "#fff" : "#000"}

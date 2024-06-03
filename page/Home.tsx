@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { getSecureValue } from "../util/loginInfo";
-import { fnAtom } from "../App";
+import { fnAtom, userInfo } from "../App";
 import { atom, useAtom, useStore } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
@@ -27,13 +27,14 @@ import { AlertMe } from "../util/AlertMe";
 function Home(): React.JSX.Element {
   const store = useStore();
 
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
   const [year, setYear] = useState<string>();
   const [month, setMonth] = useState<string>();
   const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
-  // const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
-  // const [getPendingJob, setPendingJob] = useAtom(pendingJob);
+
   const cS = usc();
 
   useEffect(() => {
@@ -72,17 +73,15 @@ function Home(): React.JSX.Element {
   const isFocused = useIsFocused();
 
   const setData = useCallback(async () => {
+    setLoading(true);
     try {
       if (!store.get(fnAtom).getUserInfofn()) {
-        console.log("ININI");
         const res = await callAPI("/api/user/me", "POST", {}, true);
         if (!res.ok) {
           throw res;
         }
         const me: inUserT = await res.json();
-        console.log("ME", me);
         store.get(fnAtom).setUserInfofn(me);
-        console.log("aa", store.get(fnAtom).getUserInfofn());
 
         if (me.Role == 300) {
           const res2 = await callAPI("/api/claimed/current", "POST", {}, true);
@@ -116,21 +115,22 @@ function Home(): React.JSX.Element {
           ]);
         }
       }
+    } finally {
+      setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    // console.log("it is ", store.get(fnAtom).getPJfn());
-    console.log("FF", store.get(fnAtom).getUserInfofn());
     setData();
-  });
+  }, [loading]);
 
-  if (!store.get(fnAtom).getUserInfofn()) {
-    return <></>;
+  if (loading) {
+    return <Text>{JSON.stringify(getUserInfo)}</Text>;
   }
 
   return (
     <SafeAreaView className="h-full flex justify-center">
+      <Text>{JSON.stringify(getUserInfo)}</Text>
       <View className="px-5 flex flex-col justify-around h-4/5">
         <View className="flex flex-row justify-around items-center">
           <Text className="text-xl dark:text-white">
