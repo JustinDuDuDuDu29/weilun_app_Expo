@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { getSecureValue } from "../util/loginInfo";
-import { fnAtom, isLoggedInAtom, pendingJob, userInfo } from "../App";
+import { fnAtom } from "../App";
 import { atom, useAtom, useStore } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
@@ -24,17 +24,12 @@ import { inUserT } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
 import { AlertMe } from "../util/AlertMe";
 
-// export const pendingJob = atom<currentJob | null>(null);
-// export const userInfo = atom<inUserT | null>(null);
-
 function Home(): React.JSX.Element {
   const store = useStore();
 
   const [show, setShow] = useState(false);
   const [year, setYear] = useState<string>();
   const [month, setMonth] = useState<string>();
-
-  const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
   // const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
@@ -78,17 +73,20 @@ function Home(): React.JSX.Element {
 
   const setData = useCallback(async () => {
     try {
-      if (!getUserInfo) {
+      if (!store.get(fnAtom).getUserInfofn()) {
+        console.log("ININI");
         const res = await callAPI("/api/user/me", "POST", {}, true);
         if (!res.ok) {
           throw res;
         }
         const me: inUserT = await res.json();
-        setUserInfo(me);
+        console.log("ME", me);
+        store.get(fnAtom).setUserInfofn(me);
+        console.log("aa", store.get(fnAtom).getUserInfofn());
 
         if (me.Role == 300) {
           const res2 = await callAPI("/api/claimed/current", "POST", {}, true);
-          if (!res.ok) {
+          if (!res2.ok) {
             throw res;
           }
           const currentJob = await res2.json();
@@ -123,10 +121,11 @@ function Home(): React.JSX.Element {
 
   useEffect(() => {
     // console.log("it is ", store.get(fnAtom).getPJfn());
+    console.log("FF", store.get(fnAtom).getUserInfofn());
     setData();
-  }, [isFocused]);
+  });
 
-  if (getUserInfo == null) {
+  if (!store.get(fnAtom).getUserInfofn()) {
     return <></>;
   }
 
@@ -135,7 +134,7 @@ function Home(): React.JSX.Element {
       <View className="px-5 flex flex-col justify-around h-4/5">
         <View className="flex flex-row justify-around items-center">
           <Text className="text-xl dark:text-white">
-            歡迎！{getUserInfo!.Username}
+            歡迎！{store.get(fnAtom).getUserInfofn().Username}
           </Text>
           <Pressable
             onPress={() => {
@@ -152,7 +151,7 @@ function Home(): React.JSX.Element {
         <Pressable
           className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center "
           onPress={() => {
-            getUserInfo.Role === 100
+            store.get(fnAtom).getUserInfofn().Role === 100
               ? navigation.navigate("jobsAdminP")
               : navigation.navigate("jobsP");
           }}
@@ -184,38 +183,41 @@ function Home(): React.JSX.Element {
             <Text className="text-3xl dark:text-white">營業額查詢</Text>
           </View>
         </Pressable>
-        {getUserInfo.Role != 100 && (
-          <Pressable
-            className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-            onPress={() => navigation.navigate("customerSP")}
-          >
-            <View className="w-1/6">
-              <Icon
-                source="phone-classic"
-                color={cS == "light" ? "black" : "white"}
-                size={0.12 * ww}
-              />
-            </View>
-            <View className="flex content-center justify-center">
-              <Text className="text-3xl dark:text-white">24H客服</Text>
-            </View>
-          </Pressable>
+        {store.get(fnAtom).getUserInfofn().Role != 100 && (
+          <>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              onPress={() => navigation.navigate("customerSP")}
+            >
+              <View className="w-1/6">
+                <Icon
+                  source="phone-classic"
+                  color={cS == "light" ? "black" : "white"}
+                  size={0.12 * ww}
+                />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl dark:text-white">24H客服</Text>
+              </View>
+            </Pressable>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              onPress={() => navigation.navigate("mainTainP")}
+            >
+              <View className="w-1/6">
+                <Icon
+                  source="tools"
+                  color={cS == "light" ? "black" : "white"}
+                  size={0.12 * ww}
+                />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl dark:text-white">維修保養</Text>
+              </View>
+            </Pressable>
+          </>
         )}
-        <Pressable
-          className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-          onPress={() => navigation.navigate("mainTainP")}
-        >
-          <View className="w-1/6">
-            <Icon
-              source="tools"
-              color={cS == "light" ? "black" : "white"}
-              size={0.12 * ww}
-            />
-          </View>
-          <View className="flex content-center justify-center">
-            <Text className="text-3xl dark:text-white">維修保養</Text>
-          </View>
-        </Pressable>
+
         <Pressable
           className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
           onPress={() => navigation.navigate("alertP")}
@@ -232,7 +234,7 @@ function Home(): React.JSX.Element {
           </View>
         </Pressable>
         <JobBlockPJ jobItem={store.get(fnAtom).getPJfn()} />
-        {getUserInfo.Role === 100 ? (
+        {store.get(fnAtom).getUserInfofn().Role === 100 ? (
           <>
             <Pressable
               className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
@@ -266,6 +268,21 @@ function Home(): React.JSX.Element {
             </Pressable>
             <Pressable
               className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              onPress={() => navigation.navigate("adminMainTainP")}
+            >
+              <View className="w-1/6">
+                <Icon
+                  color={cS == "light" ? "black" : "white"}
+                  source="tools"
+                  size={0.12 * ww}
+                />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl dark:text-white">待核可維修</Text>
+              </View>
+            </Pressable>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
               onPress={() => setShow(true)}
             >
               <View className="w-1/6">
@@ -288,7 +305,7 @@ function Home(): React.JSX.Element {
             className=" dark:bg-rose-500 bg-green-200 w-1/4 rounded-xl py-2"
             onPress={async () => {
               console.log("BYE");
-              store.get(fnAtom).logoutfn();
+              await store.get(fnAtom).logoutfn();
             }}
           >
             <Text

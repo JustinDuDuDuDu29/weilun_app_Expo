@@ -84,6 +84,7 @@ function Login(): React.JSX.Element {
       >
         <View style={styles.form}>
           <TextInput
+            keyboardType="number-pad"
             style={styles.input}
             label="電話號碼"
             mode="outlined"

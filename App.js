@@ -44,10 +44,12 @@ export const isLoggedInAtom = atom(false);
 export const isLoading = atom(false);
 export const fnAtom = atom({
   codefn: () => {},
-  logoutfn:()=>{},
+  logoutfn: async () => {},
   loginfn: (boo) => {},
-  setPJfn: (pf) => {},
+  setPJfn: (pj) => {},
   getPJfn: () => {},
+  getUserInfofn: () => {},
+  setUserInfofn: (uF) => {},
 });
 export const pendingJob = atom();
 export const userInfo = atom();
@@ -61,38 +63,48 @@ function App() {
   myStore.set(fnAtom, {
     codefn: (code) => {
       // if (code == 451) {
-        Alert.alert(
-          "糟糕！",
-          "您本次的登入資訊已無效\n可能是在其他地方登入了，或是個人資料已被修改\n如有需要，請洽管理人員！",
-          [
-            {
-              text: "OK",
-              onPress: async () => {
-                await logout();
-                setIsLoggedIn(false);
-                setPendingJob(null);
-                setUserInfo(null);
-              },
+      Alert.alert(
+        "糟糕！",
+        "您本次的登入資訊已無效\n可能是在其他地方登入了，或是個人資料已被修改\n如有需要，請洽管理人員！",
+        [
+          {
+            text: "OK",
+            onPress: async () => {
+              await logout();
+              setIsLoggedIn(false);
+              setPendingJob(null);
+              setUserInfo(null);
             },
-          ]
-        );
+          },
+        ]
+      );
       // }
     },
-    logoutfn:async()=>{
+    logoutfn: async () => {
       await logout();
       setIsLoggedIn(false);
       setPendingJob(null);
       setUserInfo(null);
+      console.log(getUserInfo);
+      console.log(881);
     },
     loginfn: (boo) => {
       console.log("setting ", boo);
+      console.log(getUserInfo);
+
       setIsLoggedIn(boo);
     },
     setPJfn: (pj) => {
-      setPendingJob(pf);
+      setPendingJob(pj);
     },
     getPJfn: () => {
       return getPendingJob;
+    },
+    getUserInfofn: () => {
+      return getUserInfo;
+    },
+    setUserInfofn: (uF) => {
+      setUserInfo(uF);
     },
   });
 
@@ -100,7 +112,6 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [getPendingJob, setPendingJob] = useAtom(pendingJob);
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
-
 
   const cS = usc();
 
