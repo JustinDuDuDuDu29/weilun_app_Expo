@@ -1,9 +1,9 @@
 // import {process.env.EXPO_PUBLIC_HOST} from '@env';
 import { getSecureValue } from './loginInfo';
-import { Platform } from 'react-native';
-import * as MediaLibrary from 'expo-media-library';
+// import { Platform } from 'react-native';
+// import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import * as Permissions from 'expo-permissions';
+// import * as Permissions from 'expo-permissions';
 const { StorageAccessFramework } = FileSystem;
 export async function download(year:string, month:string){
     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()

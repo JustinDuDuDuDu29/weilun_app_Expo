@@ -43,9 +43,12 @@ function Home(): React.JSX.Element {
   useEffect(() => {
     const ff = async () => {
       const ws = new WebSocket("wss://apiweilun.imdu29.com/api/io");
+      // console.log("ff...");
+
+      // const ws = new WebSocket("ws://10.0.2.2:8080/api/io");
 
       ws.onopen = async () => {
-        console.log("SS");
+        // console.log("SS");
         // connection opened
 
         setInterval(() => {
@@ -63,6 +66,7 @@ function Home(): React.JSX.Element {
       ws.onerror = (e) => {
         // an error occurred
         console.log("err!", e);
+        console.log("err!", ws.url);
       };
 
       ws.onclose = (e) => {
