@@ -9,6 +9,7 @@ import {
   Alert,
   Text,
   useColorScheme as usc,
+  ActivityIndicator,
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { getSecureValue } from "../util/loginInfo";
@@ -23,6 +24,7 @@ import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
 import { useIsFocused } from "@react-navigation/native";
 import { AlertMe } from "../util/AlertMe";
+import { SplashScreen } from "../components/Aplash";
 
 function Home(): React.JSX.Element {
   const store = useStore();
@@ -43,6 +45,7 @@ function Home(): React.JSX.Element {
       const ws = new WebSocket("wss://apiweilun.imdu29.com/api/io");
 
       ws.onopen = async () => {
+        console.log("SS");
         // connection opened
 
         setInterval(() => {
@@ -128,9 +131,10 @@ function Home(): React.JSX.Element {
     setData();
   }, [isFocus]);
 
-  // if (!store.get(userInfo)) {
-  if (loading) {
-    return <Text>{JSON.stringify(store.get(pendingJob))}</Text>;
+  if (!store.get(userInfo)) {
+    // if (loading) {
+    // return <Text>{JSON.stringify(store.get(pendingJob))}</Text>;
+    return <ActivityIndicator size="small" color="#0000ff" />;
   }
 
   return (
