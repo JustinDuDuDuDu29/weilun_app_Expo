@@ -44,7 +44,8 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "77a11647-892e-4eeb-a72d-da9c246d9a86"
+        "projectId": "77a11647-892e-4eeb-a72d-da9c246d9a86",
+        "owner": "justindu"
       }
     }
   }
