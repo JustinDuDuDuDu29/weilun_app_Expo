@@ -349,52 +349,59 @@ function Home(): React.JSX.Element {
             </View>
           </View>
           {show && (
-            <Dialog.Container visible={show}>
-              <Dialog.Description
-                style={{
-                  color: cS == "light" ? "black" : "#ffffff",
-                  fontSize: 25,
-                }}
-              >
-                請輸入年月
-              </Dialog.Description>
-              <Dialog.Input
-                style={{ color: cS == "light" ? "black" : "#ffffff" }}
-                placeholder="西元年"
-                onChangeText={(e: string) => {
-                  setYear(e);
-                }}
-                keyboardType="numeric"
-              ></Dialog.Input>
-              <Dialog.Input
-                placeholder="月份"
-                style={{ color: cS == "light" ? "black" : "#ffffff" }}
-                onChangeText={(e: string) => {
-                  setMonth(e);
-                }}
-                keyboardType="numeric"
-              ></Dialog.Input>
-              <Dialog.Button
-                label="送出"
-                onPress={async () => {
-                  // const res = await callAPI(
-                  //   `/api/revenue/excel?year=${year}&month=${month}`,
-                  //   "GET",
-                  //   {},
-                  //   true
-                  // );
+            <Dialog.Container
+              contentStyle={{
+                backgroundColor: cS == "light" ? "#ffffff" : "#3A3B3C",
+              }}
+              visible={show}
+            >
+              <View style={{}}>
+                <Dialog.Description
+                  style={{
+                    color: cS == "light" ? "black" : "#ffffff",
+                    fontSize: 25,
+                  }}
+                >
+                  請輸入年月
+                </Dialog.Description>
+                <Dialog.Input
+                  style={{ color: cS == "light" ? "black" : "#ffffff" }}
+                  placeholder="西元年"
+                  onChangeText={(e: string) => {
+                    setYear(e);
+                  }}
+                  keyboardType="numeric"
+                ></Dialog.Input>
+                <Dialog.Input
+                  placeholder="月份"
+                  style={{ color: cS == "light" ? "black" : "#ffffff" }}
+                  onChangeText={(e: string) => {
+                    setMonth(e);
+                  }}
+                  keyboardType="numeric"
+                ></Dialog.Input>
+                <Dialog.Button
+                  label="送出"
+                  onPress={async () => {
+                    // const res = await callAPI(
+                    //   `/api/revenue/excel?year=${year}&month=${month}`,
+                    //   "GET",
+                    //   {},
+                    //   true
+                    // );
 
-                  const res = await download(year!, month!);
-                  // download(year!, month!);
-                  setShow(false);
-                }}
-              />
-              <Dialog.Button
-                label="關閉"
-                onPress={async () => {
-                  setShow(false);
-                }}
-              />
+                    const res = await download(year!, month!);
+                    // download(year!, month!);
+                    setShow(false);
+                  }}
+                />
+                <Dialog.Button
+                  label="關閉"
+                  onPress={async () => {
+                    setShow(false);
+                  }}
+                />
+              </View>
             </Dialog.Container>
           )}
         </SafeAreaView>
