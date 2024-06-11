@@ -135,13 +135,13 @@ function Home(): React.JSX.Element {
     setData();
   }, [isFocus]);
 
-  if (!store.get(userInfo) || loading) {
+  // if (!store.get(userInfo) || loading) {
     // if (loading) {
-    return <Text>{JSON.stringify(store.get(pendingJob))}</Text>;
-   // return <ActivityIndicator size="small" color="#0000ff" />;
-  }
+    return(<> { (!store.get(userInfo))?
+    <Text>{JSON.stringify(store.get(pendingJob))}</Text>
+   // return <ActivityIndicator size="small" color="#0000ff
+:
 
-  return (
     <SafeAreaView className="h-full flex justify-center">
       <View className="px-5 flex flex-col justify-around h-4/5">
         <View className="flex flex-row justify-around items-center">
@@ -376,7 +376,7 @@ function Home(): React.JSX.Element {
         </Dialog.Container>
       )}
     </SafeAreaView>
-  );
+    }</>)
 }
 
 export default Home;
