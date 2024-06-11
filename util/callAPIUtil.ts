@@ -1,4 +1,5 @@
 // import {process.env.EXPO_PUBLIC_HOST} from '@env';
+import { Alert, Share } from 'react-native';
 import { getSecureValue } from './loginInfo';
 // import { Platform } from 'react-native';
 // import * as MediaLibrary from 'expo-media-library';
@@ -9,14 +10,24 @@ export async function download(year:string, month:string){
     const bearer = "Bearer "+ (await getSecureValue("jwtToken")).toString()
 
     const uri = process.env.EXPO_PUBLIC_HOST+`/api/revenue/excel?year=${year}&month=${month}`
-    let fileUri = FileSystem.documentDirectory + "small.xlsx";
+    let fileUri = FileSystem.documentDirectory + `${year}_${month}.xlsx`;
     FileSystem.downloadAsync(uri, fileUri, {
                 headers:{
                     'Authorization': bearer,
                 }
             })
     .then(async({ uri }) => {
-        await saveAndroidFile(uri);
+        // await saveAndroidFile(uri);
+        try {
+          console.log(uri)
+          const result = await Share.share({
+            url:uri,
+            message:
+              'React Native | A framework for building native apps using React',
+          });
+        } catch (error: any) {
+          Alert.alert(error.message);
+        }
       })
       .catch(error => {
         console.error(error);

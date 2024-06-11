@@ -66,12 +66,7 @@ function UserInfoBasic({
 
   const deleteUser = async () => {
     try {
-      const res = await callAPI(
-        "/api/user/",
-        "DELETE",
-        { id: OInfo?.ID },
-        true
-      );
+      const res = await callAPI("/api/user", "DELETE", { id: OInfo?.ID }, true);
       if (!res.ok) {
         throw res;
       }

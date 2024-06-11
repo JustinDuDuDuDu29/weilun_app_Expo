@@ -115,7 +115,7 @@ function AlertP(): React.JSX.Element {
         paddingRight: insets.right,
       }}
     >
-      <View className=" relative ">
+      <View className=" relative  mx-3">
         <FlatList
           className="h-full"
           data={alertList}

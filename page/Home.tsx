@@ -119,6 +119,9 @@ function Home(): React.JSX.Element {
           case 451:
             store.get(fnAtom).codefn();
             break;
+          case 401:
+            store.get(fnAtom).codefn();
+            break;
 
           default:
             AlertMe(error);
@@ -347,11 +350,16 @@ function Home(): React.JSX.Element {
           </View>
           {show && (
             <Dialog.Container visible={show}>
-              <Dialog.Description style={{ color: "black", fontSize: 25 }}>
+              <Dialog.Description
+                style={{
+                  color: cS == "light" ? "black" : "#ffffff",
+                  fontSize: 25,
+                }}
+              >
                 請輸入年月
               </Dialog.Description>
               <Dialog.Input
-                style={{ color: "black" }}
+                style={{ color: cS == "light" ? "black" : "#ffffff" }}
                 placeholder="西元年"
                 onChangeText={(e: string) => {
                   setYear(e);
@@ -360,7 +368,7 @@ function Home(): React.JSX.Element {
               ></Dialog.Input>
               <Dialog.Input
                 placeholder="月份"
-                style={{ color: "black" }}
+                style={{ color: cS == "light" ? "black" : "#ffffff" }}
                 onChangeText={(e: string) => {
                   setMonth(e);
                 }}
