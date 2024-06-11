@@ -5,14 +5,7 @@
         "buildType": "apk",
         "image":"latest"
       }
-    },
-    "production": {
-      "android": {
-        "image": "latest"
-      },
-      "ios": {
-        "image": "latest"
-      }
     }
+
   }
 }
