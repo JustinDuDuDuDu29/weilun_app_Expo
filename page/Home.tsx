@@ -137,8 +137,8 @@ function Home(): React.JSX.Element {
 
   if (!store.get(userInfo)) {
     // if (loading) {
-    // return <Text>{JSON.stringify(store.get(pendingJob))}</Text>;
-    return <ActivityIndicator size="small" color="#0000ff" />;
+    return <Text>{JSON.stringify(store.get(pendingJob))}</Text>;
+   // return <ActivityIndicator size="small" color="#0000ff" />;
   }
 
   return (
