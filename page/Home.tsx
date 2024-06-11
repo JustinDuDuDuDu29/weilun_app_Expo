@@ -378,5 +378,6 @@ function Home(): React.JSX.Element {
     </SafeAreaView>
     }</>)
 }
+//
 
 export default Home;
