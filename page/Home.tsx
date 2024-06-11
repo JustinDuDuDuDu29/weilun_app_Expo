@@ -101,7 +101,7 @@ function Home(): React.JSX.Element {
         if (!RUEmpty(currentJob)) {
           console.log("SS");
           store.get(fnAtom).setPJfn(currentJob);
-          store.set(pendingJob, currentJob);
+          // store.set(pendingJob, currentJob);
         } else {
           store.get(fnAtom).setPJfn(null);
         }
