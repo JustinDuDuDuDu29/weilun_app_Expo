@@ -10,6 +10,7 @@ import {
   Text,
   useColorScheme as usc,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { getSecureValue } from "../util/loginInfo";
@@ -42,7 +43,11 @@ function Home(): React.JSX.Element {
 
   useEffect(() => {
     const ff = async () => {
-      const ws = new WebSocket("wss://apiweilun.imdu29.com/api/io");
+      const ws = new WebSocket(
+        Platform.OS === "ios"
+          ? "wss://apiweilun.imdu29.com/api/io/"
+          : "wss://apiweilun.imdu29.com/api/io"
+      );
       // console.log("ff...");
 
       // const ws = new WebSocket("ws://10.0.2.2:8080/api/io");
@@ -90,6 +95,7 @@ function Home(): React.JSX.Element {
         throw res;
       }
       const me: inUserT = await res.json();
+      console.log("me:", me);
       store.get(fnAtom).setUserInfofn(me);
 
       if (me.Role == 300) {
@@ -127,6 +133,7 @@ function Home(): React.JSX.Element {
         }
       }
     } finally {
+      console.log("OUT");
       setLoading(false);
     }
   }, []);
@@ -136,247 +143,256 @@ function Home(): React.JSX.Element {
   }, [isFocus]);
 
   // if (!store.get(userInfo) || loading) {
-    // if (loading) {
-    return(<> { (!store.get(userInfo))?
-    <Text>{JSON.stringify(store.get(pendingJob))}</Text>
-   // return <ActivityIndicator size="small" color="#0000ff
-:
+  // if (loading) {
+  return (
+    <>
+      {loading || store.get(fnAtom).getUserInfofn() == null ? (
+        <>
+          {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text>
+          <Text>{JSON.stringify(store.get(userInfo))}</Text> */}
+          <ActivityIndicator size="small" color="#0000ff" />
+        </>
+      ) : (
+        // return <ActivityIndicator size="small" color="#0000ff"/>
+        <SafeAreaView className="h-full flex justify-center">
+          <View className="px-5 flex flex-col justify-around h-4/5">
+            <View className="flex flex-row justify-around items-center">
+              <Text className="text-xl dark:text-white">
+                歡迎！{store.get(fnAtom).getUserInfofn().Username}
+              </Text>
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("userInfoP");
+                }}
+              >
+                <Icon
+                  color={cS == "light" ? "black" : "white"}
+                  source={user}
+                  size={ww * 0.15}
+                />
+              </Pressable>
+            </View>
+            <Pressable
+              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center "
+              onPress={() => {
+                store.get(fnAtom).getUserInfofn().Role === 100
+                  ? navigation.navigate("jobsAdminP")
+                  : navigation.navigate("jobsP");
+              }}
+            >
+              <View className="w-1/6">
+                <Icon
+                  source="truck-fast"
+                  color={cS == "light" ? "black" : "white"}
+                  size={0.12 * ww}
+                />
+              </View>
 
-    <SafeAreaView className="h-full flex justify-center">
-      <View className="px-5 flex flex-col justify-around h-4/5">
-        <View className="flex flex-row justify-around items-center">
-          <Text className="text-xl dark:text-white">
-            歡迎！{store.get(fnAtom).getUserInfofn().Username}
-          </Text>
-          <Pressable
-            onPress={() => {
-              navigation.navigate("userInfoP");
-            }}
-          >
-            <Icon
-              color={cS == "light" ? "black" : "white"}
-              source={user}
-              size={ww * 0.15}
-            />
-          </Pressable>
-        </View>
-        <Pressable
-          className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center "
-          onPress={() => {
-            store.get(fnAtom).getUserInfofn().Role === 100
-              ? navigation.navigate("jobsAdminP")
-              : navigation.navigate("jobsP");
-          }}
-        >
-          <View className="w-1/6">
-            <Icon
-              source="truck-fast"
-              color={cS == "light" ? "black" : "white"}
-              size={0.12 * ww}
-            />
-          </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl dark:text-white">工作去</Text>
+              </View>
+            </Pressable>
+            <Pressable
+              className="flex flex-row content-center  bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              onPress={() => navigation.navigate("turnOverP")}
+            >
+              <View className="w-1/6">
+                <Icon
+                  source="chart-timeline-variant"
+                  color={cS == "light" ? "black" : "white"}
+                  size={0.12 * ww}
+                />
+              </View>
+              <View className="flex content-center justify-center">
+                <Text className="text-3xl dark:text-white">營業額查詢</Text>
+              </View>
+            </Pressable>
+            {store.get(fnAtom).getUserInfofn().Role != 100 && (
+              <>
+                <Pressable
+                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => navigation.navigate("customerSP")}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      source="phone-classic"
+                      color={cS == "light" ? "black" : "white"}
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">24H客服</Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => navigation.navigate("mainTainP")}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      source="tools"
+                      color={cS == "light" ? "black" : "white"}
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">維修保養</Text>
+                  </View>
+                </Pressable>
+              </>
+            )}
 
-          <View className="flex content-center justify-center">
-            <Text className="text-3xl dark:text-white">工作去</Text>
-          </View>
-        </Pressable>
-        <Pressable
-          className="flex flex-row content-center  bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-          onPress={() => navigation.navigate("turnOverP")}
-        >
-          <View className="w-1/6">
-            <Icon
-              source="chart-timeline-variant"
-              color={cS == "light" ? "black" : "white"}
-              size={0.12 * ww}
-            />
-          </View>
-          <View className="flex content-center justify-center">
-            <Text className="text-3xl dark:text-white">營業額查詢</Text>
-          </View>
-        </Pressable>
-        {store.get(fnAtom).getUserInfofn().Role != 100 && (
-          <>
             <Pressable
               className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-              onPress={() => navigation.navigate("customerSP")}
+              onPress={() => navigation.navigate("alertP")}
             >
               <View className="w-1/6">
                 <Icon
-                  source="phone-classic"
+                  source="exclamation"
                   color={cS == "light" ? "black" : "white"}
                   size={0.12 * ww}
                 />
               </View>
               <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">24H客服</Text>
+                <Text className="text-3xl dark:text-white">公告欄</Text>
               </View>
             </Pressable>
-            <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-              onPress={() => navigation.navigate("mainTainP")}
-            >
-              <View className="w-1/6">
-                <Icon
-                  source="tools"
-                  color={cS == "light" ? "black" : "white"}
-                  size={0.12 * ww}
-                />
-              </View>
-              <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">維修保養</Text>
-              </View>
-            </Pressable>
-          </>
-        )}
+            <JobBlockPJ setData={setData} />
 
-        <Pressable
-          className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-          onPress={() => navigation.navigate("alertP")}
-        >
-          <View className="w-1/6">
-            <Icon
-              source="exclamation"
-              color={cS == "light" ? "black" : "white"}
-              size={0.12 * ww}
-            />
+            {store.get(fnAtom).getUserInfofn().Role === 100 ? (
+              <>
+                <Pressable
+                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => navigation.navigate("userManageP")}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      source="head-outline"
+                      color={cS == "light" ? "black" : "white"}
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">用戶管理</Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => navigation.navigate("adminClaimedJobP")}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      color={cS == "light" ? "black" : "white"}
+                      source="vector-polygon"
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">
+                      已接取的任務
+                    </Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => navigation.navigate("adminMainTainP")}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      color={cS == "light" ? "black" : "white"}
+                      source="tools"
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">待核可維修</Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => setShow(true)}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      color={cS == "light" ? "black" : "white"}
+                      source="file-download-outline"
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">下載報告</Text>
+                  </View>
+                </Pressable>
+              </>
+            ) : (
+              <></>
+            )}
+            <View className="flex flex-row justify-between">
+              <Pressable
+                className=" dark:bg-rose-500 bg-green-200 w-1/4 rounded-xl py-2"
+                onPress={async () => {
+                  console.log("BYE");
+                  await store.get(fnAtom).logoutfn();
+                }}
+              >
+                <Text
+                  className="text-xl dark:text-white"
+                  style={{ verticalAlign: "middle", textAlign: "center" }}
+                >
+                  登出
+                </Text>
+              </Pressable>
+              {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text> */}
+            </View>
           </View>
-          <View className="flex content-center justify-center">
-            <Text className="text-3xl dark:text-white">公告欄</Text>
-          </View>
-        </Pressable>
-        <JobBlockPJ setData={setData} />
+          {show && (
+            <Dialog.Container visible={show}>
+              <Dialog.Description style={{ color: "black", fontSize: 25 }}>
+                請輸入年月
+              </Dialog.Description>
+              <Dialog.Input
+                style={{ color: "black" }}
+                placeholder="西元年"
+                onChangeText={(e: string) => {
+                  setYear(e);
+                }}
+                keyboardType="numeric"
+              ></Dialog.Input>
+              <Dialog.Input
+                placeholder="月份"
+                style={{ color: "black" }}
+                onChangeText={(e: string) => {
+                  setMonth(e);
+                }}
+                keyboardType="numeric"
+              ></Dialog.Input>
+              <Dialog.Button
+                label="送出"
+                onPress={async () => {
+                  // const res = await callAPI(
+                  //   `/api/revenue/excel?year=${year}&month=${month}`,
+                  //   "GET",
+                  //   {},
+                  //   true
+                  // );
 
-        {store.get(fnAtom).getUserInfofn().Role === 100 ? (
-          <>
-            <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-              onPress={() => navigation.navigate("userManageP")}
-            >
-              <View className="w-1/6">
-                <Icon
-                  source="head-outline"
-                  color={cS == "light" ? "black" : "white"}
-                  size={0.12 * ww}
-                />
-              </View>
-              <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">用戶管理</Text>
-              </View>
-            </Pressable>
-            <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-              onPress={() => navigation.navigate("adminClaimedJobP")}
-            >
-              <View className="w-1/6">
-                <Icon
-                  color={cS == "light" ? "black" : "white"}
-                  source="vector-polygon"
-                  size={0.12 * ww}
-                />
-              </View>
-              <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">已接取的任務</Text>
-              </View>
-            </Pressable>
-            <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-              onPress={() => navigation.navigate("adminMainTainP")}
-            >
-              <View className="w-1/6">
-                <Icon
-                  color={cS == "light" ? "black" : "white"}
-                  source="tools"
-                  size={0.12 * ww}
-                />
-              </View>
-              <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">待核可維修</Text>
-              </View>
-            </Pressable>
-            <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
-              onPress={() => setShow(true)}
-            >
-              <View className="w-1/6">
-                <Icon
-                  color={cS == "light" ? "black" : "white"}
-                  source="file-download-outline"
-                  size={0.12 * ww}
-                />
-              </View>
-              <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">下載報告</Text>
-              </View>
-            </Pressable>
-          </>
-        ) : (
-          <></>
-        )}
-        <View className="flex flex-row justify-between">
-          <Pressable
-            className=" dark:bg-rose-500 bg-green-200 w-1/4 rounded-xl py-2"
-            onPress={async () => {
-              console.log("BYE");
-              await store.get(fnAtom).logoutfn();
-            }}
-          >
-            <Text
-              className="text-xl dark:text-white"
-              style={{ verticalAlign: "middle", textAlign: "center" }}
-            >
-              登出
-            </Text>
-          </Pressable>
-          {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text> */}
-        </View>
-      </View>
-      {show && (
-        <Dialog.Container visible={show}>
-          <Dialog.Description style={{ color: "black", fontSize: 25 }}>
-            請輸入年月
-          </Dialog.Description>
-          <Dialog.Input
-            style={{ color: "black" }}
-            placeholder="西元年"
-            onChangeText={(e: string) => {
-              setYear(e);
-            }}
-            keyboardType="numeric"
-          ></Dialog.Input>
-          <Dialog.Input
-            placeholder="月份"
-            style={{ color: "black" }}
-            onChangeText={(e: string) => {
-              setMonth(e);
-            }}
-            keyboardType="numeric"
-          ></Dialog.Input>
-          <Dialog.Button
-            label="送出"
-            onPress={async () => {
-              // const res = await callAPI(
-              //   `/api/revenue/excel?year=${year}&month=${month}`,
-              //   "GET",
-              //   {},
-              //   true
-              // );
-
-              const res = await download(year!, month!);
-              // download(year!, month!);
-              setShow(false);
-            }}
-          />
-          <Dialog.Button
-            label="關閉"
-            onPress={async () => {
-              setShow(false);
-            }}
-          />
-        </Dialog.Container>
+                  const res = await download(year!, month!);
+                  // download(year!, month!);
+                  setShow(false);
+                }}
+              />
+              <Dialog.Button
+                label="關閉"
+                onPress={async () => {
+                  setShow(false);
+                }}
+              />
+            </Dialog.Container>
+          )}
+        </SafeAreaView>
       )}
-    </SafeAreaView>
-    }</>)
+    </>
+  );
 }
 //
 

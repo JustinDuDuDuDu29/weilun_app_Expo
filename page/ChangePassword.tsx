@@ -26,7 +26,7 @@ function ChangePassword(): React.JSX.Element {
   const [secure1, setSecure1] = useState(true);
   const [passwordA, setPasswordA] = useState("");
   const [secure2, setSecure2] = useState(true);
-  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  // const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
   const store = useStore();
   const setPwd = async () => {
@@ -37,7 +37,11 @@ function ChangePassword(): React.JSX.Element {
       const res = await callAPI(
         "/api/user/pwd",
         "POST",
-        { id: getUserInfo?.ID, pwd: newPassword, oldPwd: oldPassword },
+        {
+          id: store.get(fnAtom).getUserInfofn().ID,
+          pwd: newPassword,
+          oldPwd: oldPassword,
+        },
         true
       );
       if (!res.ok) {

@@ -88,10 +88,26 @@ function JobUpdateP({
         {
           ...route.params.jobItem,
           Mid: route.params.jobItem.Mid.String,
+          Memo: route.params.jobItem.Memo.String,
 
           ...jobItem,
           id: route.params.jobItem.ID,
         },
+        true
+      );
+      if (res.status == 200)
+        Alert.alert("成功", "資料修改成功", [{ text: "OK" }]);
+      navigation.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const delJob = async () => {
+    try {
+      const res = await callAPI(
+        `/api/jobs/${route.params.jobItem.ID}`,
+        "DELETE",
+        {},
         true
       );
       if (res.status == 200)
@@ -138,6 +154,16 @@ function JobUpdateP({
                   {editable ? "取消" : "編輯"}
                 </Text>
               </Pressable>
+              <Text>
+                {JSON.stringify({
+                  ...route.params.jobItem,
+                  Mid: route.params.jobItem.Mid.String,
+                  Memo: route.params.jobItem.Memo.String,
+
+                  ...jobItem,
+                  id: route.params.jobItem.ID,
+                })}
+              </Text>
               <View className="flex my-1 flex-row mt-3">
                 <Text
                   className=" text-2xl dark:text-white"
@@ -350,7 +376,12 @@ function JobUpdateP({
                       儲存
                     </Text>
                   </Pressable>
-                  <Pressable className=" w-1/3  bg-red-500 py-2 rounded-xl">
+                  <Pressable
+                    className=" w-1/3  bg-red-500 py-2 rounded-xl"
+                    onPress={async () => {
+                      await delJob();
+                    }}
+                  >
                     <Text
                       className=" text-2xl dark:text-white"
                       style={{
