@@ -154,16 +154,6 @@ function JobUpdateP({
                   {editable ? "取消" : "編輯"}
                 </Text>
               </Pressable>
-              <Text>
-                {JSON.stringify({
-                  ...route.params.jobItem,
-                  Mid: route.params.jobItem.Mid.String,
-                  Memo: route.params.jobItem.Memo.String,
-
-                  ...jobItem,
-                  id: route.params.jobItem.ID,
-                })}
-              </Text>
               <View className="flex my-1 flex-row mt-3">
                 <Text
                   className=" text-2xl dark:text-white"

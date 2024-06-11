@@ -55,7 +55,7 @@ function Home(): React.JSX.Element {
       ws.onopen = async () => {
         // console.log("SS");
         // connection opened
-
+        console.log("CONNECTED");
         setInterval(() => {
           ws.send("ping");
         }, 10000);

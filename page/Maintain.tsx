@@ -14,6 +14,7 @@ import {
   TouchableWithoutFeedback,
   Modal,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import MaintainBlock from "../components/MaintainBlock";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
@@ -317,7 +318,8 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
               backgroundColor: cS === "light" ? "#fff" : "#3A3B3C",
             }}
           >
-            <View className="px-3 py-3">
+            <ScrollView className="px-3 py-3">
+              {/* <View*/}
               <MaintainM
                 setPlace={setPlace}
                 type={type}
@@ -348,7 +350,10 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                   }}
                 >
                   <Text
-                    style={{ textAlign: "center", textAlignVertical: "center" }}
+                    style={{
+                      textAlign: "center",
+                      textAlignVertical: "center",
+                    }}
                   >
                     下一步
                   </Text>
@@ -429,7 +434,8 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                   </TouchableOpacity>
                 </TouchableOpacity>
               </Modal>
-            </View>
+              {/* </View> */}
+            </ScrollView>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </GoodModal>
