@@ -135,7 +135,7 @@ function Home(): React.JSX.Element {
     setData();
   }, [isFocus]);
 
-  if (!store.get(userInfo)) {
+  if (!store.get(userInfo) || loading) {
     // if (loading) {
     return <Text>{JSON.stringify(store.get(pendingJob))}</Text>;
    // return <ActivityIndicator size="small" color="#0000ff" />;
