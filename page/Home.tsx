@@ -43,6 +43,7 @@ function Home(): React.JSX.Element {
 
   useEffect(() => {
     const ff = async () => {
+      // const ws = new WebSocket(
       const ws = new WebSocket(
         Platform.OS === "ios"
           ? "wss://apiweilun.imdu29.com/api/io/"
@@ -95,7 +96,7 @@ function Home(): React.JSX.Element {
         throw res;
       }
       const me: inUserT = await res.json();
-      console.log("me:", me);
+      // console.log("me:", me);
       store.get(fnAtom).setUserInfofn(me);
 
       if (me.Role == 300) {

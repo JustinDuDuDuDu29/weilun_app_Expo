@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import 'react-native-reanimated';
+import "react-native-reanimated";
 import Login from "./page/Login";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import { colorScheme, useColorScheme } from "nativewind";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { colorScheme } from "nativewind";
 import Home from "./page/Home";
 import CustomerS from "./page/CustomerS";
 import Jobs from "./page/Jobs";
 import { Provider, atom, createStore, useAtom } from "jotai";
 import { isLoggedIn, logout } from "./util/loginInfo";
-import {
-  useColorScheme as usc,
-  StatusBar,
-  Alert,
-  View,
-  Text,
-} from "react-native";
+import { useColorScheme as usc, StatusBar, Alert } from "react-native";
+
 import TurnOver from "./page/TurnOver";
 import Maintain from "./page/Maintain";
 import FinishJob from "./page/FinishJob";
@@ -38,6 +30,7 @@ import UserInfoAdmin from "./page/UserInfoAdmin";
 import EditUserInfoP from "./page/EditUserInfoP";
 import CreateJobP from "./page/CreateJobP";
 import AdminMaintain from "./page/AdminMaintain";
+import { callAPI } from "./util/callAPIUtil";
 
 export const isLoggedInAtom = atom(false);
 export const isLoading = atom(false);
@@ -57,6 +50,8 @@ const Stack = createNativeStackNavigator();
 colorScheme.set("system");
 
 const myStore = createStore();
+myStore.set(pendingJob, null);
+myStore.set(userInfo, null);
 
 function App() {
   myStore.set(fnAtom, {
@@ -104,8 +99,8 @@ function App() {
     },
   });
 
-  myStore.set(pendingJob, null);
-  myStore.set(userInfo, null);
+  // myStore.set(pendingJob, null);
+  // myStore.set(userInfo, null);
 
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -117,73 +112,102 @@ function App() {
   useEffect(() => {
     const fun = async () => {
       try {
+        console.log("rander...");
         setIsLoading(true);
         setIsLoggedIn(await isLoggedIn());
         setIsLoading(false);
+
+        const ver = await (await callAPI("/api", "GET", {}, false)).json();
+        console.log(ver.version ==  process.env.EXPO_PUBLIC_VER);
+        if (ver.version != process.env.EXPO_PUBLIC_VER) {
+          Alert.alert("糟糕！", "請更新一下版本唷～");
+          setIsLoading(true);
+
+          // RNExitApp.exitApp();
+        }
       } catch (error) {
         console.log("err: ", error);
       }
     };
+
     fun();
   }, []);
 
-  if (isLoading) {
-    return <SplashScreen />;
-  }
+  // if (isLoading) {
+  //   return <SplashScreen />;
+  // }
   return (
-    <SafeAreaProvider>
-      <Provider store={myStore}>
-        {/* <Text>loginState:{JSON.stringify(getUserInfo)}</Text> */}
-        <StatusBar
-          backgroundColor={cS == "light" ? "#fff" : "#000"}
-          barStyle={cS == "light" ? "dark-content" : "light-content"}
-        />
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false,
-              contentStyle: {
-                backgroundColor: cS == "light" ? "#ffffff" : "#3A3B3C",
-              },
-            }}
-          >
-            {loginState ? (
-              <>
-                <Stack.Screen name="homeP" component={Home} />
-                <Stack.Screen name="jobsP" component={Jobs} />
-                <Stack.Screen name="customerSP" component={CustomerS} />
-                <Stack.Screen name="finishJobP" component={FinishJob} />
-                <Stack.Screen name="turnOverP" component={TurnOver} />
-                <Stack.Screen name="adminMainTainP" component={AdminMaintain} />
-                <Stack.Screen name="mainTainP" component={Maintain} />
-                <Stack.Screen name="userInfoP" component={UserInfo} />
-                <Stack.Screen
-                  name="changePasswordP"
-                  component={ChangePassword}
-                />
-                <Stack.Screen name="jobsAdminP" component={JobsAdmin} />
-                <Stack.Screen name="jobUpdateP" component={JobUpdateP} />
-                <Stack.Screen name="userManageP" component={UserManageP} />
-                <Stack.Screen name="alertP" component={AlertP} />
-                <Stack.Screen
-                  name="adminClaimedJobP"
-                  component={AdminClaimedJob}
-                />
-                <Stack.Screen name="claimJobP" component={ClaimJobP} />
-                <Stack.Screen name="maintainInfoP" component={MaintainInfo} />
-                <Stack.Screen name="userInfoAdminP" component={UserInfoAdmin} />
-                <Stack.Screen name="editUserInfoP" component={EditUserInfoP} />
-                <Stack.Screen name="CreateJobP" component={CreateJobP} />
-              </>
-            ) : (
-              <>
-                <Stack.Screen name="loginP" component={Login} />
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
-    </SafeAreaProvider>
+    <>
+      {isLoading ? (
+        <SplashScreen />
+      ) : (
+        <SafeAreaProvider>
+          <Provider store={myStore}>
+            {/* <Text>loginState:{JSON.stringify(getUserInfo)}</Text> */}
+            <StatusBar
+              backgroundColor={cS == "light" ? "#fff" : "#000"}
+              barStyle={cS == "light" ? "dark-content" : "light-content"}
+            />
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: {
+                    backgroundColor: cS == "light" ? "#ffffff" : "#3A3B3C",
+                  },
+                }}
+              >
+                {loginState ? (
+                  <>
+                    <Stack.Screen name="homeP" component={Home} />
+                    <Stack.Screen name="jobsP" component={Jobs} />
+                    <Stack.Screen name="customerSP" component={CustomerS} />
+                    <Stack.Screen name="finishJobP" component={FinishJob} />
+                    <Stack.Screen name="turnOverP" component={TurnOver} />
+                    <Stack.Screen
+                      name="adminMainTainP"
+                      component={AdminMaintain}
+                    />
+                    <Stack.Screen name="mainTainP" component={Maintain} />
+                    <Stack.Screen name="userInfoP" component={UserInfo} />
+                    <Stack.Screen
+                      name="changePasswordP"
+                      component={ChangePassword}
+                    />
+                    <Stack.Screen name="jobsAdminP" component={JobsAdmin} />
+                    <Stack.Screen name="jobUpdateP" component={JobUpdateP} />
+                    <Stack.Screen name="userManageP" component={UserManageP} />
+                    <Stack.Screen name="alertP" component={AlertP} />
+                    <Stack.Screen
+                      name="adminClaimedJobP"
+                      component={AdminClaimedJob}
+                    />
+                    <Stack.Screen name="claimJobP" component={ClaimJobP} />
+                    <Stack.Screen
+                      name="maintainInfoP"
+                      component={MaintainInfo}
+                    />
+                    <Stack.Screen
+                      name="userInfoAdminP"
+                      component={UserInfoAdmin}
+                    />
+                    <Stack.Screen
+                      name="editUserInfoP"
+                      component={EditUserInfoP}
+                    />
+                    <Stack.Screen name="CreateJobP" component={CreateJobP} />
+                  </>
+                ) : (
+                  <>
+                    <Stack.Screen name="loginP" component={Login} />
+                  </>
+                )}
+              </Stack.Navigator>
+            </NavigationContainer>
+          </Provider>
+        </SafeAreaProvider>
+      )}
+    </>
   );
 }
 export default App;
