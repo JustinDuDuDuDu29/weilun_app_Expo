@@ -138,7 +138,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
             <View className="my-1">
               <Text className="text-xl">
                 剩餘趟數：
-                {jobItem.Remaining > 20000000 ? "無限多趟" : jobItem.Remaining}
+                {jobItem.Remaining > 2000000 ? "無限多趟" : jobItem.Remaining}
               </Text>
             </View>
           ) : (
