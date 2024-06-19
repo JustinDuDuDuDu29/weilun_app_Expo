@@ -78,7 +78,8 @@ function ClaimJobP({
       const call = await callAPI(`/api/claimed/${CJ?.ID}`, "DELETE", {}, true);
       if (call.status == 200) {
         Alert.alert("完成", "刪除成功");
-        navigation.navigate("adminClaimedJobP");
+        // navigation.navigate("adminClaimedJobP");
+        navigation.goBack();
       }
     } catch (error) {
       console.error("Error deleting job: ", error);

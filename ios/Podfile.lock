@@ -1330,6 +1330,8 @@ PODS:
     - React-Core
   - RNDateTimePicker (8.0.1):
     - React-Core
+  - RNExitApp (2.0.0):
+    - React-Core
   - RNGestureHandler (2.16.2):
     - DoubleConversion
     - glog
@@ -1500,6 +1502,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNExitApp (from `../node_modules/react-native-exit-app`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -1686,6 +1689,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-picker/picker"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNExitApp:
+    :path: "../node_modules/react-native-exit-app"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNKeychain:
@@ -1786,6 +1791,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCPicker: 3e2c37a8328f368ce14da050cdc8231deb5fc9f9
   RNDateTimePicker: b6a9b35a785ecbe12b4e7d6de5439d0aa4614146
+  RNExitApp: 00036cabe7bacbb413d276d5520bf74ba39afa6a
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
   RNReanimated: 35f9ac9c3ac42d0497ebd1cce5c39d7687a8493e
@@ -1799,6 +1805,6 @@ SPEC CHECKSUMS:
   sqlite3: 02d1f07eaaa01f80a1c16b4b31dfcbb3345ee01a
   Yoga: ae3c32c514802d30f687a04a6a35b348506d411f
 
-PODFILE CHECKSUM: aef78ae19bac0b9e29faa956652bf32cd86fb04d
+PODFILE CHECKSUM: 2d35ff019e3ee8a4eb332edf80cb25b195601ba7
 
 COCOAPODS: 1.15.2

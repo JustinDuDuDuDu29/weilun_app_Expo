@@ -8,7 +8,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { callAPI } from "../util/callAPIUtil";
 import { revT } from "../types/revenueT";
 import { LineChart } from "react-native-gifted-charts";
@@ -32,6 +32,7 @@ function TurnOver(): React.JSX.Element {
 
   const cS = usc();
   const store = useStore();
+  const isFocus = useIsFocused();
   const getData = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -100,7 +101,7 @@ function TurnOver(): React.JSX.Element {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [isFocus]);
   const navigation = useNavigation();
   if (isLoading) {
     return <SplashScreen />;

@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "weilun_app",
+    "name": "崴倫車隊",
     "slug": "weilun_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/LOGO.jpg",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/LOGO.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/LOGO.jpg",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -29,7 +29,7 @@
       "package": "com.anonymous.weilun_app"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/LOGO.jpg",
       "bundler": "metro"
     },
     "plugins": [

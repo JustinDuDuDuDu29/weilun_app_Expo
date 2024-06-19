@@ -1,5 +1,5 @@
 // import {process.env.EXPO_PUBLIC_HOST} from '@env';
-import { Alert, Share } from "react-native";
+import { Alert, Platform, Share } from "react-native";
 import { getSecureValue } from "./loginInfo";
 // import { Platform } from 'react-native';
 // import * as MediaLibrary from 'expo-media-library';
@@ -13,20 +13,21 @@ export async function download(year: string, month: string) {
     process.env.EXPO_PUBLIC_HOST +
     `/api/revenue/excel?year=${year}&month=${month}`;
   let fileUri = FileSystem.documentDirectory + `${year}_${month}.xlsx`;
+
   FileSystem.downloadAsync(uri, fileUri, {
     headers: {
       Authorization: bearer,
     },
   })
     .then(async ({ uri }) => {
-      // await saveAndroidFile(uri);
       try {
-        console.log(uri);
-        const result = await Share.share({
-          url: uri,
-          message:
-            "React Native | A framework for building native apps using React",
-        });
+        Platform.OS === "android"
+          ? await saveAndroidFile(uri)
+          : await Share.share({
+              url: uri,
+              message:
+                "請選擇要處理的方式",
+            });
       } catch (error: any) {
         Alert.alert(error.message);
       }
@@ -76,9 +77,9 @@ export async function callAPI(
   const bearer = "Bearer " + (await getSecureValue("jwtToken")).toString();
   // console.log((await getSecureValue("jwtToken")).toString())
   const r = process.env.EXPO_PUBLIC_HOST + route;
-  const res = await fetch("https://www.imdu29.com")
-  if(res.status == 523){
-    return
+  const res = await fetch("https://www.imdu29.com");
+  if (res.status == 523) {
+    return;
   }
   return await fetch(r, {
     headers: {

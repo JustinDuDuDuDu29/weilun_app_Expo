@@ -32,6 +32,7 @@ function FinishJob(): React.JSX.Element {
 
   const finishJobf = async () => {
     try {
+      console.log(finishImg);
       if (!RUEmpty(finishImg)) {
         const fd = new FormData();
         // const bb = await (await fetch(finishImg!.uri)).blob();
@@ -42,6 +43,8 @@ function FinishJob(): React.JSX.Element {
           fd,
           true
         );
+        console.log(res.status);
+
         if (res.status == 200) {
           Alert.alert("恭喜", "您已完成這項工作");
           navigation.goBack();

@@ -89,17 +89,17 @@ function Home(): React.JSX.Element {
     setLoading(true);
     try {
       // if (!store.get(fnAtom).getUserInfofn()) {
-      // if (!store.get(userInfo)) {
-      console.log("IN");
-      const res = await callAPI("/api/user/me", "POST", {}, true);
-      if (!res.ok) {
-        throw res;
+      if (store.get(fnAtom).getUserInfofn() == null) {
+        console.log("IN");
+        const res = await callAPI("/api/user/me", "POST", {}, true);
+        if (!res.ok) {
+          throw res;
+        }
+        const me: inUserT = await res.json();
+        // console.log("me:", me);
+        store.get(fnAtom).setUserInfofn(me);
       }
-      const me: inUserT = await res.json();
-      // console.log("me:", me);
-      store.get(fnAtom).setUserInfofn(me);
-
-      if (me.Role == 300) {
+      if (store.get(fnAtom).getUserInfofn().Role == 300) {
         const res2 = await callAPI("/api/claimed/current", "POST", {}, true);
         if (!res2.ok) {
           throw res;
