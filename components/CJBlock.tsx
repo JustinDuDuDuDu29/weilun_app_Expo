@@ -64,7 +64,10 @@ function CJBlock({ CJ }: { CJ: ClaimedJob }): React.JSX.Element {
 
           <View className="flex flex-row justify-around">
             <Text>工作編號：{CJ.Username}</Text>
-            <Text>日期：{CJ.CreateDate.split("T")[0]}</Text>
+            <Text>
+              日期：
+              {CJ.CreateDate.split("T")[0] + " " + CJ.CreateDate.split("T")[1]}
+            </Text>
           </View>
         </View>
       </Pressable>

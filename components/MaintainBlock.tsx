@@ -143,7 +143,12 @@ function MaintainBlock({
               {isPressed ?? (
                 <View>
                   <Text>姓名:{maintainInfo.Drivername}</Text>
-                  <Text>日期:{maintainInfo.Createdate.split("T")[0]}</Text>
+                  <Text>
+                    日期:
+                    {maintainInfo.Createdate.split("T")[0] +
+                      " " +
+                      maintainInfo.Createdate.split("T")[1]}
+                  </Text>
                 </View>
               )}
               <Text>維修總價:{totalPrice}</Text>

@@ -41,7 +41,9 @@ function AlertBlock({ alert }: { alert: alertT }): React.JSX.Element {
               style={{ textAlign: "center", textAlignVertical: "center" }}
               className=" text-lg"
             >
-              {alert.Createdate.split("T")[0]}
+              {alert.Createdate.split("T")[0] +
+                " " +
+                alert.Createdate.split("T")[1]}
             </Text>
           </View>
         </View>

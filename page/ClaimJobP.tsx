@@ -132,7 +132,8 @@ function ClaimJobP({
               {CJ.ToLoc}
             </Text>
             <Text className="my-2 text-xl dark:text-white">
-              接取日期： {CJ.CreateDate.split("T")[0]}
+              接取日期：{" "}
+              {CJ.CreateDate.split("T")[0] + "" + CJ.CreateDate.split("T")[1]}
             </Text>
             <Text className="my-2 text-xl dark:text-white">
               工作金額： {CJ.Price}

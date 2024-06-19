@@ -129,7 +129,10 @@ function MaintainInfo({
         所屬公司：{mInfo?.Cmpname}
       </Text>
       <Text className="dark:text-white text-xl">
-        維修日期：{mInfo?.Createdate.split("T")[0]}
+        維修日期：
+        {mInfo?.Createdate.split("T")[0] +
+          " " +
+          mInfo?.Createdate.split("T")[1]}
       </Text>
       <Text className="dark:text-white text-xl">詳細資訊：</Text>
       <View className="flex flex-row">
