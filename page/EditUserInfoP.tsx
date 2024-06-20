@@ -206,17 +206,21 @@ function EditUserInfoP({
           <View className="my-3 flex flex-row">
             <Text
               className=" dark:text-white text-xl"
-              style={{ textAlignVertical: "center" }}
+              style={{ textAlignVertical: "center", textAlign: "center" }}
             >
               職位：
             </Text>
             <View className="flex-1 flex flex-row  items-center align-middle">
-              <RadioButton value="cmpAdmin" />
-              <Text className=" dark:text-white">公司負責人</Text>
+              <View className=" border my-3 rounded-full">
+                <RadioButton value="driver" />
+              </View>
+              <Text className=" dark:text-white">司機</Text>
             </View>
             <View className="flex-1 flex flex-row  items-center align-middle">
-              <RadioButton value="driver" />
-              <Text className=" dark:text-white">司機</Text>
+              <View className=" border my-3 rounded-full">
+                <RadioButton value="cmpAdmin" />
+              </View>
+              <Text className=" dark:text-white">公司負責人</Text>
             </View>
           </View>
         </RadioButton.Group>

@@ -108,7 +108,7 @@ function TurnOver(): React.JSX.Element {
   }
   return (
     <SafeAreaView className="px-3 my-2">
-      <ScrollView>
+      <ScrollView className="px-3">
         <View className=" px-5">
           <LineChart
             backgroundColor={cS == "light" ? "white" : "#3A3B3C"}

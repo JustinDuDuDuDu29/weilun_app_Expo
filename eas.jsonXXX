@@ -1,0 +1,12 @@
+{
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "app-bundle",
+        "image":"latest"
+      }
+    },
+    "production": {}
+
+  }
+}

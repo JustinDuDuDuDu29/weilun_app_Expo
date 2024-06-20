@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "28017103"
+      "bundleIdentifier": "com.justindudududu29.weilunapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +26,7 @@
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.anonymous.weilun_app"
+      "package": "com.justindudududu29.weilunapp"
     },
     "web": {
       "favicon": "./assets/LOGO.jpg",
@@ -43,7 +43,7 @@
       ]
     ],
     "extra": {
-      "owner":"justindu",
+      "owner": "justindu",
       "eas": {
         "projectId": "77a11647-892e-4eeb-a72d-da9c246d9a86"
       }

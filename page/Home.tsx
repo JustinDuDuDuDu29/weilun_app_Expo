@@ -46,8 +46,8 @@ function Home(): React.JSX.Element {
       // const ws = new WebSocket(
       const ws = new WebSocket(
         Platform.OS === "ios"
-          ? "wss://apiweilun.imdu29.com/api/io/"
-          : "wss://apiweilun.imdu29.com/api/io"
+          ? "wss://apikunhong.kunhong.org/api/io/"
+          : "wss://apikunhong.kunhong.org/api/io"
       );
       // console.log("ff...");
 

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Pressable, SafeAreaView, View, Text, Dimensions } from "react-native";
+import {
+  Pressable,
+  SafeAreaView,
+  View,
+  Text,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 import { RadioButton, Icon, TextInput } from "react-native-paper";
 import MGas from "./MGas";
 import { v4 as uuidv4 } from "uuid";
@@ -29,8 +36,8 @@ function MaintainM({
   const ww = Dimensions.get("window").width;
 
   return (
-    <SafeAreaView>
-      <View className="flex flex-col justify-between">
+    <ScrollView>
+      <Pressable className="flex flex-col justify-between">
         <Text className="text-2xl dark:text-white">請選擇類別：</Text>
         <View className="flex flex-row justify-between">
           <View>
@@ -59,11 +66,15 @@ function MaintainM({
             >
               <View className="flex flex-col">
                 <View className="flex flex-row  items-center align-middle">
-                  <RadioButton value="gas" />
+                  <View className=" border my-3 rounded-full">
+                    <RadioButton value="gas" />
+                  </View>
                   <Text className="text-xl dark:text-white">加油</Text>
                 </View>
                 <View className="flex flex-row  items-center align-middle">
-                  <RadioButton value="maintain" />
+                  <View className=" border my-3 rounded-full">
+                    <RadioButton value="maintain" />
+                  </View>
                   <Text className="text-xl dark:text-white">保養及維修</Text>
                 </View>
               </View>
@@ -90,7 +101,7 @@ function MaintainM({
             </View>
           )}
         </View>
-      </View>
+      </Pressable>
       <MGas
         type={type}
         tmpNew={tmpNew}
@@ -100,7 +111,7 @@ function MaintainM({
         setModalVisible={setModalVisible}
       />
       {/* <Text className="text-xl dark:text-white">地點：</Text> */}
-      <View className="my-2">
+      <Pressable className="my-2">
         <TextInput
           label={"地點"}
           className="text-xl"
@@ -108,8 +119,8 @@ function MaintainM({
             setPlace(e);
           }}
         />
-      </View>
-    </SafeAreaView>
+      </Pressable>
+    </ScrollView>
   );
 }
 

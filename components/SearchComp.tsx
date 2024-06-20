@@ -131,7 +131,7 @@ function SearchComp(props: {
   }, [search, FocusPage]);
   const inp = useRef();
 
-  const [newUserType, setNewUserType] = useState("cmpAdmin");
+  const [newUserType, setNewUserType] = useState("driver");
 
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
 
@@ -377,13 +377,17 @@ function SearchComp(props: {
                   >
                     <View className="flex flex-col">
                       <View className="flex flex-row  items-center align-middle">
-                        <RadioButton value="user" />
+                        <View className=" border my-3 rounded-full">
+                          <RadioButton value="user" />
+                        </View>
                         <Text className=" dark:text-white text-xl">
                           新增使用者
                         </Text>
                       </View>
                       <View className="flex flex-row  items-center align-middle">
-                        <RadioButton value="cmp" />
+                        <View className=" border my-3 rounded-full">
+                          <RadioButton value="cmp" />
+                        </View>
                         <Text className=" dark:text-white text-xl">
                           新增公司
                         </Text>
@@ -457,21 +461,28 @@ function SearchComp(props: {
                         }}
                         value={newUserType}
                       >
-                        <View className="flex flex-row">
+                        <View className="flex flex-row items-center">
                           <Text
                             className=" dark:text-white text-xl"
-                            style={{ textAlignVertical: "center" }}
+                            style={{
+                              textAlignVertical: "center",
+                              textAlign: "center",
+                            }}
                           >
                             職位：
                           </Text>
                           <View className="flex flex-row  items-center align-middle">
-                            <RadioButton value="cmpAdmin" />
+                            <View className=" border my-3 rounded-full">
+                              <RadioButton value="cmpAdmin" />
+                            </View>
                             <Text className=" dark:text-white text-xl">
                               公司負責人
                             </Text>
                           </View>
                           <View className="flex flex-row  items-center align-middle">
-                            <RadioButton value="driver" />
+                            <View className=" border my-3 rounded-full">
+                              <RadioButton value="driver" />
+                            </View>
                             <Text className=" dark:text-white text-xl">
                               司機
                             </Text>
