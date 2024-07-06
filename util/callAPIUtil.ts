@@ -77,10 +77,10 @@ export async function callAPI(
   const bearer = "Bearer " + (await getSecureValue("jwtToken")).toString();
   // console.log((await getSecureValue("jwtToken")).toString())
   const r = process.env.EXPO_PUBLIC_HOST + route;
-  const res = await fetch("https://www.imdu29.com");
-  if (res.status == 523) {
-    return;
-  }
+  // const res = await fetch("https://www.imdu29.com");
+  // if (res.status == 523) {
+  //   return;
+  // }
   return await fetch(r, {
     headers: {
       Authorization: useAuth ? bearer : "",
@@ -115,10 +115,13 @@ export async function callAPIForm(
   useAuth: boolean
 ) {
   const bearer = "Bearer " + (await getSecureValue("jwtToken")).toString();
-  return await fetch(process.env.EXPO_PUBLIC_HOST + route, {
+  const r = process.env.EXPO_PUBLIC_HOST + route;
+
+  return await fetch(r, {
     headers: {
       Authorization: useAuth ? bearer : "",
       // 'Content-Type': 'multipart/form-data',
+         
     },
     method: method,
     body: body,

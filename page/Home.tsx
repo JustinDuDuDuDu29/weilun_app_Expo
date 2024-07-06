@@ -71,13 +71,13 @@ function Home(): React.JSX.Element {
 
       ws.onerror = (e) => {
         // an error occurred
-        console.log("err!", e);
-        console.log("err!", ws.url);
+        // console.log("err!", e);
+        // console.log("err!", ws.url);
       };
 
       ws.onclose = (e) => {
         // connection closed
-        console.log("Closing");
+        // console.log("Closing");
 
         console.log(e.code, e.reason);
       };
@@ -150,11 +150,16 @@ function Home(): React.JSX.Element {
   // if (loading) {
   return (
     <>
-      {loading || store.get(fnAtom).getUserInfofn() == null ? (
+      {store.get(fnAtom).getUserInfofn() == null ? (
         <>
           {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text>
           <Text>{JSON.stringify(store.get(userInfo))}</Text> */}
-          <ActivityIndicator size="small" color="#0000ff" />
+
+          <ActivityIndicator
+            className="h-full flex justify-center items-center"
+            size="small"
+            color="#0000ff"
+          />
         </>
       ) : (
         // return <ActivityIndicator size="small" color="#0000ff"/>
@@ -261,7 +266,9 @@ function Home(): React.JSX.Element {
                 <Text className="text-3xl dark:text-white">公告欄</Text>
               </View>
             </Pressable>
-            <JobBlockPJ setData={setData} />
+            {store.get(fnAtom).getUserInfofn().Role == 300 && (
+              <JobBlockPJ setData={setData} />
+            )}
 
             {store.get(fnAtom).getUserInfofn().Role === 100 ? (
               <>

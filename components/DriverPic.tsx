@@ -175,16 +175,26 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
               f.append("Registration", registration!);
             }
             try {
+              console.log("...");
+
               const res = await callAPIForm(
                 "/api/user/UpdateDriverPic",
                 "POST",
                 f,
                 true
               );
+              console.log("...2");
+
+              console.log(res.status);
+              setCanPress(false);
               Alert.alert("完成", "管理員將確認您的資料", [{ text: "ok" }]);
             } catch (error) {
               Alert.alert("糟糕", "好像出錯了...", [{ text: "ok" }]);
-              console.log(error);
+              if (error instanceof TypeError) {
+                console.log(error.cause + "\n");
+                console.log(error.message + "\n");
+                console.log(error.stack + "\n");
+              }
             }
           }}
         >

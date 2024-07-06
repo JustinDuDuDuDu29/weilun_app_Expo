@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Dimensions, Pressable, SafeAreaView, Text } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  Text,
+  View,
+} from "react-native";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker";
@@ -24,20 +31,26 @@ function ChoosePicDrawer({
             tarFun({
               uri: result.assets![0].uri!,
               name: result.assets![0].fileName!,
-              type: result.assets![0].mimeType!,
+
+              type:
+                Platform.OS === "android"
+                  ? result.assets![0].mimeType!
+                  : result.assets![0].type,
             });
           }}
         >
-          <Text
-            className=" text-xl font-bold border-b border-gray-200 mx-2"
-            style={{
-              textAlign: "center",
-              textAlignVertical: "center",
-              height: "100%",
-            }}
-          >
-            開啟相機
-          </Text>
+          <View className="flex h-full justify-center items-center">
+            <Text
+              className=" text-xl font-bold border-b border-gray-200 mx-2"
+              // style={{
+              //   textAlign: "center",
+              //   textAlignVertical: "center",
+              //   height: "100%",
+              // }}
+            >
+              開啟相機
+            </Text>
+          </View>
         </Pressable>
         <Pressable
           style={{ height: hh * 0.1 }}
@@ -48,23 +61,32 @@ function ChoosePicDrawer({
               // aspect: [4, 3],
               quality: 1,
             });
-            tarFun({
+            const obj = {
               uri: result.assets![0].uri!,
               name: result.assets![0].fileName!,
-              type: result.assets![0].mimeType!,
-            });
+              type:
+                Platform.OS === "android"
+                  ? result.assets![0].mimeType!
+                  : result.assets![0].type!,
+            };
+            tarFun(obj);
+            console.log(obj);
           }}
         >
-          <Text
-            className="  text-xl font-bold  mx-2"
-            style={{
-              textAlign: "center",
-              textAlignVertical: "center",
-              height: "100%",
-            }}
-          >
-            開啟相簿
-          </Text>
+          <View className="flex h-full justify-center items-center">
+            <Text
+              className="  text-xl font-bold  mx-2"
+              style={
+                {
+                  // textAlign: "center",
+                  // textAlignVertical: "center",
+                  // height: "100%",
+                }
+              }
+            >
+              開啟相簿
+            </Text>
+          </View>
         </Pressable>
       </ActionSheet>
     </SafeAreaView>
