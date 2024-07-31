@@ -255,7 +255,11 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   const wh = Dimensions.get("window").height;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}
+    >
       <View className="py-4 px-3">
         <View className="mx-5 relative h-full">
           <FlatList
@@ -311,15 +315,17 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
         >
           <KeyboardAvoidingView
             behavior="padding"
-            keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+            // keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
             style={{
-              display: "flex",
+              // display: "flex",
               paddingHorizontal: 10,
               backgroundColor: cS === "light" ? "#fff" : "#3A3B3C",
             }}
           >
-            <ScrollView className="px-3 py-3">
-              {/* <View*/}
+            <ScrollView
+              className="px-3 py-3"
+              contentContainerStyle={{ paddingBottom: 20 }}
+            >
               <MaintainM
                 setPlace={setPlace}
                 type={type}
@@ -385,7 +391,13 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                     flex: 1,
                   }}
                 >
-                  <TouchableOpacity activeOpacity={1} className="w-screen">
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    className="w-screen"
+                    onPress={() => {
+                      setPicModalV(false);
+                    }}
+                  >
                     <View
                       className="flex flex-col  items-center h-5/6"
                       style={{

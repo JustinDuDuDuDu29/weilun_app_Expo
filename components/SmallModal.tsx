@@ -10,6 +10,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import { mInfoT } from "../types/maintainT";
@@ -50,7 +51,12 @@ function SmallModal({
             flex: 1,
           }}
         >
-          <TouchableOpacity activeOpacity={1} className="w-screen">
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+            // style={styles.container}
+          >
+            {/* <TouchableOpacity activeOpacity={1} className="w-screen"> */}
             <View
               style={{
                 margin: 20,
@@ -146,7 +152,8 @@ function SmallModal({
                 </Pressable>
               </View>
             </View>
-          </TouchableOpacity>
+          </KeyboardAvoidingView>
+          {/* </TouchableOpacity> */}
         </TouchableOpacity>
       </Modal>
     </View>

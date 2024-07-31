@@ -66,7 +66,9 @@ function CJBlock({ CJ }: { CJ: ClaimedJob }): React.JSX.Element {
             <Text>工作編號：{CJ.Username}</Text>
             <Text>
               日期：
-              {CJ.CreateDate.split("T")[0] + " " + CJ.CreateDate.split("T")[1]}
+              {CJ.CreateDate.split("T")[0] +
+                " " +
+                CJ.CreateDate.split("T")[1].split(".")[0]}
             </Text>
           </View>
         </View>

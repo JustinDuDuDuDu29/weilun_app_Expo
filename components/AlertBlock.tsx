@@ -31,19 +31,19 @@ function AlertBlock({ alert }: { alert: alertT }): React.JSX.Element {
           </View>
 
           <View className="flex flex-row">
-            <Text
+            {/* <Text
               style={{ textAlign: "center", textAlignVertical: "center" }}
               className=" text-lg"
             >
               通知日期:
-            </Text>
+            </Text> */}
             <Text
               style={{ textAlign: "center", textAlignVertical: "center" }}
               className=" text-lg"
             >
               {alert.Createdate.split("T")[0] +
                 " " +
-                alert.Createdate.split("T")[1]}
+                alert.Createdate.split("T")[1].split(".")[0]}
             </Text>
           </View>
         </View>

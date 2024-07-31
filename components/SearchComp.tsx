@@ -235,7 +235,11 @@ function SearchComp(props: {
   //   console.log("ww");
   // }, []);
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}
+    >
       {/* <Text>{JSON.stringify(props.userList)}</Text> */}
       <View className="flex flex-row w-full my-2 px-1">
         <View className=" w-1/4">
@@ -348,13 +352,14 @@ function SearchComp(props: {
         </SafeAreaView>
       ) : (
         // {props.userList && (
-        <View className="mx-5 relative">
-          <FlatList
-            data={props.userList}
-            renderItem={({ item }) => <UseListEl info={item} />}
-            keyExtractor={(item) => item.cmpid.toString()}
-          />
-        </View>
+        // <View className="mx-5 relative bg-red-400">
+        <FlatList
+          data={props.userList}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          renderItem={({ item }) => <UseListEl info={item} />}
+          keyExtractor={(item) => item.cmpid.toString()}
+        />
+        // </View>
         // )}
       )}
       <GoodModal visible={props.visible} hideModal={props.hideModal}>
@@ -377,17 +382,17 @@ function SearchComp(props: {
                   >
                     <View className="flex flex-col">
                       <View className="flex flex-row  items-center align-middle">
-                        <View className=" border my-3 rounded-full">
-                          <RadioButton value="user" />
-                        </View>
+                        {/* <View className=" border my-3 rounded-full"> */}
+                        <RadioButton value="user" />
+                        {/* </View> */}
                         <Text className=" dark:text-white text-xl">
                           新增使用者
                         </Text>
                       </View>
                       <View className="flex flex-row  items-center align-middle">
-                        <View className=" border my-3 rounded-full">
-                          <RadioButton value="cmp" />
-                        </View>
+                        {/* <View className=" border my-3 rounded-full"> */}
+                        <RadioButton value="cmp" />
+                        {/* </View> */}
                         <Text className=" dark:text-white text-xl">
                           新增公司
                         </Text>
@@ -472,17 +477,17 @@ function SearchComp(props: {
                             職位：
                           </Text>
                           <View className="flex flex-row  items-center align-middle">
-                            <View className=" border my-3 rounded-full">
-                              <RadioButton value="cmpAdmin" />
-                            </View>
+                            {/* <View className=" border my-3 rounded-full"> */}
+                            <RadioButton value="cmpAdmin" />
+                            {/* </View> */}
                             <Text className=" dark:text-white text-xl">
                               公司負責人
                             </Text>
                           </View>
                           <View className="flex flex-row  items-center align-middle">
-                            <View className=" border my-3 rounded-full">
-                              <RadioButton value="driver" />
-                            </View>
+                            {/* <View className=" border my-3 rounded-full"> */}
+                            <RadioButton value="driver" />
+                            {/* </View> */}
                             <Text className=" dark:text-white text-xl">
                               司機
                             </Text>

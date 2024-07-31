@@ -71,7 +71,7 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
   const navigation = useNavigation<ScreenProp>();
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="mx-5 relative">
       <Pressable
         className={`my-1 rounded-lg px-4 py-2 bg-red-200 flex flex-row justify-between`}
         onPress={() => {

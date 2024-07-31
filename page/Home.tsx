@@ -11,6 +11,7 @@ import {
   useColorScheme as usc,
   ActivityIndicator,
   Platform,
+  ScrollView,
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { getSecureValue } from "../util/loginInfo";
@@ -164,7 +165,7 @@ function Home(): React.JSX.Element {
       ) : (
         // return <ActivityIndicator size="small" color="#0000ff"/>
         <SafeAreaView className="h-full flex justify-center">
-          <View className="px-5 flex flex-col justify-around h-4/5">
+          <View className="px-5 flex flex-col justify-around">
             <View className="flex flex-row justify-around items-center">
               <Text className="text-xl dark:text-white">
                 歡迎！{store.get(fnAtom).getUserInfofn().Username}
@@ -181,8 +182,12 @@ function Home(): React.JSX.Element {
                 />
               </Pressable>
             </View>
+            {/* <ScrollView
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+            > */}
             <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center "
+              className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center "
               onPress={() => {
                 store.get(fnAtom).getUserInfofn().Role === 100
                   ? navigation.navigate("jobsAdminP")
@@ -202,7 +207,7 @@ function Home(): React.JSX.Element {
               </View>
             </Pressable>
             <Pressable
-              className="flex flex-row content-center  bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              className="flex flex-row content-center  my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
               onPress={() => navigation.navigate("turnOverP")}
             >
               <View className="w-1/6">
@@ -219,7 +224,7 @@ function Home(): React.JSX.Element {
             {store.get(fnAtom).getUserInfofn().Role != 100 && (
               <>
                 <Pressable
-                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
                   onPress={() => navigation.navigate("customerSP")}
                 >
                   <View className="w-1/6">
@@ -234,7 +239,7 @@ function Home(): React.JSX.Element {
                   </View>
                 </Pressable>
                 <Pressable
-                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
                   onPress={() => navigation.navigate("mainTainP")}
                 >
                   <View className="w-1/6">
@@ -252,7 +257,7 @@ function Home(): React.JSX.Element {
             )}
 
             <Pressable
-              className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+              className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
               onPress={() => navigation.navigate("alertP")}
             >
               <View className="w-1/6">
@@ -273,7 +278,7 @@ function Home(): React.JSX.Element {
             {store.get(fnAtom).getUserInfofn().Role === 100 ? (
               <>
                 <Pressable
-                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
                   onPress={() => navigation.navigate("userManageP")}
                 >
                   <View className="w-1/6">
@@ -288,7 +293,7 @@ function Home(): React.JSX.Element {
                   </View>
                 </Pressable>
                 <Pressable
-                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
                   onPress={() => navigation.navigate("adminClaimedJobP")}
                 >
                   <View className="w-1/6">
@@ -305,7 +310,7 @@ function Home(): React.JSX.Element {
                   </View>
                 </Pressable>
                 <Pressable
-                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
                   onPress={() => navigation.navigate("adminMainTainP")}
                 >
                   <View className="w-1/6">
@@ -320,7 +325,7 @@ function Home(): React.JSX.Element {
                   </View>
                 </Pressable>
                 <Pressable
-                  className="flex flex-row content-center bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
                   onPress={() => setShow(true)}
                 >
                   <View className="w-1/6">
@@ -355,6 +360,7 @@ function Home(): React.JSX.Element {
               </Pressable>
               {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text> */}
             </View>
+            {/* </ScrollView> */}
           </View>
           {show && (
             <Dialog.Container

@@ -147,7 +147,7 @@ function MaintainBlock({
                     日期:
                     {maintainInfo.Createdate.split("T")[0] +
                       " " +
-                      maintainInfo.Createdate.split("T")[1]}
+                      maintainInfo.Createdate.split("T")[1].split(".")[0]}
                   </Text>
                 </View>
               )}

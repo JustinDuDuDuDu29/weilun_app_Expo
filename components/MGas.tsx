@@ -48,30 +48,30 @@ function MGas(
               <Text className="text-2xl dark:text-white">請選擇種類：</Text>
               <View className="flex flex-col">
                 <View className="flex flex-row  items-center align-middle">
-                  <View className=" border my-3 rounded-full">
-                    <RadioButton value="92汽油" />
-                  </View>
+                  {/* <View className=" border my-3 rounded-full"> */}
+                  <RadioButton value="92汽油" />
+                  {/* </View> */}
                   <Text className="text-xl dark:text-white">92汽油</Text>
                 </View>
 
                 <View className="flex flex-row  items-center align-middle">
-                  <View className=" border my-3 rounded-full">
-                    <RadioButton value="95汽油" />
-                  </View>
+                  {/* <View className=" border my-3 rounded-full"> */}
+                  <RadioButton value="95汽油" />
+                  {/* </View> */}
                   <Text className="text-xl dark:text-white">95汽油</Text>
                 </View>
 
                 <View className="flex flex-row  items-center align-middle">
-                  <View className=" border my-3 rounded-full">
-                    <RadioButton value="98汽油" />
-                  </View>
+                  {/* <View className=" border my-3 rounded-full"> */}
+                  <RadioButton value="98汽油" />
+                  {/* </View> */}
                   <Text className="text-xl dark:text-white">98汽油</Text>
                 </View>
 
                 <View className="flex flex-row  items-center align-middle">
-                  <View className=" border my-3 rounded-full">
-                    <RadioButton value="超級柴油" />
-                  </View>
+                  {/* <View className=" border my-3 rounded-full"> */}
+                  <RadioButton value="超級柴油" />
+                  {/* </View> */}
                   <Text className="text-xl dark:text-white">超級柴油</Text>
                 </View>
               </View>

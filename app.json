@@ -2,7 +2,7 @@
   "expo": {
     "name": "崴倫車隊",
     "slug": "weilun_app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/LOGO.jpg",
     "splash": {
@@ -16,7 +16,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.justindudududu29.weilunapp"
+      "bundleIdentifier": "com.justindudududu29.weilunapp",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -38,7 +41,7 @@
         "expo-image-picker",
         {
           "photosPermission": "...",
-          "cameraPermission": ""
+          "cameraPermission": "！"
         }
       ]
     ],

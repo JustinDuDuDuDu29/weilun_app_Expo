@@ -1,7 +1,10 @@
 import React from "react";
 import {
   Dimensions,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
+  SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -40,30 +43,38 @@ function GoodModal({
           flex: 1,
         }}
       >
-        <TouchableOpacity
+        {/* <TouchableOpacity
           activeOpacity={1}
-          className="w-screen flex justify-end"
+          className="w-screen flexXXX justify-endXXX"
+        > */}
+        <KeyboardAvoidingView
+          behavior="padding"
+          keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+          style={styles.container}
         >
-          <View
-            style={{
-              maxHeight: wh * 0.8,
-              backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
-              borderTopRightRadius: 20,
-              borderTopLeftRadius: 20,
-              padding: 5,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
-              elevation: 5,
-            }}
-          >
-            {children}
-          </View>
-        </TouchableOpacity>
+          <SafeAreaView>
+            <View
+              style={{
+                maxHeight: wh * 0.8,
+                backgroundColor: cS == "light" ? "#fff" : "#3A3B3C",
+                borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
+                padding: 5,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                // elevation: 5,
+              }}
+            >
+              {children}
+            </View>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+        {/* </TouchableOpacity> */}
       </TouchableOpacity>
     </Modal>
   );
@@ -71,5 +82,20 @@ function GoodModal({
 
 const ww = Dimensions.get("window").width;
 const wh = Dimensions.get("window").height;
-
+const styles = StyleSheet.create({
+  container: {
+    // bottom: 0,
+    // flex: 1,
+    // justifyContent: "flex-end",
+    // paddingHorizontal: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontWeight: "bold",
+  },
+  input: {
+    borderRadius: 5,
+  },
+});
 export default GoodModal;

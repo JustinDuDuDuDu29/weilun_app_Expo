@@ -132,7 +132,7 @@ function MaintainInfo({
         維修日期：
         {mInfo?.Createdate.split("T")[0] +
           " " +
-          mInfo?.Createdate.split("T")[1]}
+          mInfo?.Createdate.split("T")[1].split(".")[0]}
       </Text>
       <Text className="dark:text-white text-xl">詳細資訊：</Text>
       <View className="flex flex-row">

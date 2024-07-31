@@ -211,15 +211,15 @@ function EditUserInfoP({
               職位：
             </Text>
             <View className="flex-1 flex flex-row  items-center align-middle">
-              <View className=" border my-3 rounded-full">
-                <RadioButton value="driver" />
-              </View>
+              {/* <View className=" border my-3 rounded-full"> */}
+              <RadioButton value="driver" />
+              {/* </View> */}
               <Text className=" dark:text-white">司機</Text>
             </View>
             <View className="flex-1 flex flex-row  items-center align-middle">
-              <View className=" border my-3 rounded-full">
-                <RadioButton value="cmpAdmin" />
-              </View>
+              {/* <View className=" border my-3 rounded-full"> */}
+              <RadioButton value="cmpAdmin" />
+              {/* </View> */}
               <Text className=" dark:text-white">公司負責人</Text>
             </View>
           </View>

@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   View,
   Text,
+  Platform,
 } from "react-native";
 import UploadPic from "./UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
@@ -14,7 +15,7 @@ import { ImgT, imgUrl } from "../types/ImgT";
 import { useAtom, useStore } from "jotai";
 import { GIBEDEIMGB0SS, callAPIForm } from "../util/callAPIUtil";
 import { fnAtom, userInfo } from "../App";
-
+import * as FileSystem from "expo-file-system";
 function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
   const store = useStore();
 
@@ -158,9 +159,13 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
           className=" border border-purple-400 bg-purple-300 rounded-xl py-1 my-2"
           onPress={async () => {
             const f = new FormData();
-
             if (truckLicense && !("headers" in truckLicense)) {
-              f.append("TruckLicense", truckLicense!);
+              f.append("TruckLicense", {
+                name: truckLicense.name,
+                uri: truckLicense.uri,
+              });
+              console.log(truckLicense.uri);
+              // f.append("TruckLicense", truckLicense!);
             }
 
             if (driverLicense && !("headers" in driverLicense!)) {
@@ -174,6 +179,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             if (registration && !("headers" in registration!)) {
               f.append("Registration", registration!);
             }
+            console.log(f);
             try {
               console.log("...");
 
@@ -190,11 +196,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
               Alert.alert("完成", "管理員將確認您的資料", [{ text: "ok" }]);
             } catch (error) {
               Alert.alert("糟糕", "好像出錯了...", [{ text: "ok" }]);
-              if (error instanceof TypeError) {
-                console.log(error.cause + "\n");
-                console.log(error.message + "\n");
-                console.log(error.stack + "\n");
-              }
+              console.log(error);
             }
           }}
         >

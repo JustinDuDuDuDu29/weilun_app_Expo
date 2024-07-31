@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
+import * as Linking from "expo-linking";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker";
 function ChoosePicDrawer({
@@ -18,6 +19,8 @@ function ChoosePicDrawer({
   tarFun: Function;
 }): React.JSX.Element {
   const hh = Dimensions.get("window").height;
+  const [cameraStatus, requestCameraPermission] =
+    ImagePicker.useCameraPermissions();
 
   return (
     <SafeAreaView>
@@ -25,6 +28,23 @@ function ChoosePicDrawer({
         <Pressable
           style={{ height: hh * 0.1 }}
           onPress={async () => {
+            if (cameraStatus) {
+              if (
+                cameraStatus.status ===
+                  ImagePicker.PermissionStatus.UNDETERMINED ||
+                (cameraStatus.status === ImagePicker.PermissionStatus.DENIED &&
+                  cameraStatus.canAskAgain)
+              ) {
+                const permission = await requestCameraPermission();
+                if (permission.granted) {
+                }
+              } else if (
+                cameraStatus.status === ImagePicker.PermissionStatus.DENIED
+              ) {
+                await Linking.openSettings();
+              } else {
+              }
+            }
             const result = await ImagePicker.launchCameraAsync({
               mediaTypes: ImagePicker.MediaTypeOptions.Images,
             });

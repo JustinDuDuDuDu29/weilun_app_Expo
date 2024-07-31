@@ -27,7 +27,7 @@ function TurnOver(): React.JSX.Element {
   const hh = Dimensions.get("window").height;
   const [data, setData] = useState<revT[]>();
   const [gDate, setGData] = useState<[]>();
-  const [max, setMax] = useState<number>(0);
+  const [max, setMax] = useState<number>(-100);
   const [cj, setCJ] = useState<ClaimedJob[]>();
 
   const cS = usc();
@@ -51,17 +51,20 @@ function TurnOver(): React.JSX.Element {
         throw res;
       }
       setData(data);
-      let max = -100;
+      let tempMax = -100;
       const aa = data?.map((d: revT, i: number) => {
-        if (d.Earn > max) setMax(d.Earn);
+        if (d.Earn > tempMax) {
+          tempMax = d.Earn;
+        }
         return {
           value: d.Earn,
           dataPointText: d.Earn.toString(),
           label: `${new Date().getFullYear()}/${new Date().getMonth() - 1 + i}`,
         };
       });
-
+      setMax(tempMax * 1.3);
       setGData(aa);
+      console.log(aa);
       const ll = await callAPI(
         `/api/claimed/list?${
           store.get(fnAtom).getUserInfofn()?.Role === 300
@@ -103,13 +106,14 @@ function TurnOver(): React.JSX.Element {
     getData();
   }, [isFocus]);
   const navigation = useNavigation();
-  if (isLoading) {
+  if (isLoading || max == -10) {
     return <SplashScreen />;
   }
   return (
     <SafeAreaView className="px-3 my-2">
       <ScrollView className="px-3">
         <View className=" px-5">
+          {/* <Text>{max}</Text> */}
           <LineChart
             backgroundColor={cS == "light" ? "white" : "#3A3B3C"}
             initialSpacing={25}
@@ -120,7 +124,7 @@ function TurnOver(): React.JSX.Element {
             textShiftX={14}
             thickness={5}
             hideRules
-            maxValue={100 + max + max / 10}
+            maxValue={max}
             hideYAxisText
             yAxisColor={cS == "light" ? "white" : "#3A3B3C"}
             xAxisColor={cS == "light" ? "#3A3B3C" : "white"}
