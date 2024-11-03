@@ -8,21 +8,11 @@ import {
   Alert,
   Text,
   useColorScheme as usc,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Modal,
-  TouchableOpacity,
+  StyleSheet,
 } from "react-native";
 import MaintainBlock from "../components/MaintainBlock";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
-import { FAB, Icon } from "react-native-paper";
-import { StyleSheet } from "nativewind";
-import GoodModal from "../components/GoodModal";
-import SmallModal from "../components/SmallModal";
 import "react-native-get-random-values";
-import { v4 as uuidv4 } from "uuid";
 import { callAPI, callAPIForm } from "../util/callAPIUtil";
 import { useAtom, useStore } from "jotai";
 import { useIsFocused } from "@react-navigation/native";

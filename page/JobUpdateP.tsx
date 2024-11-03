@@ -11,12 +11,12 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  StyleSheet,
 } from "react-native";
 import { useColorScheme as usc } from "react-native";
 
 import { NullString, jobItemT, jobItemTS } from "../types/JobItemT";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { StyleSheet } from "nativewind";
 import { Dropdown } from "react-native-element-dropdown";
 import { NullDate, cmpInfo } from "../types/userT";
 import { callAPI } from "../util/callAPIUtil";

@@ -7,10 +7,10 @@ import {
   Pressable,
   Alert,
   useColorScheme as usc,
+  StyleSheet,
 } from "react-native";
 import { NewUser, cmpInfo, inUserT } from "../types/userT";
 
-import { StyleSheet } from "nativewind";
 import { Icon, RadioButton } from "react-native-paper";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";

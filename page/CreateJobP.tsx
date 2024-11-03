@@ -12,12 +12,12 @@ import {
   View,
   Text,
   Alert,
+  StyleSheet,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 // import { styles } from "react-native-gifted-charts/src/LineChart/styles";
 import { NullString, jobItemTS } from "../types/JobItemT";
 import { useColorScheme as usc } from "react-native";
-import { StyleSheet } from "nativewind";
 import { mode } from "d3";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { callAPI } from "../util/callAPIUtil";

@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   View,
   Alert,
+  StyleSheet,
 } from "react-native";
 import _data from "../asset/fakeData/_jobs.json";
 import { jobItemT, jobItemTS } from "../types/JobItemT";
@@ -14,7 +15,6 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { callAPI } from "../util/callAPIUtil";
 import { FAB, TextInput } from "react-native-paper";
-import { StyleSheet } from "nativewind";
 import { cmpInfo } from "../types/userT";
 import { useColorScheme as usc } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";

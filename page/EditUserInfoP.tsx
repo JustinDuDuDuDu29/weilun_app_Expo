@@ -7,11 +7,10 @@ import {
   View,
   Text,
   useColorScheme as usc,
+  StyleSheet,
 } from "react-native";
 import { NewUser, cmpInfo, inUserT } from "../types/userT";
 import { Dropdown } from "react-native-element-dropdown";
-import { StyleSheet } from "nativewind";
-
 import { RadioButton } from "react-native-paper";
 import { callAPI } from "../util/callAPIUtil";
 import { RouteProp, useNavigation } from "@react-navigation/native";
@@ -28,6 +27,8 @@ function EditUserInfoP({
 }): React.JSX.Element {
   const store = useStore();
   const cS = usc();
+  const [canPress, setCanPress] = useState<boolean>(false);
+
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
   const [isFocus, setIsFocus] = useState(false);
   const [value, setValue] = useState(null);
@@ -65,6 +66,7 @@ function EditUserInfoP({
   const navigation = useNavigation<ScreenProp>();
   const insets = useSafeAreaInsets();
   const submitFun = async () => {
+    setCanPress(true);
     try {
       const res = await callAPI(
         `/api/user/${route.params.OInfo.ID}`,
@@ -103,6 +105,8 @@ function EditUserInfoP({
       } else {
         Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
+    } finally {
+      setCanPress(false);
     }
   };
   return (
@@ -324,6 +328,7 @@ function EditUserInfoP({
         <Pressable
           className="border w-1/3 rounded-lg bg-violet-300 px-3 py-2"
           onPress={submitFun}
+          disabled={canPress}
         >
           <Text
             style={{ verticalAlign: "middle", textAlign: "center" }}

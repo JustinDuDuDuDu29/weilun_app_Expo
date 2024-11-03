@@ -29,8 +29,9 @@ function FinishJob(): React.JSX.Element {
   // const [getPendingJob, setPendingJob] = useAtom(pendingJob);
   const navigation = useNavigation<ScreenProp>();
   const store = useStore();
-
+  const [disable, setDisable] = useState<boolean>(false);
   const finishJobf = async () => {
+    setDisable(true);
     try {
       console.log(finishImg);
       if (!RUEmpty(finishImg)) {
@@ -54,6 +55,8 @@ function FinishJob(): React.JSX.Element {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setDisable(false);
     }
   };
 
@@ -80,6 +83,7 @@ function FinishJob(): React.JSX.Element {
         <View className="my-5">
           <Pressable
             className="bg-blue-300 rounded-lg py-2"
+            disabled={disable}
             onPress={async () => {
               await finishJobf();
             }}

@@ -15,11 +15,11 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
+  StyleSheet,
 } from "react-native";
 import MaintainBlock from "../components/MaintainBlock";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
 import { FAB, Icon } from "react-native-paper";
-import { StyleSheet } from "nativewind";
 import GoodModal from "../components/GoodModal";
 import SmallModal from "../components/SmallModal";
 import "react-native-get-random-values";
@@ -43,6 +43,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   const [dd, setData] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<{ [key: string]: boolean }>({});
   const store = useStore();
+  const [canPress, setCanPress] = useState<boolean>(false);
   // store.get(fnAtom).getUserInfofn()
   const getData = useCallback(async () => {
     try {
@@ -215,6 +216,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   };
 
   const handleSubmit = async () => {
+    setCanPress(true);
     const f = new FormData();
 
     if (type === "gas") {
@@ -248,6 +250,8 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setCanPress(false);
     }
   };
 
@@ -430,6 +434,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                           onPress={async () => {
                             await handleSubmit();
                           }}
+                          disabled={canPress}
                           className="my-4 bg-lime-200 w-2/3 rounded-xl py-2 "
                         >
                           <Text

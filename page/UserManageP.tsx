@@ -10,12 +10,12 @@ import {
   TouchableWithoutFeedback,
   View,
   Text,
+  StyleSheet,
 } from "react-native";
 import { callAPI, callAPIAbort } from "../util/callAPIUtil";
 import { NewUser, cmpInfo, inUserT, userLS } from "../types/userT";
 import UseListEl from "../components/UserListEl";
 import { FAB, RadioButton, TextInput } from "react-native-paper";
-import { StyleSheet } from "nativewind";
 import GoodModal from "../components/GoodModal";
 
 import { Dropdown } from "react-native-element-dropdown";

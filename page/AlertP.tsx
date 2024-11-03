@@ -10,13 +10,13 @@ import {
   TouchableWithoutFeedback,
   View,
   Text,
+  StyleSheet,
 } from "react-native";
 import { callAPI } from "../util/callAPIUtil";
 import { alertT, newAlertT } from "../types/alertT";
 import AlertBlock from "../components/AlertBlock";
 import { FAB, TextInput } from "react-native-paper";
 import GoodModal from "../components/GoodModal";
-import { StyleSheet } from "nativewind";
 import { cmpInfo } from "../types/userT";
 import { useAtom, useStore } from "jotai";
 import { Dropdown } from "react-native-element-dropdown";
@@ -27,7 +27,7 @@ import { AlertMe } from "../util/AlertMe";
 
 function AlertP(): React.JSX.Element {
   const cS = usc();
-
+  const [disable, setDisable] = useState<boolean>(false);
   const getData = useCallback(async () => {
     try {
       const res = await callAPI("/api/alert", "GET", {}, true);
@@ -69,6 +69,7 @@ function AlertP(): React.JSX.Element {
   const [newAlert, setNewAlert] = useState<newAlertT>();
   const store = useStore();
   const handleSubmit = async () => {
+    setDisable(true);
     try {
       const res = await callAPI("/api/alert", "POST", newAlert!, true);
       if (!res.ok) {
@@ -101,6 +102,8 @@ function AlertP(): React.JSX.Element {
       } else {
         Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
+    } finally {
+      setDisable(false);
     }
   };
   const insets = useSafeAreaInsets();
@@ -187,6 +190,7 @@ function AlertP(): React.JSX.Element {
             </View>
             <Pressable
               className="bg-blue-200 py-3 rounded-xl mb-3"
+              disabled={disable}
               onPress={async () => {
                 await handleSubmit();
               }}

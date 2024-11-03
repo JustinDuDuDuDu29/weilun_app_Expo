@@ -12,11 +12,12 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   ActivityIndicator,
+  StyleSheet,
 } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { callAPI, callAPIAbort } from "../util/callAPIUtil";
 import { NewUser, cmpInfo, userLS } from "../types/userT";
-import { StyleSheet } from "nativewind";
+// import { StyleSheet } from "nativewind";
 import { RadioButton } from "react-native-paper";
 import GoodModal from "./GoodModal";
 import { useColorScheme as usc, StatusBar } from "react-native";
@@ -155,8 +156,9 @@ function SearchComp(props: {
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-
+  const [canPress, setCanPress] = useState(false);
   async function handleSubmit() {
+    setCanPress(true);
     try {
       if (type === "cmp") {
         if (cmpName == "") {
@@ -218,6 +220,8 @@ function SearchComp(props: {
       if (error.message == "400") {
         Alert.alert("歐不", "資料似乎不完整呢，再確認一下吧");
       }
+    } finally {
+      setCanPress(false);
     }
   }
 
@@ -581,6 +585,7 @@ function SearchComp(props: {
                     // handle sumit
                     handleSubmit();
                   }}
+                  disabled={canPress}
                 >
                   <Text
                     className=" dark:text-white text-xl"

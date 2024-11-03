@@ -29,6 +29,7 @@ function SmallModal({
   setTmpNew: Function;
 }): React.JSX.Element {
   const cS = usc();
+  const [canPress, setCanPress] = useState(false);
 
   return (
     <View>
@@ -121,8 +122,17 @@ function SmallModal({
                 <Pressable
                   className="flex-1 h-full py-4"
                   onPress={() => {
-                    addToGasLiter();
+                    try {
+                      setCanPress(true);
+
+                      addToGasLiter();
+                    } catch (error) {
+                      console.log(error);
+                    } finally {
+                      setCanPress(false);
+                    }
                   }}
+                  disabled={canPress}
                 >
                   <Text
                     className="text-center text-xl dark:text-white"

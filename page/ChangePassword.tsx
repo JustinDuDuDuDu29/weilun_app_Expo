@@ -28,10 +28,16 @@ function ChangePassword(): React.JSX.Element {
   const [secure2, setSecure2] = useState(true);
   // const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const [loginState, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  const [canPress, setCanPress] = useState<boolean>(false);
+
   const store = useStore();
   const setPwd = async () => {
+    setCanPress(true);
     if (newPassword != passwordA) {
       Alert.alert("糟糕！", "新密碼不相符！", [{ text: "OK" }]);
+      setCanPress(true);
+
+      return;
     }
     try {
       const res = await callAPI(
@@ -79,6 +85,8 @@ function ChangePassword(): React.JSX.Element {
       } else {
         Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
+    } finally {
+      setCanPress(false);
     }
   };
 
@@ -131,6 +139,7 @@ function ChangePassword(): React.JSX.Element {
             onPress={async () => {
               await setPwd();
             }}
+            disabled={canPress}
           >
             <Text
               className="text-xl text-stone-800"
