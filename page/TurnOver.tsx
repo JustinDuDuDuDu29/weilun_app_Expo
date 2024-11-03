@@ -7,6 +7,8 @@ import {
   useColorScheme as usc,
   ScrollView,
   Alert,
+  ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { callAPI } from "../util/callAPIUtil";
@@ -15,7 +17,7 @@ import { LineChart } from "react-native-gifted-charts";
 import CJBlock from "../components/CJBlock";
 import { useAtom, useStore } from "jotai";
 import { ClaimedJob } from "../types/JobItemT";
-import { SplashScreen } from "../components/Aplash";
+// import { SplashScreen } from "../components/Aplash";
 import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
 
@@ -29,6 +31,8 @@ function TurnOver(): React.JSX.Element {
   const [gDate, setGData] = useState<[]>();
   const [max, setMax] = useState<number>(-100);
   const [cj, setCJ] = useState<ClaimedJob[]>();
+  const [year, SetYear] = useState<number>(new Date().getFullYear());
+  const [month, SetMonth] = useState<number>(new Date().getMonth());
 
   const cS = usc();
   const store = useStore();
@@ -102,34 +106,70 @@ function TurnOver(): React.JSX.Element {
     }
   }, []);
 
+  const getCompanyList = async () => {
+    try {
+      setIsLoading(true);
+    } catch (err) {
+      if (err instanceof Response) {
+        switch (err.status) {
+          case 451:
+            store.get(fnAtom).codefn();
+            break;
+
+          default:
+            AlertMe(err);
+            break;
+        }
+      } else if (err instanceof TypeError) {
+        if (err.message == "Network request failed") {
+          Alert.alert("糟糕！", "請檢察網路有沒有開", [
+            { text: "OK", onPress: () => {} },
+          ]);
+        }
+      } else {
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+      }
+    }
+  };
+
   useEffect(() => {
-    getData();
+    // getData();
   }, [isFocus]);
   const navigation = useNavigation();
   if (isLoading || max == -10) {
-    return <SplashScreen />;
+    <ActivityIndicator size="large" />;
   }
   return (
     <SafeAreaView className="px-3 my-2">
       <ScrollView className="px-3">
-        <View className=" px-5">
-          {/* <Text>{max}</Text> */}
-          <LineChart
-            backgroundColor={cS == "light" ? "white" : "#3A3B3C"}
-            initialSpacing={25}
-            data={gDate}
-            height={hh / 4}
-            spacing={ww / 3}
-            textFontSize={15}
-            textShiftX={14}
-            thickness={5}
-            hideRules
-            maxValue={max}
-            hideYAxisText
-            yAxisColor={cS == "light" ? "white" : "#3A3B3C"}
-            xAxisColor={cS == "light" ? "#3A3B3C" : "white"}
-            color="#0BA5A4"
-          />
+        <View>
+          <Pressable
+            onPress={async () => {
+              if (month - 1 == 0) {
+                SetMonth(12);
+                SetYear(year - 1);
+              } else {
+                SetMonth(month - 1);
+              }
+              await getCompanyList();
+            }}
+          >
+            <Text>上個月</Text>
+          </Pressable>
+
+          <Pressable
+            onPress={async () => {
+              if (month + 1 == 13) {
+                SetMonth(1);
+                SetYear(year + 1);
+              } else {
+                SetMonth(month + 1);
+              }
+              await getCompanyList();
+            }}
+          >
+            <Text>下個月</Text>
+          </Pressable>
         </View>
         <View className="flex flex-row justify-around my-5">
           <View>

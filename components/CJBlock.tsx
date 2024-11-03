@@ -5,7 +5,13 @@ import { Icon } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 
-function CJBlock({ CJ }: { CJ: ClaimedJob }): React.JSX.Element {
+function CJBlock({
+  CJ,
+  removeFromList,
+}: {
+  CJ: ClaimedJob;
+  removeFromList: Function;
+}): React.JSX.Element {
   useEffect(() => {}, [CJ]);
 
   const navigation = useNavigation<ScreenProp>();
@@ -22,7 +28,10 @@ function CJBlock({ CJ }: { CJ: ClaimedJob }): React.JSX.Element {
             : "bg-lime-200"
         } my-3 py-2 pb-4 rounded-2xl w-full`}
         onPress={() => {
-          navigation.navigate("claimJobP", { claimedJob: CJ.ID });
+          navigation.navigate("claimJobP", {
+            claimedJob: CJ.ID,
+            removeFromList: removeFromList,
+          });
         }}
       >
         <View className="  flex flex-row justify-center content-center">

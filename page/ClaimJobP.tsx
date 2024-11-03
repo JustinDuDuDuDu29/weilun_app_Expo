@@ -20,7 +20,10 @@ import { AlertMe } from "../util/AlertMe";
 function ClaimJobP({
   route,
 }: {
-  route: RouteProp<{ params: { claimedJob: number } }, "params">;
+  route: RouteProp<
+    { params: { claimedJob: number; removeFromList: Function } },
+    "params"
+  >;
 }): React.JSX.Element {
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const navigation = useNavigation<ScreenProp>();
@@ -78,6 +81,7 @@ function ClaimJobP({
       const call = await callAPI(`/api/claimed/${CJ?.ID}`, "DELETE", {}, true);
       if (call.status == 200) {
         Alert.alert("完成", "刪除成功");
+        route.params.removeFromList(CJ?.ID);
         // navigation.navigate("adminClaimedJobP");
         navigation.goBack();
       }
@@ -97,6 +101,7 @@ function ClaimJobP({
       if (call.status == 200) {
         Alert.alert("完成", "核可資料成功");
         getData();
+        route.params.removeFromList(CJ?.ID);
       }
     } catch (error) {
       console.error("Error approving job: ", error);

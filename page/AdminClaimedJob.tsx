@@ -14,7 +14,15 @@ function AdminClaimedJob(): React.JSX.Element {
   const [claimedList, setClaimedList] = useState<ClaimedJob[]>([]);
   const focused = useIsFocused();
   const store = useStore();
-  const getData = useCallback(async () => {
+  const removeFromList = (id: number) => {
+    setClaimedList(
+      claimedList.filter((e) => {
+        return e.ID != id;
+      })
+    );
+  };
+
+  const getData = async () => {
     try {
       const res = await callAPI("/api/claimed?cat=pending", "GET", {}, true);
       if (res.status == 200) {
@@ -44,11 +52,12 @@ function AdminClaimedJob(): React.JSX.Element {
         Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
     }
-  }, []);
+  };
 
   useEffect(() => {
     getData();
   }, [focused]);
+
   const insets = useSafeAreaInsets();
 
   return (

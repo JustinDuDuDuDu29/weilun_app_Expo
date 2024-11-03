@@ -24,7 +24,7 @@ export type RootStackParamList = {
     jobUpdateP: {jobItem: jobItemT};
     alertP: undefined;
     adminClaimedJobP: undefined;
-    claimJobP: { claimedJob: number};
+    claimJobP: { claimedJob: number, removeFromList:Function};
     maintainInfoP: { maintainID: number};
     userInfoAdminP: { uid: number};
     editUserInfoP: { OInfo: inUserT};
