@@ -1,89 +1,52 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
-  SafeAreaView,
   View,
   Text,
-  useColorScheme as usc,
-  ScrollView,
   Alert,
   ActivityIndicator,
   Pressable,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
 } from "react-native";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { callAPI } from "../util/callAPIUtil";
-import { revT } from "../types/revenueT";
-import { LineChart } from "react-native-gifted-charts";
-import CJBlock from "../components/CJBlock";
+import { cmpJobT, revT } from "../types/revenueT";
 import { useAtom, useStore } from "jotai";
-import { ClaimedJob } from "../types/JobItemT";
-// import { SplashScreen } from "../components/Aplash";
 import { fnAtom, userInfo } from "../App";
+import CmpJobBlock from "../components/CmpJobBlock";
 import { AlertMe } from "../util/AlertMe";
 
 function TurnOver(): React.JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
-
-  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  const [getUserInfo] = useAtom(userInfo);
   const ww = Dimensions.get("window").width;
-  const hh = Dimensions.get("window").height;
   const [data, setData] = useState<revT[]>();
-  const [gDate, setGData] = useState<[]>();
+  const [gDate, setGData] = useState<[]>([]);
+  const [cmps, setCmps] = useState<cmpJobT[]>([]);
   const [max, setMax] = useState<number>(-100);
-  const [cj, setCJ] = useState<ClaimedJob[]>();
   const [year, SetYear] = useState<number>(new Date().getFullYear());
-  const [month, SetMonth] = useState<number>(new Date().getMonth());
-
-  const cS = usc();
+  const [month, SetMonth] = useState<number>(new Date().getMonth() + 1);
   const store = useStore();
   const isFocus = useIsFocused();
-  const getData = useCallback(async () => {
+
+  // Function to fetch company list with error handling
+  const getCompanyList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await callAPI(
-        `/api/revenue?${
-          store.get(fnAtom).getUserInfofn()?.Role === 300
-            ? "id=" + store.get(fnAtom).getUserInfofn()?.ID
-            : "cmp=" + store.get(fnAtom).getUserInfofn()?.Belongcmp
-        }`,
+      const response = await callAPI(
+        `/api/cmp/job?year=${year}&month=${month}`,
         "GET",
         {},
         true
       );
-      const data = await res.json();
-      if (!res.ok) {
-        throw res;
-      }
-      setData(data);
-      let tempMax = -100;
-      const aa = data?.map((d: revT, i: number) => {
-        if (d.Earn > tempMax) {
-          tempMax = d.Earn;
-        }
-        return {
-          value: d.Earn,
-          dataPointText: d.Earn.toString(),
-          label: `${new Date().getFullYear()}/${new Date().getMonth() - 1 + i}`,
-        };
-      });
-      setMax(tempMax * 1.3);
-      setGData(aa);
-      console.log(aa);
-      const ll = await callAPI(
-        `/api/claimed/list?${
-          store.get(fnAtom).getUserInfofn()?.Role === 300
-            ? "id=" + store.get(fnAtom).getUserInfofn()?.ID
-            : "cmp=" + store.get(fnAtom).getUserInfofn()?.Belongcmp
-        }`,
-        "GET",
-        {},
-        true
-      );
-      if (!ll.ok) throw ll;
-      const cj = await ll.json();
-      setCJ(cj);
+      const res = await response.json();
+      setCmps(res);
       setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
+
       if (err instanceof Response) {
         switch (err.status) {
           case 451:
@@ -95,130 +58,110 @@ function TurnOver(): React.JSX.Element {
             break;
         }
       } else if (err instanceof TypeError) {
-        if (err.message == "Network request failed") {
+        if (err.message === "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
             { text: "OK", onPress: () => {} },
           ]);
         }
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+        Alert.alert("GG", `發生未知錯誤\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
     }
-  }, []);
-
-  const getCompanyList = async () => {
-    try {
-      setIsLoading(true);
-    } catch (err) {
-      if (err instanceof Response) {
-        switch (err.status) {
-          case 451:
-            store.get(fnAtom).codefn();
-            break;
-
-          default:
-            AlertMe(err);
-            break;
-        }
-      } else if (err instanceof TypeError) {
-        if (err.message == "Network request failed") {
-          Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => {} },
-          ]);
-        }
-      } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
-      }
-    }
-  };
+  }, [year, month]);
 
   useEffect(() => {
-    // getData();
-  }, [isFocus]);
-  const navigation = useNavigation();
-  if (isLoading || max == -10) {
-    <ActivityIndicator size="large" />;
-  }
-  return (
-    <SafeAreaView className="px-3 my-2">
-      <ScrollView className="px-3">
-        <View>
-          <Pressable
-            onPress={async () => {
-              if (month - 1 == 0) {
-                SetMonth(12);
-                SetYear(year - 1);
-              } else {
-                SetMonth(month - 1);
-              }
-              await getCompanyList();
-            }}
-          >
-            <Text>上個月</Text>
-          </Pressable>
+    getCompanyList();
+  }, [isFocus, year, month]);
 
-          <Pressable
-            onPress={async () => {
-              if (month + 1 == 13) {
-                SetMonth(1);
-                SetYear(year + 1);
-              } else {
-                SetMonth(month + 1);
-              }
-              await getCompanyList();
-            }}
-          >
-            <Text>下個月</Text>
-          </Pressable>
-        </View>
-        <View className="flex flex-row justify-around my-5">
-          <View>
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-2xl dark:text-white"
-            >
-              {data ? data[2].Earn : 0}
-            </Text>
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-2xl dark:text-white"
-            >
-              (比上個月多{data ? data[2].Earn - data[1].Earn : 0})
-            </Text>
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-2xl dark:text-white"
-            >
-              本月營業額
-            </Text>
-          </View>
-          <View>
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-2xl dark:text-white"
-            >
-              {data ? data[2].Count : 0}
-            </Text>
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-2xl dark:text-white"
-            >
-              (比上個月多{data ? data[2].Count - data[1].Count : 0})
-            </Text>
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-2xl dark:text-white"
-            >
-              本月接案數
-            </Text>
-          </View>
-        </View>
-        {cj?.map((d) => {
-          return <CJBlock CJ={d} key={d.ID} />;
-        })}
-      </ScrollView>
+  const handlePrevMonth = async () => {
+    if (month - 1 === 0) {
+      SetMonth(12);
+      SetYear(year - 1);
+    } else {
+      SetMonth(month - 1);
+    }
+    await getCompanyList();
+  };
+
+  const handleNextMonth = async () => {
+    if (month + 1 === 13) {
+      SetMonth(1);
+      SetYear(year + 1);
+    } else {
+      SetMonth(month + 1);
+    }
+    await getCompanyList();
+  };
+
+  const renderCmpJobBlock = ({ item }: { item: cmpJobT }) => (
+    <CmpJobBlock cmpJob={item} key={item.ID} />
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <FlatList
+          data={cmps}
+          keyExtractor={(item) => item.ID.toString()}
+          renderItem={renderCmpJobBlock}
+          ListHeaderComponent={
+            <View style={styles.header}>
+              <Pressable onPress={handlePrevMonth}>
+                <Text>上個月</Text>
+              </Pressable>
+              <Text>{year} / {month}</Text>
+              <Pressable onPress={handleNextMonth}>
+                <Text>下個月</Text>
+              </Pressable>
+              <View style={styles.revenueContainer}>
+                <View style={styles.revenueBox}>
+                  <Text style={styles.revenueText}>{data ? data[2]?.Earn : 0}</Text>
+                  <Text style={styles.revenueText}>
+                    (比上個月多 {data ? data[2]?.Earn - data[1]?.Earn : 0})
+                  </Text>
+                  <Text>本月營業額</Text>
+                </View>
+                <View style={styles.revenueBox}>
+                  <Text style={styles.revenueText}>{data ? data[2]?.Count : 0}</Text>
+                  <Text style={styles.revenueText}>
+                    (比上個月多 {data ? data[2]?.Count - data[1]?.Count : 0})
+                  </Text>
+                  <Text>本月接案數</Text>
+                </View>
+              </View>
+            </View>
+          }
+        />
+      )}
     </SafeAreaView>
   );
 }
 
 export default TurnOver;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  revenueContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginVertical: 20,
+  },
+  revenueBox: {
+    alignItems: "center",
+  },
+  revenueText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});

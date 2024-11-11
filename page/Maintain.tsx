@@ -100,8 +100,13 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     if (!visibility[key]) {
       if (jobInfo[key].length === 0) {
         try {
+          console.log(`/api/repair?driverid=${
+              store.get(fnAtom).getUserInfofn()?.Role === 100
+                ? uid
+                : store.get(fnAtom).getUserInfofn()?.ID
+            }&ym=${key}`)
           const res = await callAPI(
-            `/api/repair?uid=${
+            `/api/repair?driverid=${
               store.get(fnAtom).getUserInfofn()?.Role === 100
                 ? uid
                 : store.get(fnAtom).getUserInfofn()?.ID
@@ -160,7 +165,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     id: uuidv4(),
     price: 0,
     quantity: 0,
-    name: "92汽油",
+    name: "",
     place: "",
   });
 
@@ -200,7 +205,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
       id: uuidv4(),
       price: 0,
       quantity: 0,
-      name: "92汽油",
+      name: "",
     });
     setVisible(false);
     setModalVisible(false);
@@ -238,7 +243,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     f.append("place", place);
     try {
       const res = await callAPIForm(
-        `/api/repair?type=${type}`,
+        `/api/repair`,
         "POST",
         f,
         true

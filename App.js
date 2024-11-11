@@ -118,13 +118,13 @@ function App() {
         setIsLoading(false);
 
         const ver = await (await callAPI("/api", "GET", {}, false)).json();
-        console.log(ver.version ==  process.env.EXPO_PUBLIC_VER);
-        if (ver.version != process.env.EXPO_PUBLIC_VER) {
-          Alert.alert("糟糕！", "請更新一下版本唷～");
-          setIsLoading(true);
+        // console.log(ver.version ==  process.env.EXPO_PUBLIC_VER);
+        // if (ver.version != process.env.EXPO_PUBLIC_VER) {
+        //   Alert.alert("糟糕！", "請更新一下版本唷～");
+        //   setIsLoading(true);
 
-          // RNExitApp.exitApp();
-        }
+        //   // RNExitApp.exitApp();
+        // }
       } catch (error) {
         console.log("err: ", error);
       }
