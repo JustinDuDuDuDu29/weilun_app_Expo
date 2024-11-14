@@ -40,9 +40,9 @@ function MGas(
           <RadioButton.Group
             onValueChange={(selected) => {
               // setNewInfo({...newInfo, name: selected});
-              setTmpNew({ ...tmpNew, name: selected });
+              setTmpNew({ ...tmpNew, itemName: selected });
             }}
-            value={tmpNew.name!}
+            value={tmpNew.itemName!}
           >
             <View>
               <Text className="text-2xl dark:text-white">請選擇種類：</Text>
@@ -94,7 +94,7 @@ function MGas(
               label={"總價"}
               keyboardType="number-pad"
               onChangeText={(e) => {
-                setTmpNew({ ...tmpNew, price: parseInt(e) });
+                setTmpNew({ ...tmpNew, totalPrice: parseInt(e) });
               }}
             />
           </View>
@@ -113,11 +113,11 @@ function MGas(
                 <Pressable className="flex flex-row w-full py-2">
                   <View className="flex flex-row justify-between w-full bg-neutral-300 rounded-lg px-4 py-2">
                     <View className="flex flex-col">
-                      <Text className="text-xl">品名：{item.item.name}</Text>
+                      <Text className="text-xl">品名：{item.item.itemName}</Text>
                       <Text className="text-xl">
                         數量：{item.item.quantity}
                       </Text>
-                      <Text className="text-xl">總價：{item.item.price}</Text>
+                      <Text className="text-xl">總價：{item.item.totalPrice}</Text>
                     </View>
                     <View className="flex flex-row items-center ">
                       <Pressable

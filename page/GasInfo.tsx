@@ -36,7 +36,7 @@ function GasInfo({
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(
-        `/api/repair?id=${route.params.maintainID}`,
+        `/api/gas?id=${route.params.maintainID}`,
         "GET",
         {},
         true
@@ -85,7 +85,7 @@ function GasInfo({
   const approveRepairFun = async () => {
     try {
       const call = await callAPI(
-        `/api/repair/approve/${mInfo?.ID}`,
+        `/api/gas/approve/${mInfo?.ID}`,
         "POST",
         {},
         true
@@ -102,7 +102,7 @@ function GasInfo({
   const deleteRepairFun = async () => {
     try {
       const call = await callAPI(
-        `/api/repair/${mInfo?.ID}`,
+        `/api/gas/${mInfo?.ID}`,
         "DELETE",
         {},
         true
@@ -124,7 +124,7 @@ function GasInfo({
       }));
 
       const res = await callAPI(
-        `/api/repair/updateItem`,
+        `/api/gas/updateItem`,
         "PUT",
         { 'UpdatedItems' :updatedItems },
         true
@@ -148,12 +148,12 @@ function GasInfo({
 
   const renderHeader = () => (
     <View>
-      <Text className="dark:text-white text-xl">維修編號：{mInfo?.ID}</Text>
+      <Text className="dark:text-white text-xl">加油編號：{mInfo?.ID}</Text>
       <Text className="dark:text-white text-xl">姓名：{mInfo?.Drivername}</Text>
       <Text className="dark:text-white text-xl">
         車牌號碼：{mInfo?.Platenum}
       </Text>
-      <Text className="dark:text-white text-xl">維修地點：{mInfo?.Place}</Text>
+      <Text className="dark:text-white text-xl">加油地點：{mInfo?.Place}</Text>
       <Text className="dark:text-white text-xl">
         所屬公司：{mInfo?.Cmpname}
       </Text>
@@ -204,7 +204,7 @@ function GasInfo({
 
   const renderFooter = () => (
     <View>
-      <Text className="dark:text-white text-xl">維修總價:{totalPrice}</Text>
+      <Text className="dark:text-white text-xl">加油總價:{totalPrice}</Text>
       <View className="my-2">
         <Text className="text-xl dark:text-white">照片：</Text>
         <UploadPicFCJob src={jobPic} />

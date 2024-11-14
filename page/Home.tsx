@@ -253,6 +253,21 @@ function Home(): React.JSX.Element {
                     <Text className="text-3xl dark:text-white">維修保養</Text>
                   </View>
                 </Pressable>
+                <Pressable
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => navigation.navigate("gasP")}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      source="tools"
+                      color={cS == "light" ? "black" : "white"}
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">加油</Text>
+                  </View>
+                </Pressable>
               </>
             )}
 
@@ -275,7 +290,7 @@ function Home(): React.JSX.Element {
               <JobBlockPJ setData={setData} />
             )}
 
-            {store.get(fnAtom).getUserInfofn().Role === 100 ? (
+            {store.get(fnAtom).getUserInfofn().Role <= 200 ? (
               <>
                 <Pressable
                   className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"

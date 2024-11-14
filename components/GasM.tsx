@@ -12,7 +12,7 @@ import MGas from "./MGas";
 import { v4 as uuidv4 } from "uuid";
 import { mInfoT } from "../types/maintainT";
 
-function GasM({
+function MaintainM({
   type,
   setType,
   setGasLiter,
@@ -71,12 +71,12 @@ function GasM({
                   {/* </View> */}
                   <Text className="text-xl dark:text-white">加油</Text>
                 </View>
-                <View className="flex flex-row  items-center align-middle">
+                {/* <View className="flex flex-row  items-center align-middle"> */}
                   {/* <View className=" border my-3 rounded-full"> */}
-                  <RadioButton value="maintain" />
+                  {/* <RadioButton value="maintain" /> */}
                   {/* </View> */}
-                  <Text className="text-xl dark:text-white">保養及維修</Text>
-                </View>
+                  {/* <Text className="text-xl dark:text-white">保養及維修</Text> */}
+                {/* </View> */}
               </View>
             </RadioButton.Group>
           </View>
@@ -124,4 +124,4 @@ function GasM({
   );
 }
 
-export default GasM;
+export default MaintainM;

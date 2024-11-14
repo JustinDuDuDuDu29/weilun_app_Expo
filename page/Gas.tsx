@@ -17,7 +17,7 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import MaintainBlock from "../components/MaintainBlock";
+import GasBlock from "../components/GasBlock";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
 import { FAB, Icon } from "react-native-paper";
 import GoodModal from "../components/GoodModal";
@@ -48,7 +48,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
   const getData = useCallback(async () => {
     try {
       const res = await callAPI(
-        `/api/repair/cj?id=${
+        `/api/gas/cj?id=${
           store.get(fnAtom).getUserInfofn()?.Role === 100
             ? uid
             : store.get(fnAtom).getUserInfofn()?.ID
@@ -65,6 +65,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
       setData(data);
       data.forEach((e) => {
         setJobInfo((oldArray) => ({ ...oldArray, [e]: [] }));
+        
         setVisibility((oldVisibility) => ({ ...oldVisibility, [e]: false }));
       });
     } catch (err) {
@@ -100,13 +101,13 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
     if (!visibility[key]) {
       if (jobInfo[key].length === 0) {
         try {
-          console.log(`/api/repair?driverid=${
+          console.log(`/api/gas?driverid=${
               store.get(fnAtom).getUserInfofn()?.Role === 100
                 ? uid
                 : store.get(fnAtom).getUserInfofn()?.ID
             }&ym=${key}`)
           const res = await callAPI(
-            `/api/repair?driverid=${
+            `/api/gas?driverid=${
               store.get(fnAtom).getUserInfofn()?.Role === 100
                 ? uid
                 : store.get(fnAtom).getUserInfofn()?.ID
@@ -154,7 +155,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
   const [type, setType] = useState<string>("gas");
   const [gasLiter, setGasLiter] = useState<mInfoT[]>([]);
   const actionSheetRef = useRef<ActionSheetRef>(null);
-  const [repairP, setRepairP] = useState<ImgT | imgUrl>();
+  const [gasP, setGasP] = useState<ImgT | imgUrl>();
 
   const pressFun = () => {
     actionSheetRef.current?.show();
@@ -163,10 +164,10 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
 
   const [tmpNew, setTmpNew] = useState<mInfoT>({
     id: uuidv4(),
-    price: 0,
+    totalPrice: 0,
     quantity: 0,
-    name: "",
-    place: "",
+    itemName: "",
+    create_date: ""
   });
 
   const removeByUUID = (id: string) => {
@@ -174,7 +175,9 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
   };
 
   const addToGasLiter = () => {
-    if (tmpNew.name === "" || tmpNew.price === 0 || tmpNew.quantity === 0) {
+    if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
+      console.log(tmpNew)
+
       Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
       return;
     }
@@ -191,9 +194,10 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
     setGasLiter(arr);
     setTmpNew({
       id: uuidv4(),
-      price: 0,
+      totalPrice: 0,
       quantity: 0,
-      name: "",
+      itemName: "",
+      create_date: "",
     });
     setModalVisible(false);
   };
@@ -203,13 +207,14 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
     setType("gas");
     setTmpNew({
       id: uuidv4(),
-      price: 0,
+      totalPrice: 0,
       quantity: 0,
-      name: "",
+      itemName: "",
+      create_date: "",
     });
     setVisible(false);
     setModalVisible(false);
-    setRepairP(undefined);
+    setGasP(undefined);
     setGasLiter([]);
     setPicModalV(false);
     setPlace("");
@@ -225,7 +230,8 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
     const f = new FormData();
 
     if (type === "gas") {
-      if (tmpNew.name === "" || tmpNew.price === 0 || tmpNew.quantity === 0) {
+      if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
+        console.log(tmpNew)
         Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
         return;
       }
@@ -238,12 +244,12 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
       return;
     }
 
-    f.append("repairInfo", JSON.stringify(gasLiter));
-    f.append("repairPic", repairP);
+    f.append("gasInfo", JSON.stringify(gasLiter));
+    f.append("gasPic", gasP);
     f.append("place", place);
     try {
       const res = await callAPIForm(
-        `/api/repair`,
+        `/api/gas`,
         "POST",
         f,
         true
@@ -299,10 +305,11 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
                       showsHorizontalScrollIndicator={false}
                       data={jobInfo[key]}
                       keyExtractor={(item) => {
+                        // console.log(item)
                         return item.ID!.toString();
                       }}
                       renderItem={({ item }: { item: maintainInfoT }) => (
-                        <MaintainBlock maintainInfo={item} />
+                        <GasBlock gasInfo={item} />
                       )}
                     />
                   </>
@@ -351,10 +358,12 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
                   onPress={async () => {
                     if (type === "gas") {
                       if (
-                        tmpNew.name === "" ||
-                        tmpNew.price === 0 ||
+                        tmpNew.itemName === "" ||
+                        tmpNew.totalPrice === 0 ||
                         tmpNew.quantity === 0
                       ) {
+        console.log(tmpNew)
+
                         Alert.alert("注意", "好像有東西沒填齊唷", [
                           { text: "OK" },
                         ]);
@@ -428,13 +437,13 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
                         type="big"
                         pressFun={pressFun}
                         canPress={true}
-                        src={repairP}
+                        src={gasP}
                         actionSheetRef={actionSheetRef}
-                        tarFun={setRepairP}
+                        tarFun={setGasP}
                         showText={"收據"}
                         showOption={false}
                       />
-                      {repairP && (
+                      {gasP && (
                         <Pressable
                           onPress={async () => {
                             await handleSubmit();

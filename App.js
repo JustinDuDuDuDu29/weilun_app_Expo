@@ -14,6 +14,7 @@ import { useColorScheme as usc, StatusBar, Alert } from "react-native";
 
 import TurnOver from "./page/TurnOver";
 import Maintain from "./page/Maintain";
+import Gas from "./page/Gas";
 import FinishJob from "./page/FinishJob";
 import UserInfo from "./page/UserInfo";
 import ChangePassword from "./page/ChangePassword";
@@ -31,17 +32,18 @@ import EditUserInfoP from "./page/EditUserInfoP";
 import CreateJobP from "./page/CreateJobP";
 import AdminMaintain from "./page/AdminMaintain";
 import { callAPI } from "./util/callAPIUtil";
+import GasInfo from "./page/GasInfo";
 
 export const isLoggedInAtom = atom(false);
 export const isLoading = atom(false);
 export const fnAtom = atom({
-  codefn: () => {},
-  logoutfn: async () => {},
-  loginfn: (boo) => {},
-  setPJfn: (pj) => {},
-  getPJfn: () => {},
-  getUserInfofn: () => {},
-  setUserInfofn: (uF) => {},
+  codefn: () => { },
+  logoutfn: async () => { },
+  loginfn: (boo) => { },
+  setPJfn: (pj) => { },
+  getPJfn: () => { },
+  getUserInfofn: () => { },
+  setUserInfofn: (uF) => { },
 });
 export const pendingJob = atom(null);
 export const userInfo = atom(null);
@@ -186,6 +188,14 @@ function App() {
                     <Stack.Screen
                       name="maintainInfoP"
                       component={MaintainInfo}
+                    />
+                    <Stack.Screen
+                      name="gasInfoP"
+                      component={GasInfo}
+                    />
+                    <Stack.Screen
+                      name="gasP"
+                      component={Gas}
                     />
                     <Stack.Screen
                       name="userInfoAdminP"

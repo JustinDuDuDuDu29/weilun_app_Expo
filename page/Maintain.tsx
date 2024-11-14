@@ -151,7 +151,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   const [visible, setVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [picModalV, setPicModalV] = useState(false);
-  const [type, setType] = useState<string>("gas");
+  const [type, setType] = useState<string>("maintain");
   const [gasLiter, setGasLiter] = useState<mInfoT[]>([]);
   const actionSheetRef = useRef<ActionSheetRef>(null);
   const [repairP, setRepairP] = useState<ImgT | imgUrl>();

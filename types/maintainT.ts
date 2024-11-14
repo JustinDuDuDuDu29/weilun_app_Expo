@@ -2,7 +2,7 @@ import { NullString } from "./JobItemT";
 import { NullDate } from "./userT";
 
 export type mInfoT = {
-  id: number;
+  id: number | string;
   itemName: string|null;
   quantity: number|null;
   totalPrice: number|null;
@@ -41,6 +41,6 @@ export type maintainInfoT = {
   Platenum: string;
   Createdate: string;
   Approveddate: NullDate;
-  Place: string;
+  Place: string | null;
   Pic:NullString;
 };

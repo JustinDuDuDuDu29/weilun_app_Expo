@@ -3,6 +3,8 @@ import { Pressable, Text, View, ActivityIndicator, FlatList, StyleSheet } from '
 import { cmpJobT } from '../types/revenueT';
 import { callAPI } from '../util/callAPIUtil';
 import { formatDate } from '../util/giveMeDate';
+import { useAtom } from 'jotai';
+import { userInfo } from '../App';
 
 type ClaimedJob = {
   ID: number;
@@ -19,7 +21,9 @@ type ClaimedJob = {
   Finishdate: { Time: string; Valid: boolean };
 };
 
-function CmpJobBlock({ cmpJob }: { cmpJob: cmpJobT }): React.JSX.Element {
+function CmpJobBlock({ cmpJob, year, month }: { cmpJob: cmpJobT, year: number, month: number }): React.JSX.Element {
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+
   const [showDetails, setShowDetails] = useState(false);
   const [claimedJobs, setClaimedJobs] = useState<ClaimedJob[]>([]);
   const [loading, setLoading] = useState(false);
@@ -29,7 +33,9 @@ function CmpJobBlock({ cmpJob }: { cmpJob: cmpJobT }): React.JSX.Element {
     try {
       setLoading(true);
       setError(null);
-      const response = await callAPI(`/api/claimed/list?cmp=${cmpJob.ID}`, 'GET', {}, true);
+      const str = `/api/claimed/list?` + (getUserInfo?.Role <=200 ? `cmp=${cmpJob.ID}&` : "" )+ `year=${year}&month=${month}`
+      console.log(str)
+      const response = await callAPI(str, 'GET', {}, true);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }

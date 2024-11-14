@@ -70,6 +70,7 @@ function TurnOver(): React.JSX.Element {
   }, [year, month]);
 
   useEffect(() => {
+    console.log('calling')
     getCompanyList();
   }, [isFocus, year, month]);
 
@@ -80,7 +81,7 @@ function TurnOver(): React.JSX.Element {
     } else {
       SetMonth(month - 1);
     }
-    await getCompanyList();
+    // await getCompanyList();
   };
 
   const handleNextMonth = async () => {
@@ -90,11 +91,11 @@ function TurnOver(): React.JSX.Element {
     } else {
       SetMonth(month + 1);
     }
-    await getCompanyList();
+    // await getCompanyList();
   };
 
   const renderCmpJobBlock = ({ item }: { item: cmpJobT }) => (
-    <CmpJobBlock cmpJob={item} key={item.ID} />
+    <CmpJobBlock cmpJob={item} key={item.ID} year={year} month={month} />
   );
 
   return (
@@ -115,7 +116,7 @@ function TurnOver(): React.JSX.Element {
               <Pressable onPress={handleNextMonth}>
                 <Text>下個月</Text>
               </Pressable>
-              <View style={styles.revenueContainer}>
+              {/* <View style={styles.revenueContainer}>
                 <View style={styles.revenueBox}>
                   <Text style={styles.revenueText}>{data ? data[2]?.Earn : 0}</Text>
                   <Text style={styles.revenueText}>
@@ -130,7 +131,7 @@ function TurnOver(): React.JSX.Element {
                   </Text>
                   <Text>本月接案數</Text>
                 </View>
-              </View>
+              </View> */}
             </View>
           }
         />

@@ -65,15 +65,15 @@ function MaintainM({
               value={type}
             >
               <View className="flex flex-col">
-                <View className="flex flex-row  items-center align-middle">
+                {/* <View className="flex flex-row  items-center align-middle"> */}
                   {/* <View className=" border my-3 rounded-full"> */}
-                  <RadioButton value="gas" />
+                  {/* <RadioButton value="gas" /> */}
                   {/* </View> */}
-                  <Text className="text-xl dark:text-white">加油</Text>
-                </View>
+                  {/* <Text className="text-xl dark:text-white">加油</Text> */}
+                {/* </View> */}
                 <View className="flex flex-row  items-center align-middle">
                   {/* <View className=" border my-3 rounded-full"> */}
-                  <RadioButton value="maintain" />
+                  <RadioButton value="maintain" status="checked" />
                   {/* </View> */}
                   <Text className="text-xl dark:text-white">保養及維修</Text>
                 </View>
@@ -103,7 +103,7 @@ function MaintainM({
         </View>
       </Pressable>
       <MGas
-        type={type}
+        type={"maintain"}
         tmpNew={tmpNew}
         setTmpNew={setTmpNew}
         removeByUUID={removeByUUID}

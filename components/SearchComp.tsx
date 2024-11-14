@@ -22,8 +22,8 @@ import { RadioButton } from "react-native-paper";
 import GoodModal from "./GoodModal";
 import { useColorScheme as usc, StatusBar } from "react-native";
 import UseListEl from "./UserListEl";
-import { useStore } from "jotai";
-import { fnAtom } from "../App";
+import { useAtom, useStore } from "jotai";
+import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
@@ -35,7 +35,7 @@ function SearchComp(props: {
   userList: userLS[];
 }): React.JSX.Element {
   const store = useStore();
-
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const cS = usc();
   const [loading, setLoading] = useState<boolean>(true);
   const [isFocus1, setIsFocus1] = useState(false);
@@ -117,11 +117,11 @@ function SearchComp(props: {
       } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => {} },
+            { text: "OK", onPress: () => { } },
           ]);
         }
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => { } }]);
       }
     }
   }, [search]);
@@ -393,14 +393,20 @@ function SearchComp(props: {
                           新增使用者
                         </Text>
                       </View>
-                      <View className="flex flex-row  items-center align-middle">
-                        {/* <View className=" border my-3 rounded-full"> */}
-                        <RadioButton value="cmp" />
-                        {/* </View> */}
-                        <Text className=" dark:text-white text-xl">
-                          新增公司
-                        </Text>
-                      </View>
+                      {
+                        getUserInfo?.Role == 100 ?
+                          <>
+                            <View className="flex flex-row  items-center align-middle">
+                              {/* <View className=" border my-3 rounded-full"> */}
+                              <RadioButton value="cmp" />
+                              {/* </View> */}
+                              <Text className=" dark:text-white text-xl">
+                                新增公司
+                              </Text>
+                            </View>
+                          </> : <></>
+                      }
+
                     </View>
                   </RadioButton.Group>
                 </View>
