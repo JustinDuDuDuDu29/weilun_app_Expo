@@ -25,8 +25,8 @@ function MaintainBlock({
   let totalPrice = 0;
 
   const concatData = (el: mInfoT, index: number, arr: mInfoT[]) => {
-    displayConcat += el.name;
-    totalPrice += el.price!;
+    displayConcat += el.itemName;
+    totalPrice += el.totalPrice!;
     if (!(index === arr.length - 1)) {
       displayConcat += "、";
     }
@@ -56,10 +56,10 @@ function MaintainBlock({
             style={{ flex: 0.15, flexBasis: 0.15 }}
             className="flex justify-center content-center"
           >
-            <Icon
+            {/* <Icon
               source={maintainInfo.type === "gas" ? "gas-station" : "engine"}
               size={ww * 0.11}
-            />
+            /> */}
           </View>
           <View
             className="flex flex-col justify-between py-3"
@@ -111,7 +111,7 @@ function MaintainBlock({
                           textAlignVertical: "center",
                         }}
                       >
-                        {item.name}
+                        {item.itemName}
                       </Text>
                       <Text
                         style={{
@@ -131,7 +131,7 @@ function MaintainBlock({
                           textAlignVertical: "center",
                         }}
                       >
-                        {item.price}
+                        {item.totalPrice}
                       </Text>
                     </View>
                   );

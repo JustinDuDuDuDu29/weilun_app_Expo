@@ -18,7 +18,7 @@ import { imgUrl } from "../types/ImgT";
 import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
 
-function MaintainInfo({
+function GasInfo({
   route,
 }: {
   route: RouteProp<{ params: { maintainID: number } }, "params">;
@@ -330,4 +330,4 @@ function MaintainInfo({
   );
 }
 
-export default MaintainInfo;
+export default GasInfo;

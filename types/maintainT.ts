@@ -2,12 +2,12 @@ import { NullString } from "./JobItemT";
 import { NullDate } from "./userT";
 
 export type mInfoT = {
-  id: string;
-  name: string | null;
-  price: number | null;
-  place: string | null;
-  quantity: number | null;
-};
+  id: number;
+  itemName: string|null;
+  quantity: number|null;
+  totalPrice: number|null;
+  create_date: string|null;
+}
 
 
 
