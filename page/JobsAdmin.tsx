@@ -37,6 +37,7 @@ function JobsAdmin(): React.JSX.Element {
       }
       const allJobs = await res.json();
       setData(allJobs);
+      // console.log("allJobs:", allJobs)
     } catch (err) {
       if (err instanceof Response) {
         switch (err.status) {

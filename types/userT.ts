@@ -26,6 +26,7 @@ export type inUserT={
   Platenum?:NullString;
   ApprovedDate?:NullDate; 
   Belongcmp: number;
+  // Belongcmp: number;
   DeletedDate: NullDate; 
   Driverlicense?: NullString;
   ID: number; 

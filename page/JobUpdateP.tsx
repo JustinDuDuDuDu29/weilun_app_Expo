@@ -22,8 +22,8 @@ import { NullDate, cmpInfo } from "../types/userT";
 import { callAPI } from "../util/callAPIUtil";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { ScreenProp } from "../types/navigationT";
-import { useStore } from "jotai";
-import { fnAtom } from "../App";
+import { useAtom, useStore } from "jotai";
+import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
 // import {} from "react-native-paper";
 
@@ -34,10 +34,15 @@ function JobUpdateP({
 }: {
   route: RouteProp<{ params: { jobItem: jobItemT } }, "params">;
 }): React.JSX.Element {
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
+
   const store = useStore();
   useEffect(() => {
     const getData = async () => {
       try {
+        if (getUserInfo?.Role >= 200) {
+          return
+        }
         const res = await callAPI("/api/cmp/all", "GET", {}, true);
         if (!res.ok) {
           throw res;
@@ -58,12 +63,12 @@ function JobUpdateP({
         } else if (err instanceof TypeError) {
           if (err.message == "Network request failed") {
             Alert.alert("糟糕！", "請檢察網路有沒有開", [
-              { text: "OK", onPress: () => {} },
+              { text: "OK", onPress: () => { } },
             ]);
           }
         } else {
           Alert.alert("GG", `怪怪\n${err}`, [
-            { text: "OK", onPress: () => {} },
+            { text: "OK", onPress: () => { } },
           ]);
         }
       }
@@ -165,12 +170,12 @@ function JobUpdateP({
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
-                    // value={jobItem.FromLoc}
+                    // value={jobItem.Fromloc}
                     onChangeText={(e) => {
-                      setJobItem({ ...jobItem, FromLoc: e });
+                      setJobItem({ ...jobItem, Fromloc: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.FromLoc}</Text>
+                    <Text>{route.params.jobItem.Fromloc}</Text>
                   </TextInput>
                 </View>
               </View>
@@ -210,12 +215,12 @@ function JobUpdateP({
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
                     editable={editable}
-                    // value={jobItem.ToLoc}
+                    // value={jobItem.Toloc}
                     onChangeText={(e) => {
-                      setJobItem({ ...jobItem, ToLoc: e });
+                      setJobItem({ ...jobItem, Toloc: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.ToLoc}</Text>
+                    <Text>{route.params.jobItem.Toloc}</Text>
                   </TextInput>
                 </View>
               </View>
@@ -291,7 +296,8 @@ function JobUpdateP({
               >
                 所屬公司:
               </Text>
-              <Dropdown
+
+              {userInfo?.Role <= 100 ? <Dropdown
                 style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                 mode="modal"
                 placeholderStyle={styles.placeholderStyle}
@@ -306,8 +312,8 @@ function JobUpdateP({
                 placeholder={
                   !isFocus
                     ? cmpList.find((el) => {
-                        return el.ID == route.params.jobItem.Belongcmp;
-                      })?.Name
+                      return el.ID == route.params.jobItem.Belongcmp;
+                    })?.Name
                     : "..."
                 }
                 searchPlaceholder="Search..."
@@ -322,7 +328,7 @@ function JobUpdateP({
                   setJobItem({ ...jobItem, Belongcmp: item.ID });
                   setIsFocus(false);
                 }}
-              />
+              />:<Text>{route.params.jobItem.Cmpname}</Text>}
 
               <View className="flex my-4 flex-row">
                 <Text

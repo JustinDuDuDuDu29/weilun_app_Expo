@@ -22,8 +22,8 @@ import { mode } from "d3";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { callAPI } from "../util/callAPIUtil";
 import { cmpInfo } from "../types/userT";
-import { useStore } from "jotai";
-import { fnAtom } from "../App";
+import { useAtom, useStore } from "jotai";
+import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
@@ -32,6 +32,7 @@ function CreateJobP(): React.JSX.Element {
   const store = useStore();
   const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
 
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
   const getData = useCallback(async () => {
     try {
       const cmpList: cmpInfo[] = await (
@@ -51,9 +52,9 @@ function CreateJobP(): React.JSX.Element {
   const [showC, setShowC] = useState(false);
 
   const [jobItem, setJobItem] = useState<jobItemTS>({
-    FromLoc: "",
+    Fromloc: "",
     Mid: "",
-    ToLoc: "",
+    Toloc: "",
     Price: 0,
     Remaining: 0,
     Belongcmp: NaN,
@@ -198,7 +199,7 @@ function CreateJobP(): React.JSX.Element {
                     className="text-2xl border-b border-violet-200 dark:text-white"
                     // value={jobItem.FromLoc}
                     onChangeText={(e) => {
-                      setJobItem({ ...jobItem, FromLoc: e });
+                      setJobItem({ ...jobItem, Fromloc: e });
                     }}
                   />
                 </View>
@@ -233,7 +234,7 @@ function CreateJobP(): React.JSX.Element {
                     className="text-2xl border-b border-violet-200 dark:text-white"
                     // value={jobItem.ToLoc}
                     onChangeText={(e) => {
-                      setJobItem({ ...jobItem, ToLoc: e });
+                      setJobItem({ ...jobItem, Toloc: e });
                     }}
                   />
                 </View>
@@ -302,6 +303,7 @@ function CreateJobP(): React.JSX.Element {
               >
                 所屬公司:
               </Text>
+              {userInfo?.Role <= 100 ? 
               <Dropdown
                 style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                 mode="modal"
@@ -335,6 +337,8 @@ function CreateJobP(): React.JSX.Element {
                   setIsFocus(false);
                 }}
               />
+              :<Text>{getUserInfo?.Cmpname}</Text>
+}
 
               <View className="flex my-1 flex-row mt-3">
                 <Text

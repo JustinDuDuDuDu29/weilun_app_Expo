@@ -87,7 +87,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
         <View className="flex flex-row py-2">
           <View className="flex justify-center content-center flex-1">
             <Text style={{ textAlign: "center" }} className="text-3xl">
-              {jobItem.FromLoc}
+              {jobItem.Fromloc}
             </Text>
           </View>
           <View className="flex justify-center content-center">
@@ -115,7 +115,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
 
           <View className="flex justify-center content-center flex-1">
             <Text style={{ textAlign: "center" }} className="text-3xl ">
-              {jobItem.ToLoc}
+              {jobItem.Toloc}
             </Text>
           </View>
         </View>

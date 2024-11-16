@@ -21,9 +21,9 @@ function CJBlock({
     <SafeAreaView>
       <Pressable
         className={`${
-          CJ.Approveddate.Valid
+          CJ.Approveddate?.Valid
             ? "bg-slate-300"
-            : CJ.Finishdate.Valid
+            : CJ.Finishdate?.Valid
             ? "bg-yellow-300"
             : "bg-lime-200"
         } my-3 py-2 pb-4 rounded-2xl w-full`}
@@ -40,7 +40,7 @@ function CJBlock({
             className="flex justify-center content-center"
           >
             <Text style={{ textAlign: "center" }} className="text-3xl">
-              {CJ.FromLoc}
+              {CJ.fromloc}
             </Text>
           </View>
 
@@ -52,7 +52,7 @@ function CJBlock({
               style={{ textAlign: "center" }}
               className=" absolute text-white z-50"
             >
-              {CJ.Mid.String}
+              {CJ.mid?.String}
             </Text>
             <Icon source="arrow-right-bold" size={ww * 0.25} />
           </View>
@@ -61,7 +61,7 @@ function CJBlock({
             className="flex justify-center content-center"
           >
             <Text style={{ textAlign: "center" }} className="text-3xl">
-              {CJ.ToLoc}
+              {CJ.toloc}
             </Text>
           </View>
         </View>

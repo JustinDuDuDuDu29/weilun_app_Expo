@@ -2,10 +2,11 @@ import { NullDate } from "./userT";
 
 export type jobItemT = {
   ID: number;
-  FromLoc: string;
+  Fromloc: string;
   Mid: NullString;
   // | string;
-  ToLoc: string;
+  Cmpname:string;
+  Toloc: string;
   Price: number;
   Remaining: number;
   Belongcmp: number;
@@ -16,9 +17,9 @@ export type jobItemT = {
   // DeleteDate: NullDate | string;
 };
 export type jobItemTS = {
-  FromLoc: string;
+  Fromloc: string;
   Mid: string;
-  ToLoc: string;
+  Toloc: string;
   Price: number;
   Remaining: number;
   Belongcmp: number;
@@ -44,19 +45,30 @@ export type NullString = {
   Valid: boolean;
 };
 
+export type userJob=      {
+  userID: number,
+  userName: string
+}
+
+export type PendingJobUserCmp =    {
+  cmpID: number,
+  cmpName: string,
+  users: ClaimedJob[]
+}
+
 export type ClaimedJob = {
   ID: number;
   Jobid: number;
   Userid: number;
-  FromLoc: string;
-  Mid: NullString;
-  ToLoc: string;
+  fromloc: string;
+  mid: NullString | null;
+  toloc: string;
   CreateDate: string;
   Username: string;
   Cmpname: string;
-  Finishdate: NullDate;
+  Finishdate: NullDate | null;
   Cmpid: number;
-  Approveddate: NullDate;
+  Approveddate: NullDate | null;
 };
 
 // export type uinfojobT = {
