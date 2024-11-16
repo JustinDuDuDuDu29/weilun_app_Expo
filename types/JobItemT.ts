@@ -60,9 +60,9 @@ export type ClaimedJob = {
   ID: number;
   Jobid: number;
   Userid: number;
-  fromloc: string;
-  mid: NullString | null;
-  toloc: string;
+  Fromloc: string;
+  Mid: NullString | null;
+  Toloc: string;
   CreateDate: string;
   Username: string;
   Cmpname: string;

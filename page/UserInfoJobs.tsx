@@ -80,6 +80,7 @@ function UserInfoJobs({ uid }: { uid: number }): React.JSX.Element {
           if (!res.ok) throw res;
           const data = await res.json();
           setJobInfo({ ...jobInfo, [key]: data });
+          console.log(data)
         } catch (error) {
           if (error instanceof Response) {
             switch (error.status) {
@@ -124,7 +125,7 @@ function UserInfoJobs({ uid }: { uid: number }): React.JSX.Element {
                   data={jobInfo[key]}
                   keyExtractor={(item) => item.ID.toString()}
                   renderItem={(el: ListRenderItemInfo<ClaimedJob>) => (
-                    <CJBlock CJ={el.item} />
+                    <CJBlock CJ={el.item} removeFromList={()=>{}} />
                   )}
                 />
               )}

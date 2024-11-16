@@ -11,18 +11,32 @@ import CJBlock from "../components/CJBlock";
 
 function AdminClaimedJob(): React.JSX.Element {
   const [claimedList, setClaimedList] = useState<PendingJobUserCmp[]>([]); // Default to empty array
-  const [expandedCmp, setExpandedCmp] = useState<Set<number>>(new Set());
+  const [expandedCmp, setExpandedCmp] = useState<Set<number>>(new Set()); // Track expanded companies
+  const [expandedUsers, setExpandedUsers] = useState<Set<number>>(new Set()); // Track expanded users
   const focused = useIsFocused();
   const store = useStore();
 
   // Toggle fold/unfold for a company
-  const toggleFold = (cmpID: number) => {
+  const toggleFoldCmp = (cmpID: number) => {
     setExpandedCmp((prevExpanded) => {
       const newExpanded = new Set(prevExpanded);
       if (newExpanded.has(cmpID)) {
         newExpanded.delete(cmpID);
       } else {
         newExpanded.add(cmpID);
+      }
+      return newExpanded;
+    });
+  };
+
+  // Toggle fold/unfold for a user
+  const toggleFoldUser = (userID: number) => {
+    setExpandedUsers((prevExpanded) => {
+      const newExpanded = new Set(prevExpanded);
+      if (newExpanded.has(userID)) {
+        newExpanded.delete(userID);
+      } else {
+        newExpanded.add(userID);
       }
       return newExpanded;
     });
@@ -36,6 +50,7 @@ function AdminClaimedJob(): React.JSX.Element {
         const data = await res.json();
         if (data && Array.isArray(data)) {
           setClaimedList(data);
+          console.log(data[0].users[0]);
         } else {
           setClaimedList([]); // Safe fallback if data is not in expected format
         }
@@ -75,26 +90,32 @@ function AdminClaimedJob(): React.JSX.Element {
     ));
   };
 
-  // Render user info with the job list
-  const renderUser = ({ item }: { item: { userID: number; userName: string; jobs: ClaimedJob[] } }) => (
-    <SafeAreaView style={{ marginLeft: 20 }}>
-      <Text>{item.userName}</Text>
-      {renderJobs(item.jobs)}
-    </SafeAreaView>
-  );
+  // Render user info with the job list and the ability to expand/collapse
+  const renderUser = ({ item }: { item: { userID: number; userName: string; jobs: ClaimedJob[] } }) => {
+    const isUserExpanded = expandedUsers.has(item.userID);
+
+    return (
+      <SafeAreaView style={{ marginLeft: 20 }}>
+        <TouchableOpacity onPress={() => toggleFoldUser(item.userID)}>
+          <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.userName}</Text>
+        </TouchableOpacity>
+        {isUserExpanded && renderJobs(item.jobs)} 
+      </SafeAreaView>
+    );
+  };
 
   // Render company info and toggleable user list
   const renderCmp = ({ item }: { item: PendingJobUserCmp }) => {
-    const isExpanded = expandedCmp.has(item.cmpID);
+    const isCmpExpanded = expandedCmp.has(item.cmpID);
     const users = item.users || []; // Default to empty array if users are null or undefined
 
     return (
       <SafeAreaView style={{ marginBottom: 16 }}>
-        <TouchableOpacity onPress={() => toggleFold(item.cmpID)}>
+        <TouchableOpacity onPress={() => toggleFoldCmp(item.cmpID)}>
           <Text style={{ fontWeight: "bold", fontSize: 18 }}>{item.cmpName}</Text>
         </TouchableOpacity>
 
-        {isExpanded && (
+        {isCmpExpanded && (
           <FlatList
             data={users} // Use safe empty array for users
             renderItem={renderUser}
@@ -115,7 +136,6 @@ function AdminClaimedJob(): React.JSX.Element {
         paddingRight: insets.right,
       }}
     >
-      {/* Handle empty or null data */}
       {claimedList && claimedList.length > 0 ? (
         <FlatList
           data={claimedList}

@@ -341,6 +341,21 @@ function Home(): React.JSX.Element {
                 </Pressable>
                 <Pressable
                   className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
+                  onPress={() => navigation.navigate("adminGasP")}
+                >
+                  <View className="w-1/6">
+                    <Icon
+                      color={cS == "light" ? "black" : "white"}
+                      source="tools"
+                      size={0.12 * ww}
+                    />
+                  </View>
+                  <View className="flex content-center justify-center">
+                    <Text className="text-3xl dark:text-white">待核可加油</Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
                   onPress={() => setShow(true)}
                 >
                   <View className="w-1/6">

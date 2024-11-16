@@ -23,6 +23,7 @@ import Maintain from "./Maintain";
 import { AlertMe } from "../util/AlertMe";
 import { fnAtom } from "../App";
 import { useStore } from "jotai";
+import Gas from "./Gas";
 
 const renderTabBar = (props) => {
   const layout = useWindowDimensions();
@@ -77,11 +78,11 @@ function UserInfoAdmin({
       } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => {} },
+            { text: "OK", onPress: () => { } },
           ]);
         }
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => { } }]);
       }
     }
   }, []);
@@ -98,6 +99,9 @@ function UserInfoAdmin({
 
         case "third":
           return <Maintain uid={uid} />;
+
+        case "forth":
+          return <Gas uid={uid} />;
 
         default:
           return null;
@@ -117,6 +121,7 @@ function UserInfoAdmin({
     { key: "first", title: "基本資料" },
     { key: "second", title: "工作" },
     { key: "third", title: "維修" },
+    { key: "forth", title: "加油" },
   ]);
 
   return (

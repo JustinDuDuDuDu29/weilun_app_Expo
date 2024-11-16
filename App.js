@@ -31,6 +31,7 @@ import UserInfoAdmin from "./page/UserInfoAdmin";
 import EditUserInfoP from "./page/EditUserInfoP";
 import CreateJobP from "./page/CreateJobP";
 import AdminMaintain from "./page/AdminMaintain";
+import AdminGas from "./page/AdminGas";
 import { callAPI } from "./util/callAPIUtil";
 import GasInfo from "./page/GasInfo";
 
@@ -170,7 +171,12 @@ function App() {
                       name="adminMainTainP"
                       component={AdminMaintain}
                     />
+                    <Stack.Screen
+                      name="adminGasP"
+                      component={AdminGas}
+                    />
                     <Stack.Screen name="mainTainP" component={Maintain} />
+
                     <Stack.Screen name="userInfoP" component={UserInfo} />
                     <Stack.Screen
                       name="changePasswordP"

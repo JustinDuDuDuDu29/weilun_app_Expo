@@ -40,7 +40,7 @@ function CJBlock({
             className="flex justify-center content-center"
           >
             <Text style={{ textAlign: "center" }} className="text-3xl">
-              {CJ.fromloc}
+              {CJ.Fromloc}
             </Text>
           </View>
 
@@ -52,7 +52,7 @@ function CJBlock({
               style={{ textAlign: "center" }}
               className=" absolute text-white z-50"
             >
-              {CJ.mid?.String}
+              {CJ.Mid?.String}
             </Text>
             <Icon source="arrow-right-bold" size={ww * 0.25} />
           </View>
@@ -61,7 +61,7 @@ function CJBlock({
             className="flex justify-center content-center"
           >
             <Text style={{ textAlign: "center" }} className="text-3xl">
-              {CJ.toloc}
+              {CJ.Toloc}
             </Text>
           </View>
         </View>
