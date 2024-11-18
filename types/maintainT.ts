@@ -3,14 +3,22 @@ import { NullDate } from "./userT";
 
 export type mInfoT = {
   id: number | string;
-  itemName: string|null;
-  quantity: number|null;
-  totalPrice: number|null;
-  create_date: string|null;
+  itemName: string | null;
+  quantity: number | null;
+  totalPrice: number | null;
+  create_date: string | null;
 }
 
+export type userIDAndName = {
+  driverID: number;
+  driverName: string;
+}
 
-
+export type mCmpUserT = {
+  cmpName: string;
+  cmpId: number;
+  users: userIDAndName[]
+}
 // export type maintainInfoDT = {
 //   ApprovedDate: NullDate;
 //   CreateDate: string;
@@ -36,11 +44,11 @@ export type maintainInfoT = {
   Drivername: string;
   type: string;
   Repairinfo: mInfoT[];
-  Cmpname:string;
+  Cmpname: string;
   // name: string;
   Platenum: string;
   Createdate: string;
   Approveddate: NullDate;
   Place: string | null;
-  Pic:NullString;
+  Pic: NullString;
 };

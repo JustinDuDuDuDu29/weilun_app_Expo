@@ -12,7 +12,7 @@ function CJBlock({
   CJ: ClaimedJob;
   removeFromList: Function;
 }): React.JSX.Element {
-  useEffect(() => {}, [CJ]);
+  useEffect(() => {console.log(CJ)}, [CJ]);
 
   const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
@@ -72,7 +72,7 @@ function CJBlock({
           </View>
 
           <View className="flex flex-row justify-around">
-            <Text>工作編號：{CJ.Username}</Text>
+            <Text>司機：{CJ.Username}</Text>
             <Text>
               日期：
               {CJ.CreateDate.split("T")[0] +
