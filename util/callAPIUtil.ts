@@ -6,36 +6,77 @@ import { getSecureValue } from "./loginInfo";
 import * as FileSystem from "expo-file-system";
 // import * as Permissions from 'expo-permissions';
 const { StorageAccessFramework } = FileSystem;
-export async function download(year: string, month: string) {
-  const bearer = "Bearer " + (await getSecureValue("jwtToken")).toString();
 
-  const uri =
-    process.env.EXPO_PUBLIC_HOST +
-    `/api/revenue/excel?year=${year}&month=${month}`;
-  let fileUri = FileSystem.documentDirectory + `${year}_${month}.xlsx`;
 
-  FileSystem.downloadAsync(uri, fileUri, {
-    headers: {
-      Authorization: bearer,
-    },
-  })
-    .then(async ({ uri }) => {
-      try {
-        Platform.OS === "android"
-          ? await saveAndroidFile(uri)
-          : await Share.share({
-              url: uri,
-              message:
-                "請選擇要處理的方式",
-            });
-      } catch (error: any) {
-        Alert.alert(error.message);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
+const downloadFile = async (uri: string, fileUri: string, bearer: string) => {
+  try {
+    const { uri: downloadedUri } = await FileSystem.downloadAsync(uri, fileUri, {
+      headers: {
+        Authorization: bearer,
+      },
     });
-}
+
+    if (Platform.OS === "android") {
+      await saveAndroidFile(downloadedUri, fileUri.split('/').pop() ?? "File");
+    } else {
+      await Share.share({
+        url: downloadedUri,
+        message: "請選擇要處理的方式",
+      });
+    }
+  } catch (error: any) {
+    console.error(error);
+    Alert.alert("下載失敗", error.message || "無法下載檔案");
+  }
+};
+
+export const download = async (year: string, month: string) => {
+  const bearer = "Bearer " + (await getSecureValue("jwtToken")).toString();
+  const uri = `${process.env.EXPO_PUBLIC_HOST}/api/revenue/excel?year=${year}&month=${month}`;
+  const fileUri = `${FileSystem.documentDirectory}${year}_${month}`;
+
+  await downloadFile(uri, fileUri, bearer);
+};
+
+export const downloadSimple = async (year: string, month: string, cmpName: string, cmpid?: number) => {
+  const bearer = "Bearer " + (await getSecureValue("jwtToken")).toString();
+  const uri = `${process.env.EXPO_PUBLIC_HOST}/api/revenue/simpleExcel?year=${year}&month=${month}&cmpid=${cmpid}`;
+  const fileUri = `${FileSystem.documentDirectory}${year}_${month}_${cmpName}月報表`;
+
+  try {
+    console.log("Downloading file from URI: ", uri);
+    console.log("Saving file to: ", fileUri);
+
+    // Download the file
+    const { uri: downloadedUri } = await FileSystem.downloadAsync(uri, fileUri, {
+      headers: {
+        Authorization: bearer,
+      },
+    });
+
+    console.log("File downloaded to: ", downloadedUri); // Check if the file is downloaded
+
+    // Check if the file exists
+    const fileExists = await FileSystem.getInfoAsync(downloadedUri);
+    if (!fileExists.exists) {
+      throw new Error("File download failed or the file does not exist");
+    }
+
+    // Handle file based on platform
+    if (Platform.OS === "android") {
+      await saveAndroidFile(downloadedUri, fileUri.split('/').pop() ?? "File");
+    } else {
+      console.log("Sharing file URL:", downloadedUri);
+      await Share.share({
+        url: downloadedUri,
+        message: "請選擇要處理的方式",
+      });
+    }
+  } catch (error: any) {
+    console.error("Error in downloadSimple: ", error);
+    Alert.alert("下載失敗", error.message || "無法下載檔案");
+  }
+};
 
 const saveAndroidFile = async (fileUri: string, fileName = "File") => {
   try {
@@ -43,29 +84,28 @@ const saveAndroidFile = async (fileUri: string, fileName = "File") => {
       encoding: FileSystem.EncodingType.Base64,
     });
 
-    const permissions =
-      await StorageAccessFramework.requestDirectoryPermissionsAsync();
+    const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
     if (!permissions.granted) {
-      return;
+      throw new Error("未獲得存取權限");
     }
 
-    try {
-      await StorageAccessFramework.createFileAsync(
-        permissions.directoryUri,
-        fileName + ".xls",
-        "application/vnd.ms-excel"
-      )
-        .then(async (uri) => {
-          await FileSystem.writeAsStringAsync(uri, fileString, {
-            encoding: FileSystem.EncodingType.Base64,
-          });
-          alert("成功～");
-        })
-        .catch((e) => {});
-    } catch (e) {
-      throw new Error(e);
-    }
-  } catch (err) {}
+    const fileUriPath = await StorageAccessFramework.createFileAsync(
+      permissions.directoryUri,
+      fileName + ".xls", // You may want to keep ".xlsx" here if it's an Excel file
+      "application/vnd.ms-excel"
+    );
+
+    console.log("Saving file to Android path: ", fileUriPath);
+
+    await FileSystem.writeAsStringAsync(fileUriPath, fileString, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    alert("成功儲存檔案");
+  } catch (error) {
+    console.error("Error in saveAndroidFile: ", error);
+    Alert.alert("儲存失敗", error.message || "無法儲存檔案");
+  }
 };
 
 export async function callAPI(

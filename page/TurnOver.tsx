@@ -65,7 +65,7 @@ function TurnOver(): React.JSX.Element {
         <FlatList
           data={cmps}
           keyExtractor={(item) => item.ID.toString()}
-          renderItem={({ item }) => <CmpJobBlock cmpJob={item} />}
+          renderItem={({ item }) => <CmpJobBlock cmpJob={item} year={year}  month={month} />}
         />
       )}
     </SafeAreaView>
