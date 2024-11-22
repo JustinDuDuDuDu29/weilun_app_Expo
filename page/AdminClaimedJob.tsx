@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Alert, FlatList, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import {
+  Alert,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { callAPI } from "../util/callAPIUtil";
 import { ClaimedJob, PendingJobUserCmp } from "../types/JobItemT";
 import { useIsFocused } from "@react-navigation/native";
@@ -10,143 +18,166 @@ import { fnAtom } from "../App";
 import CJBlock from "../components/CJBlock";
 
 function AdminClaimedJob(): React.JSX.Element {
-  const [claimedList, setClaimedList] = useState<PendingJobUserCmp[]>([]); // Default to empty array
-  const [expandedCmp, setExpandedCmp] = useState<Set<number>>(new Set()); // Track expanded companies
-  const [expandedUsers, setExpandedUsers] = useState<Set<number>>(new Set()); // Track expanded users
+  const [claimedList, setClaimedList] = useState<PendingJobUserCmp[]>([]);
+  const [expandedCmp, setExpandedCmp] = useState<Set<number>>(new Set());
+  const [expandedUsers, setExpandedUsers] = useState<Set<number>>(new Set());
   const focused = useIsFocused();
   const store = useStore();
 
-  // Toggle fold/unfold for a company
   const toggleFoldCmp = (cmpID: number) => {
     setExpandedCmp((prevExpanded) => {
       const newExpanded = new Set(prevExpanded);
-      if (newExpanded.has(cmpID)) {
-        newExpanded.delete(cmpID);
-      } else {
-        newExpanded.add(cmpID);
-      }
+      newExpanded.has(cmpID) ? newExpanded.delete(cmpID) : newExpanded.add(cmpID);
       return newExpanded;
     });
   };
 
-  // Toggle fold/unfold for a user
   const toggleFoldUser = (userID: number) => {
     setExpandedUsers((prevExpanded) => {
       const newExpanded = new Set(prevExpanded);
-      if (newExpanded.has(userID)) {
-        newExpanded.delete(userID);
-      } else {
-        newExpanded.add(userID);
-      }
+      newExpanded.has(userID) ? newExpanded.delete(userID) : newExpanded.add(userID);
       return newExpanded;
     });
   };
 
-  // Fetch data from the API
   const getData = async () => {
     try {
       const res = await callAPI("/api/claimed/userwitpendingjob", "GET", {}, true);
       if (res.status === 200) {
         const data = await res.json();
-        if (data && Array.isArray(data)) {
-          setClaimedList(data);
-          console.log(data[0].users[0]);
-        } else {
-          setClaimedList([]); // Safe fallback if data is not in expected format
-        }
+        setClaimedList(Array.isArray(data) ? data : []);
       }
     } catch (err) {
       if (err instanceof Response) {
-        switch (err.status) {
-          case 451:
-            store.get(fnAtom).codefn();
-            break;
-          default:
-            AlertMe(err);
-            break;
-        }
-      } else if (err instanceof TypeError) {
-        if (err.message === "Network request failed") {
-          Alert.alert("糟糕！", "請檢察網路有沒有開", [{ text: "OK", onPress: () => {} }]);
-        }
+        if (err.status === 451) store.get(fnAtom).codefn();
+        else AlertMe(err);
+      } else if (err instanceof TypeError && err.message === "Network request failed") {
+        Alert.alert("糟糕！", "請檢察網路有沒有開", [{ text: "OK" }]);
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK" }]);
       }
     }
   };
 
-  // Fetch the data when page is focused
   useEffect(() => {
     getData();
   }, [focused]);
 
   const insets = useSafeAreaInsets();
 
-  // Render job list for each user
   const renderJobs = (jobs: ClaimedJob[]) => {
-    if (!jobs || jobs.length === 0) return <Text>啥都沒有呢</Text>; // Safe fallback if jobs array is empty or null
+    if (!jobs || jobs.length === 0) {
+      return <Text style={styles.emptyText} className="dark:text-white">No jobs available</Text>;
+    }
     return jobs.map((job) => (
       <CJBlock CJ={job} removeFromList={() => {}} key={job.ID} />
     ));
   };
 
-  // Render user info with the job list and the ability to expand/collapse
   const renderUser = ({ item }: { item: { userID: number; userName: string; jobs: ClaimedJob[] } }) => {
     const isUserExpanded = expandedUsers.has(item.userID);
 
     return (
-      <SafeAreaView style={{ marginLeft: 20 }}>
+      <View style={styles.userContainer}>
         <TouchableOpacity onPress={() => toggleFoldUser(item.userID)}>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>{item.userName}</Text>
+          <Text style={styles.userName} className="dark:text-white">{item.userName}</Text>
         </TouchableOpacity>
-        {isUserExpanded && renderJobs(item.jobs)} 
-      </SafeAreaView>
+        {isUserExpanded && renderJobs(item.jobs)}
+      </View>
     );
   };
 
-  // Render company info and toggleable user list
   const renderCmp = ({ item }: { item: PendingJobUserCmp }) => {
     const isCmpExpanded = expandedCmp.has(item.cmpID);
-    const users = item.users || []; // Default to empty array if users are null or undefined
+    const users = item.users || [];
 
     return (
-      <SafeAreaView style={{ marginBottom: 16 }}>
+      <View style={styles.companyContainer}>
         <TouchableOpacity onPress={() => toggleFoldCmp(item.cmpID)}>
-          <Text style={{ fontWeight: "bold", fontSize: 18 }}>{item.cmpName}</Text>
+          <Text style={styles.companyName} className="dark:text-white">{item.cmpName}</Text>
         </TouchableOpacity>
-
         {isCmpExpanded && (
           <FlatList
-            data={users} // Use safe empty array for users
+            data={users}
             renderItem={renderUser}
             keyExtractor={(user) => user.userID.toString()}
+            contentContainerStyle={styles.userList}
           />
         )}
-      </SafeAreaView>
+      </View>
     );
   };
 
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        paddingLeft: insets.left,
-        paddingRight: insets.right,
-      }}
+      style={[
+        styles.container,
+        {
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+      ]}
     >
       {claimedList && claimedList.length > 0 ? (
         <FlatList
           data={claimedList}
           renderItem={renderCmp}
           keyExtractor={(item) => item.cmpID.toString()}
+          contentContainerStyle={styles.list}
         />
       ) : (
-        <Text>No claimed jobs available</Text> // Handle empty state
+        <Text style={styles.emptyText} className="dark:text-white">No claimed jobs available</Text>
       )}
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // backgroundColor: "#f8f9fa",
+  },
+  list: {
+    padding: 16,
+  },
+  companyContainer: {
+    marginBottom: 16,
+    // backgroundColor: "#ffffff",
+    borderRadius: 8,
+    padding: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  companyName: {
+    fontSize: 18,
+    fontWeight: "600",
+    // color: "#333",
+    marginBottom: 8,
+  },
+  userContainer: {
+    marginLeft: 16,
+    marginTop: 8,
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: "500",
+    // color: "#555",
+    marginBottom: 4,
+  },
+  userList: {
+    paddingLeft: 16,
+  },
+  emptyText: {
+    textAlign: "center",
+    fontSize: 16,
+    // color: "#888",
+    marginTop: 32,
+  },
+});
 
 export default AdminClaimedJob;
