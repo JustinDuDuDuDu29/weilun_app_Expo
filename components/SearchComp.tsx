@@ -141,7 +141,7 @@ function SearchComp(props: {
     Name: "",
     Role: newUserType,
     PhoneNum: "",
-    BelongCmp: NaN,
+    BelongCmp:  getUserInfo?.Role == 200 ? getUserInfo?.Belongcmp : NaN,
     driverInfo: {
       // percentage: 0,
       nationalIdNumber: "",
@@ -149,6 +149,7 @@ function SearchComp(props: {
     },
   });
   useEffect(() => {
+    console.log(user)
     setUser({ ...user, Role: newUserType });
   }, [newUserType]);
 
@@ -179,7 +180,7 @@ function SearchComp(props: {
         }
       } else {
         if (user.Name == "" || user.PhoneNum == "" || !user.BelongCmp) {
-          Alert.alert("注意！", "請確認資料是否完整!!", [{ text: "OK" }]);
+          Alert.alert("注意！", `請確認資料是否完整!! `, [{ text: "OK" }]);
           return;
         }
         if (
@@ -203,7 +204,7 @@ function SearchComp(props: {
           Name: "",
           Role: newUserType,
           PhoneNum: "",
-          BelongCmp: NaN,
+          BelongCmp:  getUserInfo?.Role == 200 ? getUserInfo?.RoleBelongcmp : NaN,
           driverInfo: {
             // percentage: 0,
             nationalIdNumber: "",
@@ -375,6 +376,7 @@ function SearchComp(props: {
           >
             <View className="flex flex-col justify-between">
               <View>
+                {/* <Text>{JSON.stringify(user)}</Text> */}
                 <Text className=" dark:text-white text-xl">請選擇類別：</Text>
                 <View className="flex flex-row justify-between">
                   <RadioButton.Group
@@ -429,7 +431,7 @@ function SearchComp(props: {
                       </View>
                       <View>
                         <TextInput
-                          className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                          className={`text-xl dark:text-white border-b border-violet-200 my-2`}
                           placeholderTextColor={
                             cS == "light" ? "black" : "#ffffff"
                           }
@@ -440,30 +442,35 @@ function SearchComp(props: {
                           }}
                         />
                       </View>
-                      <Dropdown
-                        style={[
-                          styles.dropdown,
-                          isFocus && { borderColor: "blue" },
-                        ]}
-                        mode="modal"
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={cmpList}
-                        search
-                        labelField="Name"
-                        valueField="ID"
-                        placeholder={!isFocus ? "所屬公司" : "..."}
-                        searchPlaceholder="Search..."
-                        value={value}
-                        onFocus={() => setIsFocus(true)}
-                        onBlur={() => setIsFocus(false)}
-                        onChange={(item) => {
-                          setUser({ ...user, BelongCmp: item.ID });
-                          setIsFocus(false);
-                        }}
-                      />
+                      {
+                        getUserInfo?.Role == 100 ?
+                          <Dropdown
+                            style={[
+                              styles.dropdown,
+                              isFocus && { borderColor: "blue" },
+                            ]}
+                            mode="modal"
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={cmpList}
+                            search
+                            labelField="Name"
+                            valueField="ID"
+                            placeholder={!isFocus ? "所屬公司" : "..."}
+                            searchPlaceholder="Search..."
+                            value={value}
+                            onFocus={() => setIsFocus(true)}
+                            onBlur={() => setIsFocus(false)}
+                            onChange={(item) => {
+                              setUser({ ...user, BelongCmp: item.ID });
+                              setIsFocus(false);
+                            }}
+                          /> : <View>
+                            <Text className=" dark:text-white text-xl">所屬公司：{getUserInfo?.Cmpname}</Text>
+                          </View>
+                      }
                       <RadioButton.Group
                         onValueChange={(newValue) => {
                           setUser({

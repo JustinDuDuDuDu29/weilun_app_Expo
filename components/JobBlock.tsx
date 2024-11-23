@@ -79,7 +79,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
                 ]);
               }
             }
-          } else if (getUserInfo?.Role == 100) {
+          } else if (getUserInfo?.Role <= 200) {
             navigation.navigate("jobUpdateP", { jobItem: jobItem });
           }
         }}
@@ -95,11 +95,11 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
               ➡
             </Text>
           </View>
-          {jobItem.Mid.Valid ? (
+          {jobItem.Mid?.Valid ?? jobItem.Mid  ? (
             <>
               <View className="flex justify-center content-center flex-1">
                 <Text style={{ textAlign: "center" }} className="text-3xl">
-                  {jobItem.Mid.String}
+                  {jobItem.Mid.String ?? jobItem.Mid }
                 </Text>
               </View>
 
@@ -120,9 +120,9 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
           </View>
         </View>
         <View className="bg-slate-100 rounded-xl px-2 my-2">
-          {jobItem.Memo.Valid ? (
+          {jobItem.Memo?.Valid ?? jobItem.Memo ? (
             <View className="my-1">
-              <Text className="text-xl">注意事項：{jobItem.Memo.String}</Text>
+              <Text className="text-xl">注意事項：{jobItem.Memo.String ?? jobItem.Memo}</Text>
             </View>
           ) : (
             <></>

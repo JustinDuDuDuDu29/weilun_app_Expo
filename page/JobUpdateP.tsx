@@ -23,8 +23,9 @@ import { callAPI } from "../util/callAPIUtil";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { ScreenProp } from "../types/navigationT";
 import { useAtom, useStore } from "jotai";
-import { fnAtom, userInfo } from "../App";
+// import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
+import { userInfo } from "../App";
 // import {} from "react-native-paper";
 
 // import {TextInput} from "react-native-paper";
@@ -92,8 +93,8 @@ function JobUpdateP({
         "PUT",
         {
           ...route.params.jobItem,
-          Mid: route.params.jobItem.Mid.String,
-          Memo: route.params.jobItem.Memo.String,
+          Mid: route.params.jobItem.Mid?.String ?? route.params.jobItem.Mid,
+          Memo: route.params.jobItem.Memo?.String ?? route.params.jobItem.Memo,
 
           ...jobItem,
           id: route.params.jobItem.ID,
@@ -123,7 +124,7 @@ function JobUpdateP({
     }
   };
   const navigation = useNavigation<ScreenProp>();
-
+  console.log("it is :"+ JSON.stringify(route.params.jobItem))
   return (
     <SafeAreaView>
       <TouchableWithoutFeedback
@@ -199,7 +200,7 @@ function JobUpdateP({
                       setJobItem({ ...jobItem, Mid: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.Mid.String}</Text>
+                    <Text>{route.params.jobItem.Mid?.String ?? route.params.jobItem.Mid}</Text>
                   </TextInput>
                 </View>
               </View>
@@ -261,7 +262,7 @@ function JobUpdateP({
                       setJobItem({ ...jobItem, Memo: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.Memo.String}</Text>
+                    <Text>{route.params.jobItem.Memo?.String ?? route.params.jobItem.Memo}</Text>
                   </TextInput>
                 </View>
               </View>
@@ -297,7 +298,7 @@ function JobUpdateP({
                 所屬公司:
               </Text>
 
-              {userInfo?.Role <= 100 ? <Dropdown
+              {getUserInfo?.Role <= 100 ? <Dropdown
                 style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                 mode="modal"
                 placeholderStyle={styles.placeholderStyle}

@@ -89,11 +89,11 @@ export type CJInfo = {
   ID: number;
   Jobid: number;
   Userid: number;
-  FromLoc: string;
+  Fromloc: string;
   Finishdate: NullDate;
   Finishpic: NullString;
   Mid: NullString;
-  ToLoc: string;
+  Toloc: string;
   CreateDate: string;
   Username: string;
   Cmpname: string;

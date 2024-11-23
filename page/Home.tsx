@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-// import { colorScheme, remapProps, useColorScheme } from "nativewind";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import Dialog from "react-native-dialog";
 import {
   SafeAreaView,
@@ -11,187 +10,161 @@ import {
   useColorScheme as usc,
   ActivityIndicator,
   Platform,
-  ScrollView,
 } from "react-native";
 import { Icon } from "react-native-paper";
 import { getSecureValue } from "../util/loginInfo";
 import { fnAtom, pendingJob, userInfo } from "../App";
 import { useStore } from "jotai";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { RUEmpty } from "../util/RUEmpty";
 import JobBlockPJ from "../components/JobBlockPJ";
 import { callAPI, download } from "../util/callAPIUtil";
 import user from "../asset/user.png";
 import { inUserT } from "../types/userT";
-import { useIsFocused } from "@react-navigation/native";
 import { AlertMe } from "../util/AlertMe";
-import { SplashScreen } from "../components/Aplash";
+
+function usePersistentWebSocket(url: string) {
+  const [ws, setWs] = useState<WebSocket | null>(null);
+  // const wsUrl = Platform.OS === "ios"
+  //   ? "wss://apikunhong.kunhong.org/api/io/"
+  //   : "wss://apikunhong.kunhong.org/api/io";
+  useEffect(() => {
+    let socket: WebSocket | null = null;
+
+    const initializeWebSocket = async () => {
+      const wsUrl = Platform.OS === "ios"
+        ? "ws://10.0.2.2:8080/api/io/"
+        : "ws://10.0.2.2:8080/api/io";
+      socket = new WebSocket(wsUrl);
+
+      socket.onopen = async () => {
+        console.log("WebSocket connected");
+        try {
+          const jwt = await getSecureValue("jwtToken");
+          if (jwt) {
+            socket?.send(jwt.toString());
+          }
+        } catch (err) {
+          console.error("Failed to retrieve JWT", err);
+        }
+      };
+
+      socket.onmessage = (e) => {
+        try {
+          const message = JSON.parse(e.data);
+          Alert.alert("Notification", message.msg, [{ text: "OK" }]);
+        } catch (err) {
+          console.error("Error parsing WebSocket message", err);
+        }
+      };
+
+      socket.onerror = (e) => {
+        console.error("WebSocket error:", e);
+      };
+
+      socket.onclose = (e) => {
+        console.log(`WebSocket closed: ${e.code}, ${e.reason}`);
+      };
+
+      setWs(socket);
+    };
+
+    initializeWebSocket();
+
+    return () => {
+      if (socket) {
+        socket.close();
+        console.log("WebSocket cleaned up");
+      }
+    };
+  }, [url]);
+
+  return ws;
+}
 
 function Home(): React.JSX.Element {
   const store = useStore();
-  const isFocus = useIsFocused();
-
-  // const [getUserInfo, setUserInfo] = useAtom(userInfo);
+  const navigation = useNavigation<ScreenProp>();
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
   const [year, setYear] = useState<string>();
   const [month, setMonth] = useState<string>();
-  const navigation = useNavigation<ScreenProp>();
   const ww = Dimensions.get("window").width;
-
   const cS = usc();
-
-  useEffect(() => {
-    const ff = async () => {
-      // const ws = new WebSocket(
-      const ws = new WebSocket(
-        Platform.OS === "ios"
-          ? "wss://apikunhong.kunhong.org/api/io/"
-          : "wss://apikunhong.kunhong.org/api/io"
-      );
-      // console.log("ff...");
-
-      // const ws = new WebSocket("ws://10.0.2.2:8080/api/io");
-
-      ws.onopen = async () => {
-        // console.log("SS");
-        // connection opened
-        console.log("CONNECTED");
-        setInterval(() => {
-          ws.send("ping");
-        }, 10000);
-        const jwt = (await getSecureValue("jwtToken")).toString();
-        ws.send(jwt); // send a message
-      };
-
-      ws.onmessage = (e) => {
-        // a message was received
-        Alert.alert("YO!", JSON.parse(e.data).msg, [{ text: "OK" }]);
-      };
-
-      ws.onerror = (e) => {
-        // an error occurred
-        // console.log("err!", e);
-        // console.log("err!", ws.url);
-      };
-
-      ws.onclose = (e) => {
-        // connection closed
-        // console.log("Closing");
-
-        console.log(e.code, e.reason);
-      };
-    };
-    ff();
-  }, [isFocus]);
+  const isF= useIsFocused()
+  const ws = usePersistentWebSocket("ws://10.0.2.2:8080/api/io/");
 
   const setData = useCallback(async () => {
+    console.log("rerun")
+
     setLoading(true);
     try {
-      // if (!store.get(fnAtom).getUserInfofn()) {
       if (store.get(fnAtom).getUserInfofn() == null) {
-        console.log("IN");
         const res = await callAPI("/api/user/me", "POST", {}, true);
-        if (!res.ok) {
-          throw res;
-        }
+        if (!res.ok) throw res;
+
         const me: inUserT = await res.json();
-        // console.log("me:", me);
         store.get(fnAtom).setUserInfofn(me);
       }
-      if (store.get(fnAtom).getUserInfofn().Role == 300) {
+
+      if (store.get(fnAtom).getUserInfofn().Role === 300) {
         const res2 = await callAPI("/api/claimed/current", "POST", {}, true);
-        if (!res2.ok) {
-          throw res;
-        }
+        if (!res2.ok) throw res2;
+
         const currentJob = await res2.json();
-        if (!RUEmpty(currentJob)) {
-          console.log("SS");
-          store.get(fnAtom).setPJfn(currentJob);
-          // store.set(pendingJob, currentJob);
-        } else {
-          store.get(fnAtom).setPJfn(null);
-        }
-        // }
+        store.get(fnAtom).setPJfn(RUEmpty(currentJob) ? null : currentJob);
       }
     } catch (error) {
       if (error instanceof Response) {
-        switch (error.status) {
-          case 451:
-            store.get(fnAtom).codefn();
-            break;
-          case 401:
-            store.get(fnAtom).codefn();
-            break;
-
-          default:
-            AlertMe(error);
-            break;
+        if (error.status === 451 || error.status === 401) {
+          store.get(fnAtom).codefn();
+        } else {
+          AlertMe(error);
         }
       }
-      if (error instanceof TypeError) {
-        if (error.message == "Network request failed") {
-          Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => {} },
-          ]);
-        }
+      if (error instanceof TypeError && error.message === "Network request failed") {
+        Alert.alert("糟糕！", "請檢察網路有沒有開", [{ text: "OK" }]);
       }
     } finally {
-      console.log("OUT");
       setLoading(false);
     }
-  }, []);
+  }, [store]);
 
   useEffect(() => {
     setData();
-  }, [isFocus]);
+  }, [isF]);
 
-  // if (!store.get(userInfo) || loading) {
-  // if (loading) {
   return (
     <>
-      {store.get(fnAtom).getUserInfofn() == null ? (
-        <>
-          {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text>
-          <Text>{JSON.stringify(store.get(userInfo))}</Text> */}
-
-          <ActivityIndicator
-            className="h-full flex justify-center items-center"
-            size="small"
-            color="#0000ff"
-          />
-        </>
+      {loading ? (
+        <ActivityIndicator
+          className="h-full flex justify-center items-center"
+          size="small"
+          color="#0000ff"
+        />
       ) : (
-        // return <ActivityIndicator size="small" color="#0000ff"/>
         <SafeAreaView className="h-full flex justify-center">
           <View className="px-5 flex flex-col justify-around">
             <View className="flex flex-row justify-around items-center">
               <Text className="text-xl dark:text-white">
-                歡迎！{store.get(fnAtom).getUserInfofn().Username}
+                歡迎！{store.get(fnAtom).getUserInfofn()?.Username}
               </Text>
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("userInfoP");
-                }}
-              >
+              <Pressable onPress={() => navigation.navigate("userInfoP")}>
                 <Icon
-                  color={cS == "light" ? "black" : "white"}
+                  color={cS === "light" ? "black" : "white"}
                   source={user}
                   size={ww * 0.15}
                 />
               </Pressable>
             </View>
-            {/* <ScrollView
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-            > */}
+
             <Pressable
               className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center "
               onPress={() => {
-                store.get(fnAtom).getUserInfofn().Role === 100
-                  ? navigation.navigate("jobsAdminP")
-                  : navigation.navigate("jobsP");
+                store.get(fnAtom).getUserInfofn().Role === 300
+                  ?navigation.navigate("jobsP") 
+                  : navigation.navigate("jobsAdminP");
               }}
             >
               <View className="w-1/6">
@@ -221,7 +194,7 @@ function Home(): React.JSX.Element {
                 <Text className="text-3xl dark:text-white">營業額查詢</Text>
               </View>
             </Pressable>
-            {store.get(fnAtom).getUserInfofn().Role != 100 && (
+            {store.get(fnAtom).getUserInfofn().Role >= 300 && (
               <>
                 <Pressable
                   className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center"
@@ -395,56 +368,39 @@ function Home(): React.JSX.Element {
           {show && (
             <Dialog.Container
               contentStyle={{
-                backgroundColor: cS == "light" ? "#ffffff" : "#3A3B3C",
+                backgroundColor: cS === "light" ? "#ffffff" : "#3A3B3C",
               }}
               visible={show}
             >
-              <View style={{}}>
+              <View>
                 <Dialog.Description
                   style={{
-                    color: cS == "light" ? "black" : "#ffffff",
+                    color: cS === "light" ? "black" : "#ffffff",
                     fontSize: 25,
                   }}
                 >
                   請輸入年月
                 </Dialog.Description>
                 <Dialog.Input
-                  style={{ color: cS == "light" ? "black" : "#ffffff" }}
+                  style={{ color: cS === "light" ? "black" : "#ffffff" }}
                   placeholder="西元年"
-                  onChangeText={(e: string) => {
-                    setYear(e);
-                  }}
+                  onChangeText={(e: string) => setYear(e)}
                   keyboardType="numeric"
-                ></Dialog.Input>
+                />
                 <Dialog.Input
                   placeholder="月份"
-                  style={{ color: cS == "light" ? "black" : "#ffffff" }}
-                  onChangeText={(e: string) => {
-                    setMonth(e);
-                  }}
+                  style={{ color: cS === "light" ? "black" : "#ffffff" }}
+                  onChangeText={(e: string) => setMonth(e)}
                   keyboardType="numeric"
-                ></Dialog.Input>
+                />
                 <Dialog.Button
                   label="送出"
                   onPress={async () => {
-                    // const res = await callAPI(
-                    //   `/api/revenue/excel?year=${year}&month=${month}`,
-                    //   "GET",
-                    //   {},
-                    //   true
-                    // );
-
-                    const res = await download(year!, month!);
-                    // download(year!, month!);
+                    await download(year!, month!);
                     setShow(false);
                   }}
                 />
-                <Dialog.Button
-                  label="關閉"
-                  onPress={async () => {
-                    setShow(false);
-                  }}
-                />
+                <Dialog.Button label="關閉" onPress={() => setShow(false)} />
               </View>
             </Dialog.Container>
           )}
@@ -453,6 +409,5 @@ function Home(): React.JSX.Element {
     </>
   );
 }
-//
 
 export default Home;

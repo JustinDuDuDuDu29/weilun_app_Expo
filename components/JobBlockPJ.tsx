@@ -7,12 +7,12 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import { useStore } from "jotai";
+import { useAtom, useStore } from "jotai";
 import { callAPI } from "../util/callAPIUtil";
 import { useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { currentJob } from "../types/JobItemT";
-import { fnAtom, pendingJob } from "../App";
+import { fnAtom, pendingJob, userInfo } from "../App";
 import { err } from "react-native-svg";
 import { AlertMe } from "../util/AlertMe";
 
@@ -20,6 +20,7 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
   const store = useStore();
   const ww = Dimensions.get("window").width;
   const navigation = useNavigation<ScreenProp>();
+  const [getUserInfo, setUserInfo] = useAtom(userInfo);
 
   const cancel = async (id: number) => {
     try {
@@ -58,7 +59,10 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("Calling")
+    console.log(store.get(fnAtom).getPJfn())
+  }, []);
   if (!store.get(fnAtom).getPJfn()) {
     return <></>;
   }
@@ -89,7 +93,7 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
               style={{ textAlign: "center", verticalAlign: "middle" }}
               className="text-3xl"
             >
-              {store.get(fnAtom).getPJfn().FromLoc}
+              {store.get(fnAtom).getPJfn().Fromloc}
             </Text>
           </View>
           <View className="flex justify-center content-center">
@@ -129,7 +133,7 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
               style={{ textAlign: "center", verticalAlign: "middle" }}
               className="text-3xl "
             >
-              {store.get(fnAtom).getPJfn().ToLoc}
+              {store.get(fnAtom).getPJfn().Toloc}
             </Text>
           </View>
         </View>

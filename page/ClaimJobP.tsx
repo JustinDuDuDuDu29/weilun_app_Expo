@@ -105,7 +105,7 @@ function ClaimJobP({
             <Text className="my-2 text-xl dark:text-white">公司：{CJ.Cmpname}（{CJ.Cmpid}）</Text>
             <Text className="my-2 text-xl dark:text-white">駕駛：{CJ.Username}（{CJ.Userid}）</Text>
             <Text className="my-2 text-xl dark:text-white">
-              工作資訊：{CJ.FromLoc} ➡ {CJ.Mid.Valid ? `${CJ.Mid.String} ➡ ` : ""} {CJ.ToLoc}
+              工作資訊：{CJ.Fromloc} ➡ {CJ.Mid.Valid ? `${CJ.Mid.String} ➡ ` : ""} {CJ.Toloc}
             </Text>
             <Text className="my-2 text-xl dark:text-white">
               接取日期：{CJ.CreateDate.split("T")[0]} {CJ.CreateDate.split("T")[1].split(".")[0]}
@@ -117,7 +117,7 @@ function ClaimJobP({
               <UploadPicFCJob src={jobPic} />
             </View>
 
-            {getUserInfo?.Role === 100 && (
+            {getUserInfo?.Role <= 200 && (
 
               <View className="flex flex-row justify-around">
                 {!CJ.Approveddate.Valid && (

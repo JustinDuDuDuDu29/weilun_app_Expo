@@ -60,34 +60,26 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
   const [visible, setVisible] = useState(false);
   const [dVisible, setDVisible] = useState(false);
   const [newCmpName, setNewCmpName] = useState("");
-  const showDialog = () => {
-    setDVisible(true);
-  };
-
-  const handleCancel = () => {
-    setDVisible(false);
-  };
-
+  const [cmpName, setCmpName] = useState(info.Cmpname); // Track updated company name
   const navigation = useNavigation<ScreenProp>();
+
+  const showDialog = () => setDVisible(true);
+  const handleCancel = () => setDVisible(false);
 
   return (
     <SafeAreaView className="mx-5 relative">
       <Pressable
-        className={`my-1 rounded-lg px-4 py-2 bg-red-200 flex flex-row justify-between`}
-        onPress={() => {
-          setVisible(!visible);
-        }}
-        onLongPress={() => {
-          showDialog();
-        }}
+        className="my-1 rounded-lg px-4 py-2 bg-red-200 flex flex-row justify-between"
+        onPress={() => setVisible(!visible)}
+        onLongPress={showDialog}
       >
-        <Text>{info.Cmpname}</Text>
+        <Text>{cmpName}</Text>
         <View className={`${visible ? "rotate-180" : "rotate-90"}`}>
           <Icon source={"triangle"} size={15} />
         </View>
       </Pressable>
       <View>
-        {visible ? (
+        {visible && (
           info.list[0].id ? (
             <FlatList
               data={info.list}
@@ -97,8 +89,6 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
           ) : (
             <Text>他什麼都木有</Text>
           )
-        ) : (
-          <></>
         )}
       </View>
       <View>
@@ -106,9 +96,8 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
           <Dialog.Title>更改公司名稱</Dialog.Title>
           <Dialog.Description>賦予它新的稱呼ㄅ</Dialog.Description>
           <Dialog.Input
-            onChangeText={(e) => {
-              setNewCmpName(e);
-            }}
+            value={newCmpName}
+            onChangeText={(e) => setNewCmpName(e)}
           />
           <Dialog.Button
             label="確定"
@@ -117,46 +106,39 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
                 const res = await callAPI(
                   "/api/cmp",
                   "PUT",
-                  {
-                    id: info.cmpid,
-                    cmpName: newCmpName,
-                  },
+                  { id: info.cmpid, cmpName: newCmpName },
                   true
                 );
                 if (!res.ok) {
                   throw res;
                 }
+                setCmpName(newCmpName); // Update displayed name
+                setDVisible(false); // Close dialog
               } catch (err) {
                 if (err instanceof Response) {
                   switch (err.status) {
                     case 451:
                       store.get(fnAtom).codefn();
                       break;
-
                     default:
                       AlertMe(err);
                       break;
                   }
                 } else if (err instanceof TypeError) {
-                  if (err.message == "Network request failed") {
+                  if (err.message === "Network request failed") {
                     Alert.alert("糟糕！", "請檢察網路有沒有開", [
-                      { text: "OK", onPress: () => {} },
+                      { text: "OK" },
                     ]);
                   }
                 } else {
                   Alert.alert("GG", `怪怪\n${err}`, [
-                    { text: "OK", onPress: () => {} },
+                    { text: "OK" },
                   ]);
                 }
               }
             }}
           />
-          <Dialog.Button
-            label="取消"
-            onPress={() => {
-              handleCancel();
-            }}
-          />
+          <Dialog.Button label="取消" onPress={handleCancel} />
         </Dialog.Container>
       </View>
     </SafeAreaView>

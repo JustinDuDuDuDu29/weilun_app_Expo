@@ -53,7 +53,7 @@ function CreateJobP(): React.JSX.Element {
     Toloc: "",
     Price: 0,
     Remaining: 0,
-    Belongcmp: NaN,
+    Belongcmp: getUserInfo?.Role <= 100 ? NaN : getUserInfo?.Belongcmp,
     Source: "",
     Jobdate: "",
     Memo: "",
@@ -134,6 +134,7 @@ function CreateJobP(): React.JSX.Element {
           }}
         >
           <ScrollView>
+            {/* <Text>{JSON.stringify(jobItem)}</Text> */}
             <View className="mx-4 my-2">
               <View className="flex my-1 flex-row mt-2">
                 <Text className="text-2xl dark:text-white">出發地:</Text>

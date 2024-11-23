@@ -1,152 +1,155 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
-  FlatList,
-  RefreshControl,
-  SafeAreaView,
-  View,
   Alert,
+  FlatList,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
   StyleSheet,
 } from "react-native";
-import _data from "../asset/fakeData/_jobs.json";
-import { jobItemT, jobItemTS } from "../types/JobItemT";
-import JobBlock from "../components/JobBlock";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
 import { callAPI } from "../util/callAPIUtil";
-import { FAB, TextInput } from "react-native-paper";
-import { cmpInfo } from "../types/userT";
-import { useColorScheme as usc } from "react-native";
+import JobBlock from "../components/JobBlock"; // Reuse existing JobBlock component
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { ScreenProp } from "../types/navigationT";
-import { useStore } from "jotai";
-import { fnAtom } from "../App";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAtom, useStore } from "jotai";
+import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
+import { FAB } from "react-native-paper";
+import { ScreenProp } from "../types/navigationT";
 
-function JobsAdmin(): React.JSX.Element {
-  const isFocused = useIsFocused();
+function JobsScreen(): React.JSX.Element {
+  const [getUserInfo] = useAtom(userInfo); // Retrieve user info
+  const [data, setData] = useState([]); // Jobs for role `200` or grouped companies for role `100`
+  const [expandedCompanies, setExpandedCompanies] = useState<Record<number, boolean>>({}); // Track expansion per company
+  const focused = useIsFocused();
+  const insets = useSafeAreaInsets();
   const store = useStore();
-  const cS = usc();
   const navigation = useNavigation<ScreenProp>();
+
+  const toggleCompanyExpansion = (cmpID: number) => {
+    setExpandedCompanies((prevExpanded) => ({
+      ...prevExpanded,
+      [cmpID]: !prevExpanded[cmpID], // Toggle the expansion state for the specific company
+    }));
+  };
 
   const getData = useCallback(async () => {
     try {
-      const res = await callAPI("/api/jobs/all", "POST", {}, true);
-      if (!res.ok) {
-        throw res;
+      const endpoint = "/api/jobs/all";
+      const res = await callAPI(endpoint, "POST", {}, true);
+      if (res.status === 200) {
+        const fetchedData = await res.json();
+        console.log(`fetchedData: ${JSON.stringify(fetchedData)}`);
+        setData(fetchedData);
       }
-      const allJobs = await res.json();
-      setData(allJobs);
-      // console.log("allJobs:", allJobs)
     } catch (err) {
       if (err instanceof Response) {
-        switch (err.status) {
-          case 451:
-            store.get(fnAtom).codefn();
-            break;
-
-          default:
-            AlertMe(err);
-            break;
-        }
-      } else if (err instanceof TypeError) {
-        if (err.message == "Network request failed") {
-          Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => {} },
-          ]);
-        }
+        err.status === 451
+          ? store.get(fnAtom).codefn()
+          : AlertMe(err);
+      } else if (err instanceof TypeError && err.message === "Network request failed") {
+        Alert.alert("糟糕！", "請檢察網路有沒有開", [{ text: "OK" }]);
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK" }]);
       }
     }
-  }, [isFocused]);
-
-  const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState();
+  }, [focused]);
 
   useEffect(() => {
-    setRefreshing(true);
-    getData();
-    setRefreshing(false);
-  }, [isFocused]);
+    console.log("getGet")
+    if (focused) getData();
+  }, [focused]);
 
-  const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
+  const renderJobs = (jobs) =>
+    jobs && jobs.length ? (
+      jobs.map((job) => <JobBlock jobItem={job} key={job.ID} />)
+    ) : (
+      <Text style={styles.emptyText}>No jobs available</Text>
+    );
 
-  //
-  return (
-    <SafeAreaView>
-      <View className="mx-5 relative">
+  const renderCompany = ({ item }) => {
+    const isExpanded = !!expandedCompanies[item.Belongcmp]; // Get expansion state for the specific company
+
+    return (
+      <View>
+        <TouchableOpacity onPress={() => toggleCompanyExpansion(item.Belongcmp)} style={styles.companyContainer}>
+          <Text style={styles.companyName}>{item.Cmpname}</Text>
+        </TouchableOpacity>
+        {isExpanded && renderJobs(item.Jobs)}
+      </View>
+    );
+  };
+
+  const renderContent = () => {
+    if (getUserInfo?.Role === 100) {
+      // Admin view: List of companies with expandable jobs
+      return (
+        <>
+          <FlatList
+            data={data}
+            renderItem={renderCompany}
+            keyExtractor={(item) => item.Belongcmp.toString()}
+            contentContainerStyle={styles.list}
+          />
+
+        </>
+      );
+    } else {
+      // Driver view: Direct list of jobs
+      return (
         <FlatList
           data={data}
-          className="h-full"
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={async () => {
-                setRefreshing(true);
-                await getData();
-                setRefreshing(false);
-              }}
-            />
-          }
-          renderItem={({ item }: { item: jobItemT }) => (
-            <JobBlock jobItem={item} />
-          )}
+          renderItem={({ item }) => <JobBlock jobItem={item} />}
+          keyExtractor={(item) => item.ID.toString()}
+          contentContainerStyle={styles.list}
         />
-        <FAB
-          icon="plus"
-          style={styles.fab}
-          onPress={() => navigation.navigate("CreateJobP")}
-        />
-      </View>
+      );
+    }
+  };
+
+  return (
+    <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+      {data && data.length > 0 ? renderContent() : <Text style={styles.emptyText}>No jobs available</Text>}
+      {getUserInfo?.Role <= 200 ? <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={() => navigation.navigate("CreateJobP")}
+      /> : <></>}
     </SafeAreaView>
   );
 }
 
-export default JobsAdmin;
+export default JobsScreen;
+
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    paddingHorizontal: 10,
-    // backgroundColor: usc() == "light" ? "#fff" : "#000",
+    flex: 1,
+  },
+  companyContainer: {
+    borderRadius: 4,
+    padding: 12,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    elevation: 2,
+    backgroundColor: "#fff", // Add background for better visibility
+  },
+  companyName: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  emptyText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+  },
+  list: {
+    paddingBottom: 16,
   },
   fab: {
     position: "absolute",
     margin: 16,
     right: 0,
     bottom: 40,
-  },
-  dropdown: {
-    backgroundColor: "rgb(233, 223, 235)",
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 0.5,
-    paddingHorizontal: 8,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: "absolute",
-    backgroundColor: "white",
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
   },
 });

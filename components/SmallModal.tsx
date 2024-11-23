@@ -103,7 +103,7 @@ function SmallModal({
                   mode="outlined"
                 />
               </View>
-              <View className="py-2">
+              {/* <View className="py-2">
                 <TextInput
                   onChangeText={(e) => {
                     setTmpNew((prev: mInfoT) => {
@@ -117,7 +117,7 @@ function SmallModal({
                   }
                   mode="outlined"
                 />
-              </View>
+              </View> */}
               <View className="flex flex-row ">
                 <Pressable
                   className="flex-1 h-full py-4"

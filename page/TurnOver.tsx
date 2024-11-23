@@ -52,20 +52,20 @@ function TurnOver(): React.JSX.Element {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={handlePrevMonth} style={styles.navButton}>
-          <Text style={styles.navButtonText}>{"< 上個月"}</Text>
+          <Text style={styles.navButtonText} className="dark:text-white">{"< 上個月"}</Text>
         </Pressable>
-        <Text style={styles.dateText}>
+        <Text style={styles.dateText} className="dark:text-white">
           {year} / {month.toString().padStart(2, "0")}
         </Text>
         <Pressable onPress={handleNextMonth} style={styles.navButton}>
-          <Text style={styles.navButtonText}>{"下個月 >"}</Text>
+          <Text style={styles.navButtonText} className="dark:text-white">{"下個月 >"}</Text>
         </Pressable>
       </View>
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#007bff" />
         </View>
-      ) : cmps.length > 0 ? (
+      ) : cmps && cmps.length > 0 ? (
         <FlatList
           data={cmps}
           keyExtractor={(item) => item.ID.toString()}
@@ -76,7 +76,7 @@ function TurnOver(): React.JSX.Element {
         />
       ) : (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No data available for this month.</Text>
+          <Text className="dark:text-white" style={styles.emptyText}>No data available for this month.</Text>
         </View>
       )}
     </SafeAreaView>
@@ -88,38 +88,38 @@ export default TurnOver;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
+    // backgroundColor: "#f8f9fa",
     padding: 16,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#ffffff",
+    // backgroundColor: "#ffffff",
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 4,
     marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    // shadowColor: "#000",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.1,
+    // shadowRadius: 4,
     elevation: 3,
   },
   navButton: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
-    backgroundColor: "#007bff",
+    // backgroundColor: "#007bff",
   },
   navButtonText: {
-    color: "#ffffff",
+    // color: "#ffffff",
     fontSize: 14,
     fontWeight: "600",
   },
   dateText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333",
+    // color: "#333",
   },
   loadingContainer: {
     flex: 1,
@@ -136,6 +136,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: "#888",
+    // color: "#888",
   },
 });

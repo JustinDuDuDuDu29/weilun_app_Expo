@@ -66,9 +66,17 @@ function AlertP(): React.JSX.Element {
   const [isFocus, setIsFocus] = useState(false);
 
   const [alertList, setAlertList] = useState<alertT[]>([]);
-  const [newAlert, setNewAlert] = useState<newAlertT>();
+  const [newAlert, setNewAlert] = useState<newAlertT>({
+    belongCmp: getUserInfo?.Role == 200 ? getUserInfo?.RoleBelongcmp : 0,
+    alert: "",
+  }
+  );
   const store = useStore();
   const handleSubmit = async () => {
+    if (!newAlert.alert || !newAlert.belongCmp) {
+      Alert.alert("請檢查東西是否都有填齊")
+      return
+    }
     setDisable(true);
     try {
       const res = await callAPI("/api/alert", "POST", newAlert!, true);
@@ -78,7 +86,10 @@ function AlertP(): React.JSX.Element {
       if (res.status == 200) {
         Alert.alert("成功", "已新增通知", [{ text: "OK" }]);
         setValue(undefined);
-        setNewAlert({});
+        setNewAlert({
+          belongCmp: getUserInfo?.Role == 200 ? getUserInfo?.RoleBelongcmp : 0,
+          alert: "",
+        });
         setVisible(false);
         getData();
       }
@@ -96,11 +107,11 @@ function AlertP(): React.JSX.Element {
       } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => {} },
+            { text: "OK", onPress: () => { } },
           ]);
         }
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => { } }]);
       }
     } finally {
       setDisable(false);
@@ -129,7 +140,7 @@ function AlertP(): React.JSX.Element {
           }}
           keyExtractor={(item) => item.ID.toString()}
         />
-        {getUserInfo?.Role == 100 ? (
+        {getUserInfo?.Role <= 200 ? (
           <FAB icon="plus" style={styles.fab} onPress={() => showModal()} />
         ) : (
           <></>
@@ -165,27 +176,31 @@ function AlertP(): React.JSX.Element {
                 </View>
               </View>
               <View className=" mt-4">
-                <Dropdown
-                  style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
-                  mode="modal"
-                  placeholderStyle={styles.placeholderStyle}
-                  selectedTextStyle={styles.selectedTextStyle}
-                  inputSearchStyle={styles.inputSearchStyle}
-                  iconStyle={styles.iconStyle}
-                  data={cmpList}
-                  search
-                  labelField="Name"
-                  valueField="ID"
-                  placeholder={!isFocus ? "請選擇" : "..."}
-                  searchPlaceholder="Search..."
-                  value={value}
-                  onFocus={() => setIsFocus(true)}
-                  onBlur={() => setIsFocus(false)}
-                  onChange={(item) => {
-                    setNewAlert({ ...newAlert!, belongCmp: item.ID });
-                    setIsFocus(false);
-                  }}
-                />
+                {getUserInfo?.Role <= 100 ?
+                  <Dropdown
+                    style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+                    mode="modal"
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={cmpList}
+                    search
+                    labelField="Name"
+                    valueField="ID"
+                    placeholder={!isFocus ? "請選擇" : "..."}
+                    searchPlaceholder="Search..."
+                    value={value}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={(item) => {
+                      setNewAlert({ ...newAlert!, belongCmp: item.ID });
+                      setIsFocus(false);
+                    }}
+                  /> :
+                  <Text>{getUserInfo?.Cmpname}</Text>
+                }
+
               </View>
             </View>
             <Pressable
