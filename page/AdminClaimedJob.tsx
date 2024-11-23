@@ -60,6 +60,7 @@ function AdminClaimedJob(): React.JSX.Element {
   };
 
   useEffect(() => {
+    console.log("Getting")
     getData();
   }, [focused]);
 

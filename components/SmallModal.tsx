@@ -16,12 +16,14 @@ import { TextInput } from "react-native-paper";
 import { mInfoT } from "../types/maintainT";
 
 function SmallModal({
+  type,
   modalVisible,
   setModalVisible,
   addToGasLiter,
   tmpNew,
   setTmpNew,
 }: {
+  type: string,
   modalVisible: boolean;
   setModalVisible: Function;
   addToGasLiter: Function;
@@ -55,7 +57,7 @@ function SmallModal({
           <KeyboardAvoidingView
             behavior="padding"
             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-            // style={styles.container}
+          // style={styles.container}
           >
             {/* <TouchableOpacity activeOpacity={1} className="w-screen"> */}
             <View
@@ -78,10 +80,10 @@ function SmallModal({
                 <TextInput
                   label="品名"
                   mode="outlined"
-                  value={tmpNew.name!}
+                  value={tmpNew.itemName!}
                   onChangeText={(e) => {
                     setTmpNew((prev: mInfoT) => {
-                      return { ...prev, name: e };
+                      return { ...prev, itemName: e };
                     });
                   }}
                 />
@@ -103,21 +105,24 @@ function SmallModal({
                   mode="outlined"
                 />
               </View>
-              {/* <View className="py-2">
-                <TextInput
-                  onChangeText={(e) => {
-                    setTmpNew((prev: mInfoT) => {
-                      return { ...prev, price: parseInt(e) };
-                    });
-                  }}
-                  defaultValue={tmpNew.price! ? tmpNew.price!.toString() : ""}
-                  label="總價"
-                  keyboardType={
-                    Platform.OS === "android" ? "numeric" : "number-pad"
-                  }
-                  mode="outlined"
-                />
-              </View> */}
+              {type == "gas" ?
+                <View className="py-2">
+
+                  <TextInput
+                    onChangeText={(e) => {
+                      setTmpNew((prev: mInfoT) => {
+                        return { ...prev, totalPrice: parseInt(e) };
+                      });
+                    }}
+                    defaultValue={tmpNew.totalPrice! ? tmpNew.totalPrice!.toString() : ""}
+                    label="總價"
+                    keyboardType={
+                      Platform.OS === "android" ? "numeric" : "number-pad"
+                    }
+                    mode="outlined"
+                  />
+                </View> : <></>
+              }
               <View className="flex flex-row ">
                 <Pressable
                   className="flex-1 h-full py-4"

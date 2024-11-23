@@ -100,11 +100,6 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     if (!visibility[key]) {
       if (jobInfo[key].length === 0) {
         try {
-          console.log(`/api/repair?driverid=${
-              store.get(fnAtom).getUserInfofn()?.Role === 100
-                ? uid
-                : store.get(fnAtom).getUserInfofn()?.ID
-            }&ym=${key}`)
           const res = await callAPI(
             `/api/repair?driverid=${
               store.get(fnAtom).getUserInfofn()?.Role === 100
@@ -163,10 +158,11 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
 
   const [tmpNew, setTmpNew] = useState<mInfoT>({
     id: uuidv4(),
-    price: 0,
+    totalPrice: 0,
     quantity: 0,
-    name: "",
-    place: "",
+    itemName: "",
+    create_date:""
+    // place: "",
   });
 
   const removeByUUID = (id: string) => {
@@ -174,7 +170,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   };
 
   const addToGasLiter = () => {
-    if (tmpNew.name === "" || tmpNew.price === 0 || tmpNew.quantity === 0) {
+    if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
       Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
       return;
     }
@@ -191,21 +187,23 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     setGasLiter(arr);
     setTmpNew({
       id: uuidv4(),
-      price: 0,
+      totalPrice: 0,
       quantity: 0,
-      name: "",
+      itemName: "",
+      create_date: ""
     });
     setModalVisible(false);
   };
 
   const showModal = () => setVisible(true);
   const clearD = () => {
-    setType("gas");
+    setType("maintain");
     setTmpNew({
       id: uuidv4(),
-      price: 0,
+      totalPrice: 0,
       quantity: 0,
-      name: "",
+      itemName: "",
+      create_date: ""
     });
     setVisible(false);
     setModalVisible(false);
@@ -225,7 +223,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     const f = new FormData();
 
     if (type === "gas") {
-      if (tmpNew.name === "" || tmpNew.price === 0 || tmpNew.quantity === 0) {
+      if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
         Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
         return;
       }
@@ -351,8 +349,8 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                   onPress={async () => {
                     if (type === "gas") {
                       if (
-                        tmpNew.name === "" ||
-                        tmpNew.price === 0 ||
+                        tmpNew.itemName === "" ||
+                        tmpNew.totalPrice === 0 ||
                         tmpNew.quantity === 0
                       ) {
                         Alert.alert("注意", "好像有東西沒填齊唷", [
@@ -375,6 +373,8 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                 </Pressable>
               </View>
               <SmallModal
+                type="maintain"
+
                 tmpNew={tmpNew}
                 setTmpNew={setTmpNew}
                 modalVisible={modalVisible}

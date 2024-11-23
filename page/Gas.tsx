@@ -30,7 +30,8 @@ import GasM from "../components/GasM";
 import UploadPic from "../components/UploadPic";
 import { ActionSheetRef } from "react-native-actions-sheet";
 import { ImgT, imgUrl } from "../types/ImgT";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
+import {  useNavigation } from "@react-navigation/native";
 import { ScreenProp } from "../types/navigationT";
 import { fnAtom, userInfo } from "../App";
 import { AlertMe } from "../util/AlertMe";
@@ -44,8 +45,10 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
   const [visibility, setVisibility] = useState<{ [key: string]: boolean }>({});
   const store = useStore();
   const [canPress, setCanPress] = useState<boolean>(false);
+  const focused = useIsFocused();
+
   // store.get(fnAtom).getUserInfofn()
-  const getData = useCallback(async () => {
+  const getData = async () => {
     try {
       const res = await callAPI(
         `/api/gas/cj?id=${
@@ -62,6 +65,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
       }
       const data: string[] = await res.json();
 
+      console.log(data)
       setData(data);
       data.forEach((e) => {
         setJobInfo((oldArray) => ({ ...oldArray, [e]: [] }));
@@ -89,11 +93,17 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
         Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
     }
-  }, [uid]);
+  };
 
   useEffect(() => {
+    console.log("Getting")
     getData();
-  }, [getData]);
+  }, [focused]);
+  // useEffect(() => {
+  //   console.log("New")
+  //   getData();
+
+  // }, [focused]);
 
   const navigation = useNavigation<ScreenProp>();
 
@@ -101,11 +111,6 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
     if (!visibility[key]) {
       if (jobInfo[key].length === 0) {
         try {
-          console.log(`/api/gas?driverid=${
-              store.get(fnAtom).getUserInfofn()?.Role === 100
-                ? uid
-                : store.get(fnAtom).getUserInfofn()?.ID
-            }&ym=${key}`)
           const res = await callAPI(
             `/api/gas?driverid=${
               store.get(fnAtom).getUserInfofn()?.Role === 100
@@ -176,11 +181,13 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
 
   const addToGasLiter = () => {
     if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
-      console.log(tmpNew)
+      // console.log(tmpNew)
 
-      Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
+      Alert.alert("注意", "3好像有東西沒填齊唷", [{ text: "OK" }]);
       return;
     }
+
+    // console.log("add:", tmpNew)
 
     const arr = gasLiter;
     const index = arr.findIndex((el) => el.id === tmpNew.id);
@@ -229,24 +236,25 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
     setCanPress(true);
     const f = new FormData();
 
-    if (type === "gas") {
-      if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
-        console.log(tmpNew)
-        Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
-        return;
-      }
-      const arr = gasLiter;
-      arr.push(tmpNew);
-      setGasLiter(arr);
-    }
-    if (gasLiter.length === 0) {
-      clearD();
-      return;
-    }
+    // if (type === "gas") {
+    //   if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
+    //     console.log(tmpNew)
+    //     Alert.alert("注意", "2好像有東西沒填齊唷", [{ text: "OK" }]);
+    //     return;
+    //   }
+    //   const arr = gasLiter;
+    //   arr.push(tmpNew);
+    //   setGasLiter(arr);
+    // }
+    // if (gasLiter.length === 0) {
+    //   clearD();
+    //   return;
+    // }
 
     f.append("gasInfo", JSON.stringify(gasLiter));
     f.append("gasPic", gasP);
     f.append("place", place);
+    // console.log("f:", f)
     try {
       const res = await callAPIForm(
         `/api/gas`,
@@ -356,20 +364,20 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
               <View className="bg-blue-400 py-3 mt-3 rounded-xl">
                 <Pressable
                   onPress={async () => {
-                    if (type === "gas") {
-                      if (
-                        tmpNew.itemName === "" ||
-                        tmpNew.totalPrice === 0 ||
-                        tmpNew.quantity === 0
-                      ) {
-        console.log(tmpNew)
+        //             if (type === "gas") {
+        //               if (
+        //                 tmpNew.itemName === "" ||
+        //                 tmpNew.totalPrice === 0 ||
+        //                 tmpNew.quantity === 0
+        //               ) {
+        // console.log(tmpNew)
 
-                        Alert.alert("注意", "好像有東西沒填齊唷", [
-                          { text: "OK" },
-                        ]);
-                        return;
-                      }
-                    }
+        //                 Alert.alert("注意", "1好像有東西沒填齊唷", [
+        //                   { text: "OK" },
+        //                 ]);
+        //                 return;
+        //               }
+        //             }
                     setPicModalV(true);
                   }}
                 >
@@ -384,6 +392,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
                 </Pressable>
               </View>
               <SmallModal
+                type="gas"
                 tmpNew={tmpNew}
                 setTmpNew={setTmpNew}
                 modalVisible={modalVisible}

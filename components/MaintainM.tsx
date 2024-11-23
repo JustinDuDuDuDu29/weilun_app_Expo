@@ -49,17 +49,17 @@ function MaintainM({
                 if (newValue == "gas") {
                   setTmpNew({
                     id: uuidv4(),
-                    price: 0,
+                    totalPrice: 0,
                     quantity: 0,
-                    name: "92汽油",
+                    itemName: "92汽油",
                   });
                   return;
                 }
                 setTmpNew({
                   id: uuidv4(),
-                  price: 0,
+                  totalPrice: 0,
                   quantity: 0,
-                  name: "",
+                  itemName: "",
                 });
               }}
               value={type}
@@ -89,9 +89,9 @@ function MaintainM({
                 onPress={(e) => {
                   setTmpNew({
                     id: uuidv4(),
-                    price: 0,
+                    totalPrice: 0,
                     quantity: 0,
-                    name: "",
+                    itemName: "",
                   });
                   setModalVisible(true);
                 }}

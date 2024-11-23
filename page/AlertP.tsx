@@ -67,12 +67,13 @@ function AlertP(): React.JSX.Element {
 
   const [alertList, setAlertList] = useState<alertT[]>([]);
   const [newAlert, setNewAlert] = useState<newAlertT>({
-    belongCmp: getUserInfo?.Role == 200 ? getUserInfo?.RoleBelongcmp : 0,
+    belongCmp: getUserInfo?.Role == 200 ? getUserInfo?.Belongcmp : 0,
     alert: "",
   }
   );
   const store = useStore();
   const handleSubmit = async () => {
+    console.log(JSON.stringify(newAlert))
     if (!newAlert.alert || !newAlert.belongCmp) {
       Alert.alert("請檢查東西是否都有填齊")
       return

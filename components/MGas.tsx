@@ -35,71 +35,6 @@ function MGas(
 
   return (
     <Pressable>
-      {type === "gas" ? (
-        <View>
-          <RadioButton.Group
-            onValueChange={(selected) => {
-              // setNewInfo({...newInfo, name: selected});
-              setTmpNew({ ...tmpNew, itemName: selected });
-            }}
-            value={tmpNew.itemName!}
-          >
-            <View>
-              <Text className="text-2xl dark:text-white">請選擇種類：</Text>
-              <View className="flex flex-col">
-                <View className="flex flex-row  items-center align-middle">
-                  {/* <View className=" border my-3 rounded-full"> */}
-                  <RadioButton value="92汽油" />
-                  {/* </View> */}
-                  <Text className="text-xl dark:text-white">92汽油</Text>
-                </View>
-
-                <View className="flex flex-row  items-center align-middle">
-                  {/* <View className=" border my-3 rounded-full"> */}
-                  <RadioButton value="95汽油" />
-                  {/* </View> */}
-                  <Text className="text-xl dark:text-white">95汽油</Text>
-                </View>
-
-                <View className="flex flex-row  items-center align-middle">
-                  {/* <View className=" border my-3 rounded-full"> */}
-                  <RadioButton value="98汽油" />
-                  {/* </View> */}
-                  <Text className="text-xl dark:text-white">98汽油</Text>
-                </View>
-
-                <View className="flex flex-row  items-center align-middle">
-                  {/* <View className=" border my-3 rounded-full"> */}
-                  <RadioButton value="超級柴油" />
-                  {/* </View> */}
-                  <Text className="text-xl dark:text-white">超級柴油</Text>
-                </View>
-              </View>
-            </View>
-          </RadioButton.Group>
-
-          <View className="my-2">
-            {/* <Text className="text-xl dark:text-white">公升數:</Text> */}
-            <TextInput
-              label={"公升數"}
-              keyboardType="number-pad"
-              onChangeText={(e) => {
-                setTmpNew({ ...tmpNew, quantity: parseInt(e) });
-              }}
-            />
-          </View>
-          <View className="my-2">
-            {/* <Text className="text-xl dark:text-white">總價:</Text> */}
-            <TextInput
-              label={"總價"}
-              keyboardType="number-pad"
-              onChangeText={(e) => {
-                setTmpNew({ ...tmpNew, totalPrice: parseInt(e) });
-              }}
-            />
-          </View>
-        </View>
-      ) : (
         <View className="flex flex-col" style={{ maxHeight: 400 }}>
           <FlatList
             className=" w-full"
@@ -117,7 +52,7 @@ function MGas(
                       <Text className="text-xl">
                         數量：{item.item.quantity}
                       </Text>
-                      <Text className="text-xl">總價：{item.item.totalPrice}</Text>
+                      {type == "gas" ?<Text className="text-xl">總價：{item.item.totalPrice}</Text>: <></>}
                     </View>
                     <View className="flex flex-row items-center ">
                       <Pressable
@@ -144,7 +79,6 @@ function MGas(
             // keyExtractor={(item) => item.!.toString()}
           />
         </View>
-      )}
     </Pressable>
   );
 }

@@ -49,17 +49,17 @@ function MaintainM({
                 if (newValue == "gas") {
                   setTmpNew({
                     id: uuidv4(),
-                    price: 0,
+                    totalPrice: 0,
                     quantity: 0,
-                    name: "92汽油",
+                    itemName: "92汽油",
                   });
                   return;
                 }
                 setTmpNew({
                   id: uuidv4(),
-                  price: 0,
+                  totalPrice: 0,
                   quantity: 0,
-                  name: "",
+                  itemName: "",
                 });
               }}
               value={type}
@@ -80,18 +80,15 @@ function MaintainM({
               </View>
             </RadioButton.Group>
           </View>
-          {type === "gas" ? (
-            <></>
-          ) : (
-            <View className="h-full flex  items-center align-middle content-center justify-center flex-row">
+       <View className="h-full flex  items-center align-middle content-center justify-center flex-row">
               <Pressable
                 className="bg-blue-300 flex rounded-full"
                 onPress={(e) => {
                   setTmpNew({
                     id: uuidv4(),
-                    price: 0,
+                    totalPrice: 0,
                     quantity: 0,
-                    name: "",
+                    itemName: "",
                   });
                   setModalVisible(true);
                 }}
@@ -99,7 +96,7 @@ function MaintainM({
                 <Icon source={"plus"} size={ww * 0.15} />
               </Pressable>
             </View>
-          )}
+          
         </View>
       </Pressable>
       <MGas
@@ -111,7 +108,7 @@ function MaintainM({
         setModalVisible={setModalVisible}
       />
       {/* <Text className="text-xl dark:text-white">地點：</Text> */}
-      <Pressable className="my-2">
+      {/* <Pressable className="my-2">
         <TextInput
           label={"地點"}
           className="text-xl"
@@ -119,7 +116,7 @@ function MaintainM({
             setPlace(e);
           }}
         />
-      </Pressable>
+      </Pressable> */}
     </ScrollView>
   );
 }

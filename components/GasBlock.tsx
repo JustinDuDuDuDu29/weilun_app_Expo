@@ -32,7 +32,7 @@ function GasBlock({
     }
   };
   gasInfo.Repairinfo.forEach(concatData);
-  
+  // console.log(gasInfo)
   return (
     <SafeAreaView>
       <Pressable

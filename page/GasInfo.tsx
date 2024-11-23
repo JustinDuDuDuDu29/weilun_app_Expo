@@ -47,7 +47,8 @@ function GasInfo({
       const data = await res.json();
 
       setMInfo(data.res[0]);
-      console.log(data.res[0].Pic.Valid);
+      console.log(data.res[0])
+      // console.log(data.res[0].Pic.Valid);
       let calculatedTotalPrice = 0;
       data.res[0].Repairinfo.forEach((el) => {
         calculatedTotalPrice += el.totalPrice!;
@@ -120,8 +121,9 @@ function GasInfo({
     try {
       const updatedItems = mInfo?.Repairinfo.map((item) => ({
         id: item.id,
-        price: modifiedPrices[item.id] || item.totalPrice,
+        totalPrice: modifiedPrices[item.id] || item.totalPrice,
       }));
+      console.log(updatedItems)
 
       const res = await callAPI(
         `/api/gas/updateItem`,
@@ -143,6 +145,7 @@ function GasInfo({
   };
 
   useEffect(() => {
+    
     getData();
   }, [getData]);
 
@@ -153,7 +156,7 @@ function GasInfo({
       <Text className="dark:text-white text-xl">
         車牌號碼：{mInfo?.Platenum}
       </Text>
-      <Text className="dark:text-white text-xl">加油地點：{mInfo?.Place}</Text>
+      {/* <Text className="dark:text-white text-xl">加油地點：{mInfo?.Place}</Text> */}
       <Text className="dark:text-white text-xl">
         所屬公司：{mInfo?.Cmpname}
       </Text>

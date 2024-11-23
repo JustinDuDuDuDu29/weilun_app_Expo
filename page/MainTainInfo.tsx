@@ -47,7 +47,7 @@ function MaintainInfo({
       const data = await res.json();
 
       setMInfo(data.res[0]);
-      console.log(data.res[0].Pic.Valid);
+      // console.log(data.res[0].Pic.Valid);
       let calculatedTotalPrice = 0;
       data.res[0].Repairinfo.forEach((el) => {
         calculatedTotalPrice += el.totalPrice!;
@@ -120,7 +120,7 @@ function MaintainInfo({
     try {
       const updatedItems = mInfo?.Repairinfo.map((item) => ({
         id: item.id,
-        price: modifiedPrices[item.id] || item.totalPrice,
+        totalPrice: modifiedPrices[item.id] || item.totalPrice,
       }));
 
       const res = await callAPI(
