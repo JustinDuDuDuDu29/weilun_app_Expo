@@ -20,7 +20,9 @@ import { fnAtom } from "../App";
 function Maintain(): React.JSX.Element {
   const [cmpList, setCmpList] = useState<mCmpUserT[]>([]);
   const [expandedCmp, setExpandedCmp] = useState<Set<number>>(new Set());
-  const [expandedDrivers, setExpandedDrivers] = useState<Map<number, maintainInfoT[]>>(new Map());
+  const [expandedDrivers, setExpandedDrivers] = useState<
+    Map<number, maintainInfoT[]>
+  >(new Map());
   const focused = useIsFocused();
   const store = useStore();
   const insets = useSafeAreaInsets();
@@ -28,9 +30,28 @@ function Maintain(): React.JSX.Element {
   const toggleFoldCmp = (cmpID: number) => {
     setExpandedCmp((prevExpanded) => {
       const newExpanded = new Set(prevExpanded);
-      newExpanded.has(cmpID) ? newExpanded.delete(cmpID) : newExpanded.add(cmpID);
+      newExpanded.has(cmpID)
+        ? newExpanded.delete(cmpID)
+        : newExpanded.add(cmpID);
       return newExpanded;
     });
+  };
+  const changeMe = async (driverID: number) => {
+    try {
+      const res = await callAPI(
+        `/api/repair?cat=pending&driverid=${driverID}`,
+        "GET",
+        {},
+        true
+      );
+      if (res.status === 200) {
+        const jobs = await res.json();
+        console.log(jobs);
+        setExpandedDrivers((prev) => new Map(prev).set(driverID, jobs.res));
+      }
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   const toggleFoldDriver = async (driverID: number) => {
@@ -41,16 +62,7 @@ function Maintain(): React.JSX.Element {
         return newMap;
       });
     } else {
-      try {
-        const res = await callAPI(`/api/repair?cat=pending&driverid=${driverID}`, "GET", {}, true);
-        if (res.status === 200) {
-          const jobs = await res.json();
-          console.log(jobs)
-          setExpandedDrivers((prev) => new Map(prev).set(driverID, jobs.res));
-        }
-      } catch (err) {
-        handleError(err);
-      }
+      changeMe(driverID);
     }
   };
 
@@ -68,10 +80,11 @@ function Maintain(): React.JSX.Element {
 
   const handleError = (err: unknown) => {
     if (err instanceof Response) {
-      err.status === 451
-        ? store.get(fnAtom).codefn()
-        : AlertMe(err);
-    } else if (err instanceof TypeError && err.message === "Network request failed") {
+      err.status === 451 ? store.get(fnAtom).codefn() : AlertMe(err);
+    } else if (
+      err instanceof TypeError &&
+      err.message === "Network request failed"
+    ) {
       Alert.alert("糟糕！", "請檢察網路有沒有開", [{ text: "OK" }]);
     } else {
       Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK" }]);
@@ -82,23 +95,39 @@ function Maintain(): React.JSX.Element {
     getData();
   }, [focused]);
 
-  const renderJobs = (jobs: maintainInfoT[]) =>
+  const renderJobs = (jobs: maintainInfoT[], did: number) =>
     jobs && jobs.length ? (
-      jobs.map((job) => <MaintainBlock maintainInfo={job} key={job.ID} />)
+      jobs.map((job) => (
+        <MaintainBlock
+          maintainInfo={job}
+          key={job.ID}
+          changeMe={() => {
+            changeMe(did);
+          }}
+        />
+      ))
     ) : (
-      <Text style={styles.emptyText} className="dark:text-white">No jobs available</Text>
+      <Text style={styles.emptyText} className="dark:text-white">
+        No jobs available
+      </Text>
     );
 
-  const renderDriver = ({ item }: { item: { driverID: number; driverName: string } }) => {
+  const renderDriver = ({
+    item,
+  }: {
+    item: { driverID: number; driverName: string };
+  }) => {
     const isDriverExpanded = expandedDrivers.has(item.driverID);
     const jobs = expandedDrivers.get(item.driverID);
 
     return (
       <View style={styles.driverContainer}>
         <TouchableOpacity onPress={() => toggleFoldDriver(item.driverID)}>
-          <Text style={styles.driverText} className="dark:text-white">{item.driverName}</Text>
+          <Text style={styles.driverText} className="dark:text-white">
+            {item.driverName}
+          </Text>
         </TouchableOpacity>
-        {isDriverExpanded && jobs && renderJobs(jobs)}
+        {isDriverExpanded && jobs && renderJobs(jobs, item.driverID)}
       </View>
     );
   };
@@ -110,7 +139,9 @@ function Maintain(): React.JSX.Element {
     return (
       <View style={styles.cmpContainer}>
         <TouchableOpacity onPress={() => toggleFoldCmp(item.cmpId)}>
-          <Text style={styles.cmpText} className="dark:text-white">{item.cmpName}</Text>
+          <Text style={styles.cmpText} className="dark:text-white">
+            {item.cmpName}
+          </Text>
         </TouchableOpacity>
         {isCmpExpanded && (
           <FlatList
@@ -125,7 +156,12 @@ function Maintain(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { paddingTop: insets.top, paddingBottom: insets.bottom },
+      ]}
+    >
       {cmpList && cmpList.length > 0 ? (
         <FlatList
           data={cmpList}
@@ -134,7 +170,9 @@ function Maintain(): React.JSX.Element {
           contentContainerStyle={styles.cmpList}
         />
       ) : (
-        <Text style={styles.emptyText} className="dark:text-white">No repair jobs available</Text>
+        <Text style={styles.emptyText} className="dark:text-white">
+          No repair jobs available
+        </Text>
       )}
     </SafeAreaView>
   );

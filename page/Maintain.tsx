@@ -161,7 +161,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     totalPrice: 0,
     quantity: 0,
     itemName: "",
-    create_date:""
+    create_date: "",
     // place: "",
   });
 
@@ -170,7 +170,11 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
   };
 
   const addToGasLiter = () => {
-    if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
+    if (
+      tmpNew.itemName === "" ||
+      // tmpNew.totalPrice === 0 ||
+      tmpNew.quantity === 0
+    ) {
       Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
       return;
     }
@@ -190,7 +194,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
       totalPrice: 0,
       quantity: 0,
       itemName: "",
-      create_date: ""
+      create_date: "",
     });
     setModalVisible(false);
   };
@@ -203,7 +207,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
       totalPrice: 0,
       quantity: 0,
       itemName: "",
-      create_date: ""
+      create_date: "",
     });
     setVisible(false);
     setModalVisible(false);
@@ -223,7 +227,11 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     const f = new FormData();
 
     if (type === "gas") {
-      if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
+      if (
+        tmpNew.itemName === "" ||
+        tmpNew.totalPrice === 0 ||
+        tmpNew.quantity === 0
+      ) {
         Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
         return;
       }
@@ -240,12 +248,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
     f.append("repairPic", repairP);
     f.append("place", place);
     try {
-      const res = await callAPIForm(
-        `/api/repair`,
-        "POST",
-        f,
-        true
-      );
+      const res = await callAPIForm(`/api/repair`, "POST", f, true);
 
       if (res.status === 200) {
         clearD();
@@ -350,7 +353,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                     if (type === "gas") {
                       if (
                         tmpNew.itemName === "" ||
-                        tmpNew.totalPrice === 0 ||
+                        // tmpNew.totalPrice === 0 ||
                         tmpNew.quantity === 0
                       ) {
                         Alert.alert("注意", "好像有東西沒填齊唷", [
@@ -374,7 +377,6 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
               </View>
               <SmallModal
                 type="maintain"
-
                 tmpNew={tmpNew}
                 setTmpNew={setTmpNew}
                 modalVisible={modalVisible}

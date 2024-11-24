@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Text,
   View,
-  TextInput
+  TextInput,
 } from "react-native";
 import { GIBEDEIMGB0SS, callAPI } from "../util/callAPIUtil";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
@@ -20,8 +20,12 @@ import { AlertMe } from "../util/AlertMe";
 
 function GasInfo({
   route,
-}: {
-  route: RouteProp<{ params: { maintainID: number } }, "params">;
+}: // changeMe,
+{
+  route: RouteProp<
+    { params: { maintainID: number; changeMe: Function } },
+    "params"
+  >;
 }): React.JSX.Element {
   const store = useStore();
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
@@ -31,7 +35,9 @@ function GasInfo({
   const [mInfo, setMInfo] = useState<maintainInfoT>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   // const [modifiedPrices, setModifiedPrices] = useState<{ [key: number]: number }>({});
-  const [modifiedPrices, setModifiedPrices] = useState<{ [key: number]: string }>({});
+  const [modifiedPrices, setModifiedPrices] = useState<{
+    [key: number]: string;
+  }>({});
 
   const getData = useCallback(async () => {
     try {
@@ -47,7 +53,7 @@ function GasInfo({
       const data = await res.json();
 
       setMInfo(data.res[0]);
-      console.log(data.res[0])
+      console.log(data.res[0]);
       // console.log(data.res[0].Pic.Valid);
       let calculatedTotalPrice = 0;
       data.res[0].Repairinfo.forEach((el) => {
@@ -74,11 +80,11 @@ function GasInfo({
       } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => { } },
+            { text: "OK", onPress: () => {} },
           ]);
         }
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => { } }]);
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
     }
   }, [route.params.maintainID]);
@@ -102,12 +108,7 @@ function GasInfo({
 
   const deleteRepairFun = async () => {
     try {
-      const call = await callAPI(
-        `/api/gas/${mInfo?.ID}`,
-        "DELETE",
-        {},
-        true
-      );
+      const call = await callAPI(`/api/gas/${mInfo?.ID}`, "DELETE", {}, true);
       if (call.status == 200) {
         Alert.alert("完成", "刪除成功");
         navigation.navigate("adminClaimedJobP");
@@ -123,18 +124,19 @@ function GasInfo({
         id: item.id,
         totalPrice: modifiedPrices[item.id] || item.totalPrice,
       }));
-      console.log(updatedItems)
+      console.log(updatedItems);
 
       const res = await callAPI(
         `/api/gas/updateItem`,
         "PUT",
-        { 'UpdatedItems' :updatedItems },
+        { UpdatedItems: updatedItems },
         true
       );
 
       if (res.status === 200) {
         Alert.alert("更新成功", "所有價格已成功更新");
         getData(); // Reload data after update
+        await route.params.changeMe();
       } else {
         Alert.alert("更新失敗", "無法更新價格，請稍後再試");
       }
@@ -145,7 +147,6 @@ function GasInfo({
   };
 
   useEffect(() => {
-    
     getData();
   }, [getData]);
 
@@ -230,7 +231,7 @@ function GasInfo({
                     },
                     {
                       text: "我再想想",
-                      onPress: () => { },
+                      onPress: () => {},
                     },
                   ]
                 );
@@ -301,7 +302,7 @@ function GasInfo({
               </Text>
 
               <TextInput
-              editable={getUserInfo?.Role <= 200}
+                editable={getUserInfo?.Role <= 200}
                 value={modifiedPrices[item.id] ?? item.totalPrice!.toString()}
                 onChangeText={(text) => {
                   const sanitizedText = text.replace(/[^0-9.]/g, ""); // Sanitize input to allow only numbers and decimals
@@ -321,7 +322,6 @@ function GasInfo({
                 }}
                 keyboardType="numeric"
               />
-
             </View>
           )}
           keyExtractor={(item) => item.id.toString()}

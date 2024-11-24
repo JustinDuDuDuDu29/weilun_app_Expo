@@ -20,7 +20,9 @@ import { fnAtom } from "../App";
 function Gas(): React.JSX.Element {
   const [cmpList, setCmpList] = useState<mCmpUserT[]>([]);
   const [expandedCmp, setExpandedCmp] = useState<Set<number>>(new Set());
-  const [expandedDrivers, setExpandedDrivers] = useState<Map<number, maintainInfoT[]>>(new Map());
+  const [expandedDrivers, setExpandedDrivers] = useState<
+    Map<number, maintainInfoT[]>
+  >(new Map());
   const focused = useIsFocused();
   const store = useStore();
   const insets = useSafeAreaInsets();
@@ -28,9 +30,29 @@ function Gas(): React.JSX.Element {
   const toggleFoldCmp = (cmpID: number) => {
     setExpandedCmp((prevExpanded) => {
       const newExpanded = new Set(prevExpanded);
-      newExpanded.has(cmpID) ? newExpanded.delete(cmpID) : newExpanded.add(cmpID);
+      newExpanded.has(cmpID)
+        ? newExpanded.delete(cmpID)
+        : newExpanded.add(cmpID);
       return newExpanded;
     });
+  };
+
+  const fetchUserData = async (driverID: number) => {
+    try {
+      const res = await callAPI(
+        `/api/gas?cat=pending&driverid=${driverID}`,
+        "GET",
+        {},
+        true
+      );
+      if (res.status === 200) {
+        const jobs = await res.json();
+        console.log(jobs);
+        setExpandedDrivers((prev) => new Map(prev).set(driverID, jobs.res));
+      }
+    } catch (err) {
+      handleError(err);
+    }
   };
 
   const toggleFoldDriver = async (driverID: number) => {
@@ -41,16 +63,7 @@ function Gas(): React.JSX.Element {
         return newMap;
       });
     } else {
-      try {
-        const res = await callAPI(`/api/gas?cat=pending&driverid=${driverID}`, "GET", {}, true);
-        if (res.status === 200) {
-          const jobs = await res.json();
-          console.log(jobs)
-          setExpandedDrivers((prev) => new Map(prev).set(driverID, jobs.res));
-        }
-      } catch (err) {
-        handleError(err);
-      }
+      await fetchUserData(driverID);
     }
   };
 
@@ -59,7 +72,7 @@ function Gas(): React.JSX.Element {
       const res = await callAPI("/api/gas/cmpUser", "GET", {}, true);
       if (res.status === 200) {
         const data = await res.json();
-        console.log(data)
+        console.log(data);
         setCmpList(Array.isArray(data) ? data : []);
       }
     } catch (err) {
@@ -69,10 +82,11 @@ function Gas(): React.JSX.Element {
 
   const handleError = (err: unknown) => {
     if (err instanceof Response) {
-      err.status === 451
-        ? store.get(fnAtom).codefn()
-        : AlertMe(err);
-    } else if (err instanceof TypeError && err.message === "Network request failed") {
+      err.status === 451 ? store.get(fnAtom).codefn() : AlertMe(err);
+    } else if (
+      err instanceof TypeError &&
+      err.message === "Network request failed"
+    ) {
       Alert.alert("糟糕！", "請檢察網路有沒有開", [{ text: "OK" }]);
     } else {
       Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK" }]);
@@ -83,23 +97,39 @@ function Gas(): React.JSX.Element {
     getData();
   }, [focused]);
 
-  const renderJobs = (jobs: maintainInfoT[]) =>
+  const renderJobs = (jobs: maintainInfoT[], did: number) =>
     jobs && jobs.length ? (
-      jobs.map((job) => <GasBlock gasInfo={job} key={job.ID} />)
+      jobs.map((job) => (
+        <GasBlock
+          gasInfo={job}
+          key={job.ID}
+          changeMe={() => {
+            fetchUserData(did);
+          }}
+        />
+      ))
     ) : (
-      <Text className="dark:text-white" style={styles.emptyText}>No gas jobs available</Text>
+      <Text className="dark:text-white" style={styles.emptyText}>
+        No gas jobs available
+      </Text>
     );
 
-  const renderDriver = ({ item }: { item: { driverID: number; driverName: string } }) => {
+  const renderDriver = ({
+    item,
+  }: {
+    item: { driverID: number; driverName: string };
+  }) => {
     const isDriverExpanded = expandedDrivers.has(item.driverID);
     const jobs = expandedDrivers.get(item.driverID);
 
     return (
       <View style={styles.driverContainer}>
         <TouchableOpacity onPress={() => toggleFoldDriver(item.driverID)}>
-          <Text className="dark:text-white" style={styles.driverText}>{item.driverName}</Text>
+          <Text className="dark:text-white" style={styles.driverText}>
+            {item.driverName}
+          </Text>
         </TouchableOpacity>
-        {isDriverExpanded && jobs && renderJobs(jobs)}
+        {isDriverExpanded && jobs && renderJobs(jobs, item.driverID)}
       </View>
     );
   };
@@ -111,7 +141,9 @@ function Gas(): React.JSX.Element {
     return (
       <View style={styles.cmpContainer}>
         <TouchableOpacity onPress={() => toggleFoldCmp(item.cmpId)}>
-          <Text style={styles.cmpText} className="dark:text-white">{item.cmpName}</Text>
+          <Text style={styles.cmpText} className="dark:text-white">
+            {item.cmpName}
+          </Text>
         </TouchableOpacity>
         {isCmpExpanded && (
           <FlatList
@@ -126,7 +158,12 @@ function Gas(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { paddingTop: insets.top, paddingBottom: insets.bottom },
+      ]}
+    >
       {cmpList && cmpList.length > 0 ? (
         <FlatList
           data={cmpList}
@@ -135,7 +172,9 @@ function Gas(): React.JSX.Element {
           contentContainerStyle={styles.cmpList}
         />
       ) : (
-        <Text style={styles.emptyText} className="dark:text-white">No gas jobs available</Text>
+        <Text style={styles.emptyText} className="dark:text-white">
+          No gas jobs available
+        </Text>
       )}
     </SafeAreaView>
   );

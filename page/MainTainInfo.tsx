@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Text,
   View,
-  TextInput
+  TextInput,
 } from "react-native";
 import { GIBEDEIMGB0SS, callAPI } from "../util/callAPIUtil";
 import { mInfoT, maintainInfoT } from "../types/maintainT";
@@ -20,8 +20,12 @@ import { AlertMe } from "../util/AlertMe";
 
 function MaintainInfo({
   route,
-}: {
-  route: RouteProp<{ params: { maintainID: number } }, "params">;
+}: // changeMe,
+{
+  route: RouteProp<
+    { params: { maintainID: number; changeMe: Function } },
+    "params"
+  >;
 }): React.JSX.Element {
   const store = useStore();
   const [getUserInfo, setUserInfo] = useAtom(userInfo);
@@ -31,7 +35,9 @@ function MaintainInfo({
   const [mInfo, setMInfo] = useState<maintainInfoT>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   // const [modifiedPrices, setModifiedPrices] = useState<{ [key: number]: number }>({});
-  const [modifiedPrices, setModifiedPrices] = useState<{ [key: number]: string }>({});
+  const [modifiedPrices, setModifiedPrices] = useState<{
+    [key: number]: string;
+  }>({});
 
   const getData = useCallback(async () => {
     try {
@@ -73,11 +79,11 @@ function MaintainInfo({
       } else if (err instanceof TypeError) {
         if (err.message == "Network request failed") {
           Alert.alert("糟糕！", "請檢察網路有沒有開", [
-            { text: "OK", onPress: () => { } },
+            { text: "OK", onPress: () => {} },
           ]);
         }
       } else {
-        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => { } }]);
+        Alert.alert("GG", `怪怪\n${err}`, [{ text: "OK", onPress: () => {} }]);
       }
     }
   }, [route.params.maintainID]);
@@ -93,6 +99,7 @@ function MaintainInfo({
       if (call.status == 200) {
         Alert.alert("完成", "核可資料成功");
         getData();
+        await route.params.changeMe();
       }
     } catch (error) {
       console.error("Error approving job: ", error);
@@ -109,7 +116,9 @@ function MaintainInfo({
       );
       if (call.status == 200) {
         Alert.alert("完成", "刪除成功");
-        navigation.navigate("adminClaimedJobP");
+        await route.params.changeMe();
+        navigation.goBack();
+        // navigation.navigate("adminClaimedJobP");
       }
     } catch (error) {
       console.error("Error deleting job: ", error);
@@ -126,13 +135,15 @@ function MaintainInfo({
       const res = await callAPI(
         `/api/repair/updateItem`,
         "PUT",
-        { 'UpdatedItems' :updatedItems },
+        { UpdatedItems: updatedItems },
         true
       );
 
       if (res.status === 200) {
         Alert.alert("更新成功", "所有價格已成功更新");
         getData(); // Reload data after update
+        await route.params.changeMe();
+        // navigation.goBack();
       } else {
         Alert.alert("更新失敗", "無法更新價格，請稍後再試");
       }
@@ -227,7 +238,7 @@ function MaintainInfo({
                     },
                     {
                       text: "我再想想",
-                      onPress: () => { },
+                      onPress: () => {},
                     },
                   ]
                 );
@@ -298,7 +309,7 @@ function MaintainInfo({
               </Text>
 
               <TextInput
-              editable={getUserInfo?.Role <= 200}
+                editable={getUserInfo?.Role <= 200}
                 value={modifiedPrices[item.id] ?? item.totalPrice!.toString()}
                 onChangeText={(text) => {
                   const sanitizedText = text.replace(/[^0-9.]/g, ""); // Sanitize input to allow only numbers and decimals
@@ -318,7 +329,6 @@ function MaintainInfo({
                 }}
                 keyboardType="numeric"
               />
-
             </View>
           )}
           keyExtractor={(item) => item.id.toString()}

@@ -9,6 +9,7 @@ import {
   Text,
   useColorScheme as usc,
   ActivityIndicator,
+  StyleSheet,
   Platform,
 } from "react-native";
 import { Icon } from "react-native-paper";
@@ -21,8 +22,9 @@ import { RUEmpty } from "../util/RUEmpty";
 import JobBlockPJ from "../components/JobBlockPJ";
 import { callAPI, download } from "../util/callAPIUtil";
 import user from "../asset/user.png";
-import { inUserT } from "../types/userT";
+import { cmpInfo, inUserT } from "../types/userT";
 import { AlertMe } from "../util/AlertMe";
+import { Dropdown } from "react-native-element-dropdown";
 
 function usePersistentWebSocket(url: string) {
   const [ws, setWs] = useState<WebSocket | null>(null);
@@ -33,9 +35,10 @@ function usePersistentWebSocket(url: string) {
     let socket: WebSocket | null = null;
 
     const initializeWebSocket = async () => {
-      const wsUrl = Platform.OS === "ios"
-        ? "ws://10.0.2.2:8080/api/io/"
-        : "ws://10.0.2.2:8080/api/io";
+      const wsUrl =
+        Platform.OS === "ios"
+          ? "ws://10.0.2.2:8080/api/io/"
+          : "ws://10.0.2.2:8080/api/io";
       socket = new WebSocket(wsUrl);
 
       socket.onopen = async () => {
@@ -85,6 +88,10 @@ function usePersistentWebSocket(url: string) {
 
 function Home(): React.JSX.Element {
   const store = useStore();
+  const [isFocus, setIsFocus] = useState(false);
+  const [cmpList, setCmpList] = useState<cmpInfo[]>([]);
+  const [value, setValue] = useState(null);
+
   const navigation = useNavigation<ScreenProp>();
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
@@ -92,11 +99,11 @@ function Home(): React.JSX.Element {
   const [month, setMonth] = useState<string>();
   const ww = Dimensions.get("window").width;
   const cS = usc();
-  const isF= useIsFocused()
+  const isF = useIsFocused();
   const ws = usePersistentWebSocket("ws://10.0.2.2:8080/api/io/");
 
   const setData = useCallback(async () => {
-    console.log("rerun")
+    console.log("rerun");
 
     setLoading(true);
     try {
@@ -123,16 +130,25 @@ function Home(): React.JSX.Element {
           AlertMe(error);
         }
       }
-      if (error instanceof TypeError && error.message === "Network request failed") {
+      if (
+        error instanceof TypeError &&
+        error.message === "Network request failed"
+      ) {
         Alert.alert("糟糕！", "請檢察網路有沒有開", [{ text: "OK" }]);
       }
     } finally {
       setLoading(false);
     }
   }, [store]);
-
+  const getCmp = useCallback(async () => {
+    const cmpList: cmpInfo[] = await (
+      await callAPI("/api/cmp/all", "GET", {}, true)
+    ).json();
+    setCmpList(cmpList);
+  }, []);
   useEffect(() => {
     setData();
+    getCmp();
   }, [isF]);
 
   return (
@@ -163,7 +179,7 @@ function Home(): React.JSX.Element {
               className="flex flex-row content-center my-2 bg-blue-300 dark:bg-slate-500 rounded-lg px-9 py-2 justify-center "
               onPress={() => {
                 store.get(fnAtom).getUserInfofn().Role === 300
-                  ?navigation.navigate("jobsP") 
+                  ? navigation.navigate("jobsP")
                   : navigation.navigate("jobsAdminP");
               }}
             >
@@ -393,10 +409,43 @@ function Home(): React.JSX.Element {
                   onChangeText={(e: string) => setMonth(e)}
                   keyboardType="numeric"
                 />
+                <Text>{value}</Text>
+                {store.get(fnAtom).getUserInfofn().Role <= 100 ? (
+                  <Dropdown
+                    style={[
+                      styles.dropdown,
+                      isFocus && { borderColor: "blue" },
+                    ]}
+                    mode="modal"
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    iconStyle={styles.iconStyle}
+                    data={cmpList}
+                    search
+                    labelField="Name"
+                    valueField="ID"
+                    placeholder={!isFocus ? "所屬公司" : "..."}
+                    searchPlaceholder="Search..."
+                    value={value}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={(item) => {
+                      setValue(item.ID);
+                      setIsFocus(false);
+                    }}
+                  />
+                ) : (
+                  <View>
+                    <Text className=" dark:text-white text-xl">
+                      所屬公司：{getUserInfo?.Cmpname}
+                    </Text>
+                  </View>
+                )}
                 <Dialog.Button
                   label="送出"
                   onPress={async () => {
-                    await download(year!, month!);
+                    await download(year!, month!, value);
                     setShow(false);
                   }}
                 />
@@ -411,3 +460,48 @@ function Home(): React.JSX.Element {
 }
 
 export default Home;
+const styles = StyleSheet.create({
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 50,
+  },
+  container: {
+    display: "flex",
+    paddingHorizontal: 10,
+  },
+  dropdown: {
+    backgroundColor: "rgb(233, 223, 235)",
+    // height: 50,
+    borderColor: "gray",
+    // borderWidth: 0.5,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: "absolute",
+    backgroundColor: "white",
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});

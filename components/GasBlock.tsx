@@ -13,8 +13,10 @@ import { ScreenProp } from "../types/navigationT";
 
 function GasBlock({
   gasInfo,
+  changeMe,
 }: {
   gasInfo: maintainInfoT;
+  changeMe: Function;
 }): React.JSX.Element {
   const [isPressed, setIsPressed] = useState(false);
   const navigation = useNavigation<ScreenProp>();
@@ -37,7 +39,10 @@ function GasBlock({
     <SafeAreaView>
       <Pressable
         onLongPress={() => {
-          navigation.navigate("gasInfoP", { maintainID: gasInfo.ID });
+          navigation.navigate("gasInfoP", {
+            maintainID: gasInfo.ID,
+            changeMe: changeMe,
+          });
         }}
         onPress={() => {
           // expain the block

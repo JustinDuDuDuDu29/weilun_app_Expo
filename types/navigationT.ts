@@ -27,8 +27,8 @@ export type RootStackParamList = {
     alertP: undefined;
     adminClaimedJobP: undefined;
     claimJobP: { claimedJob: number, removeFromList:Function};
-    maintainInfoP: { maintainID: number};
-    gasInfoP: { maintainID: number};
+    maintainInfoP: { maintainID: number, changeMe: Function};
+    gasInfoP: { maintainID: number, changeMe: Function};
     userInfoAdminP: { uid: number};
     editUserInfoP: { OInfo: inUserT};
     CreateJobP: undefined;

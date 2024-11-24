@@ -30,9 +30,11 @@ const downloadFile = async (uri: string, fileUri: string, bearer: string) => {
   }
 };
 
-export const download = async (year: string, month: string) => {
+export const download = async (year: string, month: string, value) => {
   const bearer = "Bearer " + (await getSecureValue("jwtToken")).toString();
-  const uri = `${process.env.EXPO_PUBLIC_HOST}/api/revenue/excel?year=${year}&month=${month}`;
+  // console.log(value)
+  const uri = `${process.env.EXPO_PUBLIC_HOST}/api/revenue/excel?year=${year}&month=${month}` + (value?`&cmp=${value}`:"");
+  console.log(uri)
   const fileUri = `${FileSystem.documentDirectory}${year}_${month}`;
 
   await downloadFile(uri, fileUri, bearer);
