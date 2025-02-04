@@ -163,7 +163,7 @@ function Home(): React.JSX.Element {
         <SafeAreaView className="h-full flex justify-center">
           <View className="px-5 flex flex-col justify-around">
             <View className="flex flex-row justify-around items-center">
-              <Text className="text-xl dark:text-white">
+              <Text allowFontScaling={false}className="text-xl dark:text-white">
                 歡迎！{store.get(fnAtom).getUserInfofn()?.Username}
               </Text>
               <Pressable onPress={() => navigation.navigate("userInfoP")}>
@@ -192,7 +192,7 @@ function Home(): React.JSX.Element {
               </View>
 
               <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">工作去</Text>
+                <Text allowFontScaling={false}className="text-3xl dark:text-white">工作去</Text>
               </View>
             </Pressable>
             <Pressable
@@ -207,7 +207,7 @@ function Home(): React.JSX.Element {
                 />
               </View>
               <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">營業額查詢</Text>
+                <Text allowFontScaling={false}className="text-3xl dark:text-white">營業額查詢</Text>
               </View>
             </Pressable>
             {store.get(fnAtom).getUserInfofn().Role >= 300 && (
@@ -224,7 +224,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">24H客服</Text>
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">24H客服</Text>
                   </View>
                 </Pressable>
                 <Pressable
@@ -239,7 +239,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">維修保養</Text>
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">維修保養</Text>
                   </View>
                 </Pressable>
                 <Pressable
@@ -254,7 +254,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">加油</Text>
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">加油</Text>
                   </View>
                 </Pressable>
               </>
@@ -272,7 +272,7 @@ function Home(): React.JSX.Element {
                 />
               </View>
               <View className="flex content-center justify-center">
-                <Text className="text-3xl dark:text-white">公告欄</Text>
+                <Text allowFontScaling={false}className="text-3xl dark:text-white">公告欄</Text>
               </View>
             </Pressable>
             {store.get(fnAtom).getUserInfofn().Role == 300 && (
@@ -293,7 +293,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">用戶管理</Text>
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">用戶管理</Text>
                   </View>
                 </Pressable>
                 <Pressable
@@ -308,7 +308,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">
                       已接取的任務
                     </Text>
                   </View>
@@ -325,7 +325,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">待核可維修</Text>
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">待核可維修</Text>
                   </View>
                 </Pressable>
                 <Pressable
@@ -340,7 +340,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">待核可加油</Text>
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">待核可加油</Text>
                   </View>
                 </Pressable>
                 <Pressable
@@ -355,7 +355,7 @@ function Home(): React.JSX.Element {
                     />
                   </View>
                   <View className="flex content-center justify-center">
-                    <Text className="text-3xl dark:text-white">下載報告</Text>
+                    <Text allowFontScaling={false}className="text-3xl dark:text-white">下載報告</Text>
                   </View>
                 </Pressable>
               </>
@@ -437,7 +437,7 @@ function Home(): React.JSX.Element {
                   />
                 ) : (
                   <View>
-                    <Text className=" dark:text-white text-xl">
+                    <Text allowFontScaling={false}className=" dark:text-white text-xl">
                       所屬公司：{getUserInfo?.Cmpname}
                     </Text>
                   </View>

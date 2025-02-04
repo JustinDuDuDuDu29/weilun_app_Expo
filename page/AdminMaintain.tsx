@@ -107,7 +107,7 @@ function Maintain(): React.JSX.Element {
         />
       ))
     ) : (
-      <Text style={styles.emptyText} className="dark:text-white">
+      <Text allowFontScaling={false}style={styles.emptyText} className="dark:text-white">
         No jobs available
       </Text>
     );
@@ -123,7 +123,7 @@ function Maintain(): React.JSX.Element {
     return (
       <View style={styles.driverContainer}>
         <TouchableOpacity onPress={() => toggleFoldDriver(item.driverID)}>
-          <Text style={styles.driverText} className="dark:text-white">
+          <Text allowFontScaling={false}style={styles.driverText} className="dark:text-white">
             {item.driverName}
           </Text>
         </TouchableOpacity>
@@ -139,7 +139,7 @@ function Maintain(): React.JSX.Element {
     return (
       <View style={styles.cmpContainer}>
         <TouchableOpacity onPress={() => toggleFoldCmp(item.cmpId)}>
-          <Text style={styles.cmpText} className="dark:text-white">
+          <Text allowFontScaling={false}style={styles.cmpText} className="dark:text-white">
             {item.cmpName}
           </Text>
         </TouchableOpacity>
@@ -170,7 +170,7 @@ function Maintain(): React.JSX.Element {
           contentContainerStyle={styles.cmpList}
         />
       ) : (
-        <Text style={styles.emptyText} className="dark:text-white">
+        <Text allowFontScaling={false}style={styles.emptyText} className="dark:text-white">
           No repair jobs available
         </Text>
       )}

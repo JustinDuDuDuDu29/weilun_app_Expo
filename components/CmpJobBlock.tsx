@@ -38,8 +38,8 @@ function CmpJobBlock({ cmpJob, year, month }: { cmpJob: cmpJobT, year: number, m
   const renderUser = ({ item }: { item: userI }) => (
     <>
       {/* <Pressable onPress={() => handleUserPress(item.)} style={styles.userPressable}> */}
-        <Text style={styles.userName}>{item.UserName} / {item.JobCount} / {item.JobTotal}/ {item.GasTotal} / {item.RepairTotal}</Text>
-        {/* <Text style={styles.userName}>{JSON.stringify(item)} </Text> */}
+        <Text allowFontScaling={false}style={styles.userName}>{item.UserName} / {item.JobCount} / {item.JobTotal}/ {item.GasTotal} / {item.RepairTotal}</Text>
+        {/* <Text allowFontScaling={false}style={styles.userName}>{JSON.stringify(item)} </Text> */}
 
       {/* </Pressable> */}
       {/* {expandedUserID === item.UserID && (
@@ -58,7 +58,7 @@ function CmpJobBlock({ cmpJob, year, month }: { cmpJob: cmpJobT, year: number, m
       <Pressable onPress={handleCompanyPress} style={styles.pressable}>
         <View style={styles.row}>
           {/* Left Side: Text */}
-          <Text style={styles.headerText}>
+          <Text allowFontScaling={false}style={styles.headerText}>
             {cmpJob.Name} / {cmpJob.Count} / {cmpJob.Jobtotal} / {cmpJob.Gastotal} / {cmpJob.Repairtotal}
           </Text>
 

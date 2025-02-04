@@ -68,7 +68,7 @@ function AdminClaimedJob(): React.JSX.Element {
 
   const renderJobs = (jobs: ClaimedJob[]) => {
     if (!jobs || jobs.length === 0) {
-      return <Text style={styles.emptyText} className="dark:text-white">No jobs available</Text>;
+      return <Text allowFontScaling={false}style={styles.emptyText} className="dark:text-white">No jobs available</Text>;
     }
     return jobs.map((job) => (
       <CJBlock CJ={job} removeFromList={() => {}} key={job.ID} />
@@ -81,7 +81,7 @@ function AdminClaimedJob(): React.JSX.Element {
     return (
       <View style={styles.userContainer}>
         <TouchableOpacity onPress={() => toggleFoldUser(item.userID)}>
-          <Text style={styles.userName} className="dark:text-white">{item.userName}</Text>
+          <Text allowFontScaling={false}style={styles.userName} className="dark:text-white">{item.userName}</Text>
         </TouchableOpacity>
         {isUserExpanded && renderJobs(item.jobs)}
       </View>
@@ -95,7 +95,7 @@ function AdminClaimedJob(): React.JSX.Element {
     return (
       <View style={styles.companyContainer}>
         <TouchableOpacity onPress={() => toggleFoldCmp(item.cmpID)}>
-          <Text style={styles.companyName} className="dark:text-white">{item.cmpName}</Text>
+          <Text allowFontScaling={false}style={styles.companyName} className="dark:text-white">{item.cmpName}</Text>
         </TouchableOpacity>
         {isCmpExpanded && (
           <FlatList
@@ -129,7 +129,7 @@ function AdminClaimedJob(): React.JSX.Element {
           contentContainerStyle={styles.list}
         />
       ) : (
-        <Text style={styles.emptyText} className="dark:text-white">No claimed jobs available</Text>
+        <Text allowFontScaling={false}style={styles.emptyText} className="dark:text-white">No claimed jobs available</Text>
       )}
     </SafeAreaView>
   );

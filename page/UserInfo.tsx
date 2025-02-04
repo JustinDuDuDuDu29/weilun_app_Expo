@@ -24,19 +24,19 @@ function UserInfo(): React.JSX.Element {
       <ScrollView className="mx-4 my-3">
         {/* <Text>{JSON.stringify(store.get(fnAtom).getUserInfofn())}</Text> */}
         <View>
-          <Text className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
             姓名：{store.get(fnAtom).getUserInfofn().Username}
           </Text>
-          <Text className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
             電話：{store.get(fnAtom).getUserInfofn().Phonenum}
           </Text>
-          <Text className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
             編號：{store.get(fnAtom).getUserInfofn().ID}
           </Text>
-          <Text className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
             所屬公司：{store.get(fnAtom).getUserInfofn().Cmpname}
           </Text>
-          <Text className="text-xl dark:text-white my-2">類別：{roleName}</Text>
+          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">類別：{roleName}</Text>
         </View>
         <Pressable
           className=" border border-purple-400 bg-purple-300 rounded-xl py-1"

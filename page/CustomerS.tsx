@@ -20,7 +20,7 @@ function CustomerS(): React.JSX.Element {
             <Icon source={lineLogo} size={ww * 0.38} />
           </View>
           <View className="flex flex-row justify-center align-middle">
-            <Text className="text-2xl text-black dark:text-white">
+            <Text allowFontScaling={false}className="text-2xl text-black dark:text-white">
               Line客服
             </Text>
           </View>
@@ -41,7 +41,7 @@ function CustomerS(): React.JSX.Element {
             <Icon source={phoneLogo} size={ww * 0.38} />
           </View>
           <View className="flex flex-row justify-center align-middle">
-            <Text className="text-2xl dark:text-white">客服專線</Text>
+            <Text allowFontScaling={false}className="text-2xl dark:text-white">客服專線</Text>
           </View>
         </Pressable>
       </View>

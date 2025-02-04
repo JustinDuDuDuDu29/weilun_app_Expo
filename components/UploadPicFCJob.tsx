@@ -20,7 +20,7 @@ const UploadPicFCJob = ({ src }: { src: null | imgUrl }): React.JSX.Element => {
   if (!src) {
     return (
       <SafeAreaView>
-        <Text className="dark:text-white">何不催促他快點完成工作ㄋ</Text>
+        <Text allowFontScaling={false}className="dark:text-white">何不催促他快點完成工作ㄋ</Text>
       </SafeAreaView>
     );
   }

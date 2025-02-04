@@ -342,7 +342,7 @@ function SearchComp(props: {
                   );
                 }}
               >
-                <Text className="text-lg font-semibold text-green-800 ">
+                <Text allowFontScaling={false}className="text-lg font-semibold text-green-800 ">
                   {el.Name}:{el.searchQ}
                 </Text>
               </Pressable>
@@ -377,7 +377,7 @@ function SearchComp(props: {
             <View className="flex flex-col justify-between">
               <View>
                 {/* <Text>{JSON.stringify(user)}</Text> */}
-                <Text className=" dark:text-white text-xl">請選擇類別：</Text>
+                <Text allowFontScaling={false}className=" dark:text-white text-xl">請選擇類別：</Text>
                 <View className="flex flex-row justify-between">
                   <RadioButton.Group
                     onValueChange={(newValue) => {
@@ -391,7 +391,7 @@ function SearchComp(props: {
                         {/* <View className=" border my-3 rounded-full"> */}
                         <RadioButton value="user" />
                         {/* </View> */}
-                        <Text className=" dark:text-white text-xl">
+                        <Text allowFontScaling={false}className=" dark:text-white text-xl">
                           新增使用者
                         </Text>
                       </View>
@@ -402,7 +402,7 @@ function SearchComp(props: {
                               {/* <View className=" border my-3 rounded-full"> */}
                               <RadioButton value="cmp" />
                               {/* </View> */}
-                              <Text className=" dark:text-white text-xl">
+                              <Text allowFontScaling={false}className=" dark:text-white text-xl">
                                 新增公司
                               </Text>
                             </View>
@@ -468,7 +468,7 @@ function SearchComp(props: {
                               setIsFocus(false);
                             }}
                           /> : <View>
-                            <Text className=" dark:text-white text-xl">所屬公司：{getUserInfo?.Cmpname}</Text>
+                            <Text allowFontScaling={false}className=" dark:text-white text-xl">所屬公司：{getUserInfo?.Cmpname}</Text>
                           </View>
                       }
                       <RadioButton.Group
@@ -497,7 +497,7 @@ function SearchComp(props: {
                             {/* <View className=" border my-3 rounded-full"> */}
                             <RadioButton value="cmpAdmin" />
                             {/* </View> */}
-                            <Text className=" dark:text-white text-xl">
+                            <Text allowFontScaling={false}className=" dark:text-white text-xl">
                               公司負責人
                             </Text>
                           </View>
@@ -505,7 +505,7 @@ function SearchComp(props: {
                             {/* <View className=" border my-3 rounded-full"> */}
                             <RadioButton value="driver" />
                             {/* </View> */}
-                            <Text className=" dark:text-white text-xl">
+                            <Text allowFontScaling={false}className=" dark:text-white text-xl">
                               司機
                             </Text>
                           </View>

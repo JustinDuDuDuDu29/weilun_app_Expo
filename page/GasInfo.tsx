@@ -152,22 +152,22 @@ function GasInfo({
 
   const renderHeader = () => (
     <View>
-      <Text className="dark:text-white text-xl">加油編號：{mInfo?.ID}</Text>
-      <Text className="dark:text-white text-xl">姓名：{mInfo?.Drivername}</Text>
-      <Text className="dark:text-white text-xl">
+      <Text allowFontScaling={false}className="dark:text-white text-xl">加油編號：{mInfo?.ID}</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-xl">姓名：{mInfo?.Drivername}</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-xl">
         車牌號碼：{mInfo?.Platenum}
       </Text>
-      {/* <Text className="dark:text-white text-xl">加油地點：{mInfo?.Place}</Text> */}
-      <Text className="dark:text-white text-xl">
+      {/* <Text allowFontScaling={false}className="dark:text-white text-xl">加油地點：{mInfo?.Place}</Text> */}
+      <Text allowFontScaling={false}className="dark:text-white text-xl">
         所屬公司：{mInfo?.Cmpname}
       </Text>
-      <Text className="dark:text-white text-xl">
+      <Text allowFontScaling={false}className="dark:text-white text-xl">
         維修日期：
         {mInfo?.Createdate.split("T")[0] +
           " " +
           mInfo?.Createdate.split("T")[1].split(".")[0]}
       </Text>
-      <Text className="dark:text-white text-xl">詳細資訊：</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-xl">詳細資訊：</Text>
       <View className="flex flex-row">
         <Text
           className="dark:text-white text-xl"
@@ -208,9 +208,9 @@ function GasInfo({
 
   const renderFooter = () => (
     <View>
-      <Text className="dark:text-white text-xl">加油總價:{totalPrice}</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-xl">加油總價:{totalPrice}</Text>
       <View className="my-2">
-        <Text className="text-xl dark:text-white">照片：</Text>
+        <Text allowFontScaling={false}className="text-xl dark:text-white">照片：</Text>
         <UploadPicFCJob src={jobPic} />
       </View>
       {getUserInfo?.Role <= 200 && (
@@ -237,14 +237,14 @@ function GasInfo({
                 );
               }}
             >
-              <Text className="text-lg">核可</Text>
+              <Text allowFontScaling={false}className="text-lg">核可</Text>
             </Pressable>
           )}
           <Pressable
             className="bg-green-200 dark:bg-green-400 rounded-xl px-16 py-3"
             onPress={() => updatePrices()}
           >
-            <Text className="text-lg">儲存修改</Text>
+            <Text allowFontScaling={false}className="text-lg">儲存修改</Text>
           </Pressable>
           <Pressable
             className="bg-red-200 dark:bg-red-400 rounded-xl px-16 py-3"
@@ -264,7 +264,7 @@ function GasInfo({
               );
             }}
           >
-            <Text className="text-lg">刪除</Text>
+            <Text allowFontScaling={false}className="text-lg">刪除</Text>
           </Pressable>
         </View>
       )}

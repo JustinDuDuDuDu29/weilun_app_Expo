@@ -71,7 +71,7 @@ const UploadPic = ({
             pressFun();
           }}
         >
-          <Text className="dark:text-white">
+          <Text allowFontScaling={false}className="dark:text-white">
             {showOption && canPress ? "按我" : "尚未"}上傳{showText}照片
           </Text>
         </Pressable>

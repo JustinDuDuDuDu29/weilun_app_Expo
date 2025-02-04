@@ -65,7 +65,7 @@ function JobsScreen(): React.JSX.Element {
     jobs && jobs.length ? (
       jobs.map((job) => <JobBlock jobItem={job} key={job.ID} />)
     ) : (
-      <Text style={styles.emptyText}>No jobs available</Text>
+      <Text allowFontScaling={false}style={styles.emptyText}>No jobs available</Text>
     );
 
   const renderCompany = ({ item }) => {
@@ -74,7 +74,7 @@ function JobsScreen(): React.JSX.Element {
     return (
       <View>
         <TouchableOpacity onPress={() => toggleCompanyExpansion(item.Belongcmp)} style={styles.companyContainer}>
-          <Text style={styles.companyName}>{item.Cmpname}</Text>
+          <Text allowFontScaling={false}style={styles.companyName}>{item.Cmpname}</Text>
         </TouchableOpacity>
         {isExpanded && renderJobs(item.Jobs)}
       </View>
@@ -110,7 +110,7 @@ function JobsScreen(): React.JSX.Element {
 
   return (
     <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      {data && data.length > 0 ? renderContent() : <Text style={styles.emptyText}>No jobs available</Text>}
+      {data && data.length > 0 ? renderContent() : <Text allowFontScaling={false}style={styles.emptyText}>No jobs available</Text>}
       {getUserInfo?.Role <= 200 ? <FAB
         icon="plus"
         style={styles.fab}

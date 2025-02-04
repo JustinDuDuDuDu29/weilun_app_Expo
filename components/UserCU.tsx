@@ -90,7 +90,7 @@ function UserCU({
             navigation.navigate("editUserInfoP", { OInfo: OInfo });
           }}
         >
-          <Text className="dark:text-white">
+          <Text allowFontScaling={false}className="dark:text-white">
             編輯{" "}
             <Icon
               source={"lead-pencil"}

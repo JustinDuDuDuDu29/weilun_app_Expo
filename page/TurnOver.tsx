@@ -52,13 +52,13 @@ function TurnOver(): React.JSX.Element {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={handlePrevMonth} style={styles.navButton}>
-          <Text style={styles.navButtonText} className="dark:text-white">{"< 上個月"}</Text>
+          <Text allowFontScaling={false}style={styles.navButtonText} className="dark:text-white">{"< 上個月"}</Text>
         </Pressable>
-        <Text style={styles.dateText} className="dark:text-white">
+        <Text allowFontScaling={false}style={styles.dateText} className="dark:text-white">
           {year} / {month.toString().padStart(2, "0")}
         </Text>
         <Pressable onPress={handleNextMonth} style={styles.navButton}>
-          <Text style={styles.navButtonText} className="dark:text-white">{"下個月 >"}</Text>
+          <Text allowFontScaling={false}style={styles.navButtonText} className="dark:text-white">{"下個月 >"}</Text>
         </Pressable>
       </View>
       {isLoading ? (
@@ -76,7 +76,7 @@ function TurnOver(): React.JSX.Element {
         />
       ) : (
         <View style={styles.emptyContainer}>
-          <Text className="dark:text-white" style={styles.emptyText}>No data available for this month.</Text>
+          <Text allowFontScaling={false}className="dark:text-white" style={styles.emptyText}>No data available for this month.</Text>
         </View>
       )}
     </SafeAreaView>

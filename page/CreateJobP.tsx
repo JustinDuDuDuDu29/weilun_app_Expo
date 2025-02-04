@@ -137,7 +137,7 @@ function CreateJobP(): React.JSX.Element {
             {/* <Text>{JSON.stringify(jobItem)}</Text> */}
             <View className="mx-4 my-2">
               <View className="flex my-1 flex-row mt-2">
-                <Text className="text-2xl dark:text-white">出發地:</Text>
+                <Text allowFontScaling={false}className="text-2xl dark:text-white">出發地:</Text>
                 <View className="flex-1 px-2">
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
@@ -146,7 +146,7 @@ function CreateJobP(): React.JSX.Element {
                 </View>
               </View>
               <View className="flex my-1 flex-row mt-2">
-                <Text className="text-2xl dark:text-white">經過:</Text>
+                <Text allowFontScaling={false}className="text-2xl dark:text-white">經過:</Text>
                 <View className="flex-1 py-3 px-2">
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
@@ -155,7 +155,7 @@ function CreateJobP(): React.JSX.Element {
                 </View>
               </View>
               <View className="flex my-1 flex-row mt-2">
-                <Text className="text-2xl dark:text-white">終點:</Text>
+                <Text allowFontScaling={false}className="text-2xl dark:text-white">終點:</Text>
                 <View className="flex-1 px-2">
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
@@ -164,7 +164,7 @@ function CreateJobP(): React.JSX.Element {
                 </View>
               </View>
               <View className="flex my-1 flex-row mt-2">
-                <Text className="text-2xl dark:text-white">業主:</Text>
+                <Text allowFontScaling={false}className="text-2xl dark:text-white">業主:</Text>
                 <View className="flex-1 py-3 px-2">
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
@@ -173,7 +173,7 @@ function CreateJobP(): React.JSX.Element {
                 </View>
               </View>
               <View className="flex flex-row my-2">
-                <Text className="text-2xl dark:text-white">注意事項:</Text>
+                <Text allowFontScaling={false}className="text-2xl dark:text-white">注意事項:</Text>
                 <View className="flex-1 px-2 mt-2">
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
@@ -182,7 +182,7 @@ function CreateJobP(): React.JSX.Element {
                 </View>
               </View>
               <View className="flex my-2 flex-row mt-2">
-                <Text className="text-2xl dark:text-white">價格:</Text>
+                <Text allowFontScaling={false}className="text-2xl dark:text-white">價格:</Text>
                 <View className="flex-1 px-2">
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
@@ -195,7 +195,7 @@ function CreateJobP(): React.JSX.Element {
               </View>
               {getUserInfo?.Role <= 100 ? (
                 <View className="flex my-2  mt-2">
-                  <Text className="text-2xl dark:text-white">所屬公司:</Text>
+                  <Text allowFontScaling={false}className="text-2xl dark:text-white">所屬公司:</Text>
                   <Dropdown
                     style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
                     mode="modal"
@@ -218,14 +218,14 @@ function CreateJobP(): React.JSX.Element {
                 </View>
               ) : (
                 <View className="flex my-2 flex-row mt-2">
-                  <Text className="text-2xl dark:text-white">所屬公司:</Text>
-                  <Text className="text-2xl border-b border-violet-200 dark:text-white">
+                  <Text allowFontScaling={false}className="text-2xl dark:text-white">所屬公司:</Text>
+                  <Text allowFontScaling={false}className="text-2xl border-b border-violet-200 dark:text-white">
                     {getUserInfo?.Cmpname ?? ""}
                   </Text>
                 </View>
               )}
               <View className="flex my-1 flex-row mt-3">
-                <Text className="text-2xl dark:text-white">剩餘趟數:</Text>
+                <Text allowFontScaling={false}className="text-2xl dark:text-white">剩餘趟數:</Text>
                 <View className="flex-1 px-2">
                   <TextInput
                     className="text-2xl border-b border-violet-200 dark:text-white"
@@ -243,13 +243,13 @@ function CreateJobP(): React.JSX.Element {
                     await updateJob();
                   }}
                 >
-                  <Text className="text-center dark:text-black">新增</Text>
+                  <Text allowFontScaling={false}className="text-center dark:text-black">新增</Text>
                 </Pressable>
                 <Pressable
                   className="w-1/3 bg-gray-200 py-2 rounded-xl"
                   onPress={() => navigation.goBack()}
                 >
-                  <Text className="text-center dark:text-black">返回</Text>
+                  <Text allowFontScaling={false}className="text-center dark:text-black">返回</Text>
                 </Pressable>
               </View>
             </View>

@@ -38,7 +38,7 @@ function MaintainM({
   return (
     <ScrollView>
       <Pressable className="flex flex-col justify-between">
-        <Text className="text-2xl dark:text-white">請選擇類別：</Text>
+        <Text allowFontScaling={false}className="text-2xl dark:text-white">請選擇類別：</Text>
         <View className="flex flex-row justify-between">
           <View>
             <RadioButton.Group
@@ -69,13 +69,13 @@ function MaintainM({
                   {/* <View className=" border my-3 rounded-full"> */}
                   {/* <RadioButton value="gas" /> */}
                   {/* </View> */}
-                  {/* <Text className="text-xl dark:text-white">加油</Text> */}
+                  {/* <Text allowFontScaling={false}className="text-xl dark:text-white">加油</Text> */}
                 {/* </View> */}
                 <View className="flex flex-row  items-center align-middle">
                   {/* <View className=" border my-3 rounded-full"> */}
                   <RadioButton value="maintain" status="checked" />
                   {/* </View> */}
-                  <Text className="text-xl dark:text-white">保養及維修</Text>
+                  <Text allowFontScaling={false}className="text-xl dark:text-white">保養及維修</Text>
                 </View>
               </View>
             </RadioButton.Group>
@@ -110,7 +110,7 @@ function MaintainM({
         gasLiter={gasLiter}
         setModalVisible={setModalVisible}
       />
-      {/* <Text className="text-xl dark:text-white">地點：</Text> */}
+      {/* <Text allowFontScaling={false}className="text-xl dark:text-white">地點：</Text> */}
       <Pressable className="my-2">
         <TextInput
           label={"地點"}
