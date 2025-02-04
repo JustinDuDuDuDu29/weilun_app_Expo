@@ -161,9 +161,8 @@ function AlertP(): React.JSX.Element {
           >
             <View>
               <View className="flex flex-row w-full my-3 ">
-                <Text
-                  style={{ textAlignVertical: "center" }}
-                  className="dark:text-white"
+                <Text allowFontScaling={false}                  style={{ textAlignVertical: "center" }}
+                  className="dark:text-white text-2xl"
                 >
                   通知內容
                 </Text>
@@ -199,7 +198,7 @@ function AlertP(): React.JSX.Element {
                       setIsFocus(false);
                     }}
                   /> :
-                  <Text>{getUserInfo?.Cmpname}</Text>
+                  <Text className="text-2xl" allowFontScaling={false}>{getUserInfo?.Cmpname}</Text>
                 }
 
               </View>
@@ -211,8 +210,7 @@ function AlertP(): React.JSX.Element {
                 await handleSubmit();
               }}
             >
-              <Text
-                style={{ textAlign: "center", textAlignVertical: "center" }}
+              <Text allowFontScaling={false}    className="text-2xl"    style={{ textAlign: "center", textAlignVertical: "center" }}
               >
                 送出
               </Text>

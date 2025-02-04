@@ -159,25 +159,24 @@ function MaintainInfo({
 
   const renderHeader = () => (
     <View>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">維修編號：{mInfo?.ID}</Text>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">姓名：{mInfo?.Drivername}</Text>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">維修編號：{mInfo?.ID}</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">姓名：{mInfo?.Drivername}</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">
         車牌號碼：{mInfo?.Platenum}
       </Text>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">維修地點：{mInfo?.Place}</Text>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">維修地點：{mInfo?.Place}</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">
         所屬公司：{mInfo?.Cmpname}
       </Text>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">
         維修日期：
         {mInfo?.Createdate.split("T")[0] +
           " " +
           mInfo?.Createdate.split("T")[1].split(".")[0]}
       </Text>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">詳細資訊：</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">詳細資訊：</Text>
       <View className="flex flex-row">
-        <Text
-          className="dark:text-white text-xl"
+        <Text allowFontScaling={false}          className="dark:text-white text-2xl"
           style={{
             flex: 1 / 3,
             flexBasis: 1 / 3,
@@ -187,8 +186,7 @@ function MaintainInfo({
         >
           品名
         </Text>
-        <Text
-          className="dark:text-white text-xl"
+        <Text allowFontScaling={false}          className="dark:text-white text-2xl"
           style={{
             flex: 1 / 3,
             flexBasis: 1 / 3,
@@ -198,8 +196,7 @@ function MaintainInfo({
         >
           數量
         </Text>
-        <Text
-          className="dark:text-white text-xl"
+        <Text allowFontScaling={false}          className="dark:text-white text-2xl"
           style={{
             flex: 1 / 3,
             flexBasis: 1 / 3,
@@ -215,9 +212,9 @@ function MaintainInfo({
 
   const renderFooter = () => (
     <View>
-      <Text allowFontScaling={false}className="dark:text-white text-xl">維修總價:{totalPrice}</Text>
+      <Text allowFontScaling={false}className="dark:text-white text-2xl">維修總價:{totalPrice}</Text>
       <View className="my-2">
-        <Text allowFontScaling={false}className="text-xl dark:text-white">照片：</Text>
+        <Text allowFontScaling={false}className="text-2xl dark:text-white">照片：</Text>
         <UploadPicFCJob src={jobPic} />
       </View>
       {getUserInfo?.Role <= 200 && (
@@ -244,14 +241,14 @@ function MaintainInfo({
                 );
               }}
             >
-              <Text allowFontScaling={false}className="text-lg">核可</Text>
+              <Text allowFontScaling={false}className="text-2xl">核可</Text>
             </Pressable>
           )}
           <Pressable
             className="bg-green-200 dark:bg-green-400 rounded-xl px-16 py-3"
             onPress={() => updatePrices()}
           >
-            <Text allowFontScaling={false}className="text-lg">儲存修改</Text>
+            <Text allowFontScaling={false}className="text-2xl">儲存修改</Text>
           </Pressable>
           <Pressable
             className="bg-red-200 dark:bg-red-400 rounded-xl px-16 py-3"
@@ -271,7 +268,7 @@ function MaintainInfo({
               );
             }}
           >
-            <Text allowFontScaling={false}className="text-lg">刪除</Text>
+            <Text allowFontScaling={false}className="text-2xl">刪除</Text>
           </Pressable>
         </View>
       )}
@@ -285,8 +282,7 @@ function MaintainInfo({
           data={mInfo?.Repairinfo}
           renderItem={({ item }) => (
             <View className="flex flex-row">
-              <Text
-                className="dark:text-white text-xl"
+              <Text allowFontScaling={false}                className="dark:text-white text-2xl"
                 style={{
                   flex: 1 / 3,
                   flexBasis: 1 / 3,
@@ -296,8 +292,7 @@ function MaintainInfo({
               >
                 {item.itemName}
               </Text>
-              <Text
-                className="dark:text-white text-xl"
+              <Text allowFontScaling={false}                className="dark:text-white text-2xl"
                 style={{
                   flex: 1 / 3,
                   flexBasis: 1 / 3,

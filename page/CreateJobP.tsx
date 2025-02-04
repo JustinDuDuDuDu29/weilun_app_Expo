@@ -134,7 +134,7 @@ function CreateJobP(): React.JSX.Element {
           }}
         >
           <ScrollView>
-            {/* <Text>{JSON.stringify(jobItem)}</Text> */}
+            {/* <Text allowFontScaling={false}>{JSON.stringify(jobItem)}</Text> */}
             <View className="mx-4 my-2">
               <View className="flex my-1 flex-row mt-2">
                 <Text allowFontScaling={false}className="text-2xl dark:text-white">出發地:</Text>
@@ -207,7 +207,7 @@ function CreateJobP(): React.JSX.Element {
                     search
                     labelField="Name"
                     valueField="ID"
-                    placeholder={<Text>...</Text>}
+                    placeholder={<Text allowFontScaling={false}>...</Text>}
                     searchPlaceholder="Search..."
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}

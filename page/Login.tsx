@@ -111,8 +111,7 @@ function Login(): React.JSX.Element {
               await handleLogin();
             }}
           >
-            <Text
-              className="color-white text-2xl"
+            <Text allowFontScaling={false}              className="color-white text-2xl"
               style={{ textAlign: "center", textAlignVertical: "center" }}
             >
               登入

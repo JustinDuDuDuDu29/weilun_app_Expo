@@ -120,14 +120,13 @@ function EditUserInfoP({
       }}
     >
       <View className="my-3 flex flex-row">
-        <Text
-          className="text-xl dark:text-white"
+        <Text allowFontScaling={false}          className="text-2xl dark:text-white"
           style={{ textAlign: "center", textAlignVertical: "center" }}
         >
           姓名：
         </Text>
         <TextInput
-          className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
+          className={`flex-1 text-2xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
           placeholder="姓名"
           onChangeText={(e) => {
             setUser({ ...user, Name: e });
@@ -137,14 +136,13 @@ function EditUserInfoP({
         </TextInput>
       </View>
       <View className="my-3 flex flex-row">
-        <Text
-          className="text-xl dark:text-white"
+        <Text allowFontScaling={false}          className="text-2xl dark:text-white"
           style={{ textAlign: "center", textAlignVertical: "center" }}
         >
           手機號碼：
         </Text>
         <TextInput
-          className={`flex-1 text-xl px-3 color-black rounded-xl  border-b-2  border-fuchsia-300 dark:text-white`}
+          className={`flex-1 text-2xl px-3 color-black rounded-xl  border-b-2  border-fuchsia-300 dark:text-white`}
           keyboardType="numeric"
           placeholderTextColor={cS == "light" ? "black" : "#ffffff"}
           placeholder="電話號碼"
@@ -157,8 +155,7 @@ function EditUserInfoP({
       </View>
 
       <View className="my-3 flex flex-row">
-        <Text
-          className="text-xl dark:text-white"
+        <Text allowFontScaling={false}          className="text-2xl dark:text-white"
           style={{ textAlign: "center", textAlignVertical: "center" }}
         >
           所屬公司：
@@ -208,8 +205,7 @@ function EditUserInfoP({
           value={newUserType}
         >
           <View className="my-3 flex flex-row">
-            <Text
-              className=" dark:text-white text-xl"
+            <Text allowFontScaling={false}              className=" dark:text-white text-2xl"
               style={{ textAlignVertical: "center", textAlign: "center" }}
             >
               職位：
@@ -230,14 +226,12 @@ function EditUserInfoP({
         </RadioButton.Group>
       ) : (
         <View className="my-3 flex flex-row">
-          <Text
-            className="text-xl dark:text-white"
+          <Text allowFontScaling={false}            className="text-2xl dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             職位：
           </Text>
-          <Text
-            className=" text-xl px-3 color-black rounded-xl dark:text-white"
+          <Text allowFontScaling={false}            className=" text-2xl px-3 color-black rounded-xl dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             {roleName}
@@ -247,14 +241,13 @@ function EditUserInfoP({
       {newUserType === "driver" ? (
         <>
           <View className="my-3 flex flex-row">
-            <Text
-              className="text-xl dark:text-white"
+            <Text allowFontScaling={false}              className="text-2xl dark:text-white"
               style={{ textAlign: "center", textAlignVertical: "center" }}
             >
               身份證：
             </Text>
             <TextInput
-              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
+              className={`flex-1 text-2xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
               placeholder="身份證"
               onChangeText={(e) => {
                 setUser({
@@ -271,14 +264,13 @@ function EditUserInfoP({
             </TextInput>
           </View>
           <View className="my-3 flex flex-row">
-            <Text
-              className="text-xl dark:text-white"
+            <Text allowFontScaling={false}              className="text-2xl dark:text-white"
               style={{ textAlign: "center", textAlignVertical: "center" }}
             >
               車牌號碼：
             </Text>
             <TextInput
-              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
+              className={`flex-1 text-2xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
               placeholder="車牌號碼"
               onChangeText={(e) => {
                 setUser({
@@ -295,14 +287,13 @@ function EditUserInfoP({
             </TextInput>
           </View>
           {/* <View className="my-3 flex flex-row">
-            <Text
-              className="text-xl dark:text-white"
+            <Text allowFontScaling={false}              className="text-2xl dark:text-white"
               style={{ textAlign: "center", textAlignVertical: "center" }}
             >
               比率：
             </Text>
             <TextInput
-              className={`flex-1 text-xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
+              className={`flex-1 text-2xl px-3 color-black rounded-xl border-b-2  border-fuchsia-300 dark:text-white`}
               placeholder="比率"
               keyboardType="numeric"
               onChangeText={(e) => {
@@ -330,8 +321,7 @@ function EditUserInfoP({
           onPress={submitFun}
           disabled={canPress}
         >
-          <Text
-            style={{ verticalAlign: "middle", textAlign: "center" }}
+          <Text allowFontScaling={false}            style={{ verticalAlign: "middle", textAlign: "center" }}
             className="dark:text-white"
           >
             送出

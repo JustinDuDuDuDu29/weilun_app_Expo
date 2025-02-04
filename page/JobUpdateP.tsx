@@ -153,16 +153,14 @@ function JobUpdateP({
                   setEditable(!editable);
                 }}
               >
-                <Text
-                  className=" text-2xl "
+                <Text allowFontScaling={false}                  className=" text-2xl "
                   style={{ textAlign: "center", textAlignVertical: "center" }}
                 >
                   {editable ? "取消" : "編輯"}
                 </Text>
               </Pressable>
               <View className="flex my-1 flex-row mt-3">
-                <Text
-                  className=" text-2xl dark:text-white"
+                <Text allowFontScaling={false}                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   出發地:
@@ -176,13 +174,12 @@ function JobUpdateP({
                       setJobItem({ ...jobItem, Fromloc: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.Fromloc}</Text>
+                    <Text allowFontScaling={false}>{route.params.jobItem.Fromloc}</Text>
                   </TextInput>
                 </View>
               </View>
               <View className="flex my-1 flex-row mt-3">
-                <Text
-                  className=" text-2xl dark:text-white"
+                <Text allowFontScaling={false}                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   經過:
@@ -200,14 +197,13 @@ function JobUpdateP({
                       setJobItem({ ...jobItem, Mid: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.Mid?.String ?? route.params.jobItem.Mid}</Text>
+                    <Text allowFontScaling={false}>{route.params.jobItem.Mid?.String ?? route.params.jobItem.Mid}</Text>
                   </TextInput>
                 </View>
               </View>
 
               <View className="flex my-1 flex-row mt-3">
-                <Text
-                  className=" text-2xl dark:text-white"
+                <Text allowFontScaling={false}                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   終點:
@@ -221,14 +217,13 @@ function JobUpdateP({
                       setJobItem({ ...jobItem, Toloc: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.Toloc}</Text>
+                    <Text allowFontScaling={false}>{route.params.jobItem.Toloc}</Text>
                   </TextInput>
                 </View>
               </View>
 
               <View className="flex my-1 flex-row mt-3">
-                <Text
-                  className=" text-2xl dark:text-white"
+                <Text allowFontScaling={false}                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   業主:
@@ -242,14 +237,13 @@ function JobUpdateP({
                       setJobItem({ ...jobItem, Source: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.Source}</Text>
+                    <Text allowFontScaling={false}>{route.params.jobItem.Source}</Text>
                   </TextInput>
                 </View>
               </View>
 
               <View className="flex my-1 flex-row mt-3">
-                <Text
-                  className=" text-2xl dark:text-white"
+                <Text allowFontScaling={false}                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   注意事項:
@@ -262,13 +256,12 @@ function JobUpdateP({
                       setJobItem({ ...jobItem, Memo: e });
                     }}
                   >
-                    <Text>{route.params.jobItem.Memo?.String ?? route.params.jobItem.Memo}</Text>
+                    <Text allowFontScaling={false}>{route.params.jobItem.Memo?.String ?? route.params.jobItem.Memo}</Text>
                   </TextInput>
                 </View>
               </View>
               <View className="flex my-1 flex-row my-3">
-                <Text
-                  className=" text-2xl dark:text-white"
+                <Text allowFontScaling={false}                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   價格:
@@ -285,14 +278,13 @@ function JobUpdateP({
                       });
                     }}
                   >
-                    <Text>{route.params.jobItem.Price}</Text>
+                    <Text allowFontScaling={false}>{route.params.jobItem.Price}</Text>
                   </TextInput>
                 </View>
               </View>
 
               {/* <View className="flex flex-row w-full bg-blue-300"> */}
-              <Text
-                style={{ textAlignVertical: "center" }}
+              <Text allowFontScaling={false}                style={{ textAlignVertical: "center" }}
                 className=" text-2xl dark:text-white"
               >
                 所屬公司:
@@ -329,11 +321,10 @@ function JobUpdateP({
                   setJobItem({ ...jobItem, Belongcmp: item.ID });
                   setIsFocus(false);
                 }}
-              />:<Text>{route.params.jobItem.Cmpname}</Text>}
+              />:<Text allowFontScaling={false}>{route.params.jobItem.Cmpname}</Text>}
 
               <View className="flex my-4 flex-row">
-                <Text
-                  className=" text-2xl dark:text-white"
+                <Text allowFontScaling={false}                  className=" text-2xl dark:text-white"
                   style={{ textAlignVertical: "center" }}
                 >
                   剩餘趟數:
@@ -350,7 +341,7 @@ function JobUpdateP({
                       });
                     }}
                   >
-                    <Text>{route.params.jobItem.Remaining}</Text>
+                    <Text allowFontScaling={false}>{route.params.jobItem.Remaining}</Text>
                   </TextInput>
                 </View>
               </View>
@@ -363,8 +354,7 @@ function JobUpdateP({
                       await updateJob();
                     }}
                   >
-                    <Text
-                      className=" text-2xl"
+                    <Text allowFontScaling={false}                      className=" text-2xl"
                       style={{
                         textAlignVertical: "center",
                         textAlign: "center",
@@ -379,8 +369,7 @@ function JobUpdateP({
                       await delJob();
                     }}
                   >
-                    <Text
-                      className=" text-2xl dark:text-white"
+                    <Text allowFontScaling={false}                      className=" text-2xl dark:text-white"
                       style={{
                         textAlignVertical: "center",
                         textAlign: "center",

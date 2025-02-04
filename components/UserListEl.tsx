@@ -39,9 +39,9 @@ export function SmallEL({
           : "bg-lime-200"
       }`}
     >
-      <Text>員編：{driverInfo.id}</Text>
-      <Text>{driverInfo.Username}</Text>
-      <Text>
+      <Text  className="text-2xl" allowFontScaling={false}>員編：{driverInfo.id}</Text>
+      <Text className="text-2xl"  allowFontScaling={false}>{driverInfo.Username}</Text>
+      <Text className="text-2xl"  allowFontScaling={false}>
         職位：
         {driverInfo.Role == 100
           ? "管理員"
@@ -49,7 +49,7 @@ export function SmallEL({
           ? "公司負責人"
           : "司機"}
       </Text>
-      <Text>{driverInfo.phoneNum}</Text>
+      <Text className="text-2xl"  allowFontScaling={false}>{driverInfo.phoneNum}</Text>
     </Pressable>
   );
 }
@@ -73,7 +73,7 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
         onPress={() => setVisible(!visible)}
         onLongPress={showDialog}
       >
-        <Text>{cmpName}</Text>
+        <Text className="text-2xl" allowFontScaling={false}>{cmpName}</Text>
         <View className={`${visible ? "rotate-180" : "rotate-90"}`}>
           <Icon source={"triangle"} size={15} />
         </View>
@@ -87,7 +87,7 @@ function UseListEl({ info }: { info: userLS }): React.JSX.Element {
               keyExtractor={(item) => item.id!.toString()}
             />
           ) : (
-            <Text>他什麼都木有</Text>
+            <Text className="text-2xl" allowFontScaling={false}>他什麼都木有</Text>
           )
         )}
       </View>

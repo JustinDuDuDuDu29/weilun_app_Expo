@@ -109,7 +109,7 @@ function Gas(): React.JSX.Element {
         />
       ))
     ) : (
-      <Text allowFontScaling={false}className="dark:text-white" style={styles.emptyText}>
+      <Text allowFontScaling={false}className="dark:text-white text-2xl" style={styles.emptyText}>
         No gas jobs available
       </Text>
     );
@@ -125,7 +125,7 @@ function Gas(): React.JSX.Element {
     return (
       <View style={styles.driverContainer}>
         <TouchableOpacity onPress={() => toggleFoldDriver(item.driverID)}>
-          <Text allowFontScaling={false}className="dark:text-white" style={styles.driverText}>
+          <Text allowFontScaling={false}className="dark:text-white text-2xl" style={styles.driverText}>
             {item.driverName}
           </Text>
         </TouchableOpacity>
@@ -141,7 +141,7 @@ function Gas(): React.JSX.Element {
     return (
       <View style={styles.cmpContainer}>
         <TouchableOpacity onPress={() => toggleFoldCmp(item.cmpId)}>
-          <Text allowFontScaling={false}style={styles.cmpText} className="dark:text-white">
+          <Text allowFontScaling={false}style={styles.cmpText} className="dark:text-white text-2xl">
             {item.cmpName}
           </Text>
         </TouchableOpacity>
@@ -172,7 +172,7 @@ function Gas(): React.JSX.Element {
           contentContainerStyle={styles.cmpList}
         />
       ) : (
-        <Text allowFontScaling={false}style={styles.emptyText} className="dark:text-white">
+        <Text allowFontScaling={false}style={styles.emptyText} className="dark:text-white ">
           No gas jobs available
         </Text>
       )}
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cmpText: {
-    fontSize: 18,
+    
     fontWeight: "bold",
     // color: "#333",
   },
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   driverText: {
-    fontSize: 16,
+    
     // color: "#555",
     fontWeight: "500",
   },
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
     // color: "#888",
-    fontSize: 16,
+    
   },
   cmpList: {
     paddingBottom: 16,

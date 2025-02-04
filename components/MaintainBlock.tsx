@@ -54,26 +54,17 @@ function MaintainBlock({
         }}
       >
         <View
-          className="flex flex-row py-2 px-4 my-1 rounded-xl  bg-blue-200"
+          className="flex py-2 px-4 my-1 rounded-xl  bg-blue-200"
           style={{ height: wh * (isPressed ? 0.45 : 0.12222) }}
         >
-          <View
-            style={{ flex: 0.15, flexBasis: 0.15 }}
-            className="flex justify-center content-center"
-          >
-            {/* <Icon
-              source={maintainInfo.type === "gas" ? "gas-station" : "engine"}
-              size={ww * 0.11}
-            /> */}
-          </View>
+
           <View
             className="flex flex-col justify-between py-3"
-            style={{ flex: 0.85, flexBasis: 0.85 }}
+            style={{ flex: 1, flexBasis: 1 }}
           >
             <View>
               <View className="flex flex-row">
-                <Text
-                  style={{
+                <Text allowFontScaling={false}      className=" text-2xl" style={{
                     flex: 1 / 3,
                     flexBasis: 1 / 3,
                     textAlign: "center",
@@ -82,8 +73,7 @@ function MaintainBlock({
                 >
                   品名
                 </Text>
-                <Text
-                  style={{
+                <Text allowFontScaling={false}   className=" text-2xl"       style={{
                     flex: 1 / 3,
                     flexBasis: 1 / 3,
                     textAlign: "center",
@@ -92,8 +82,7 @@ function MaintainBlock({
                 >
                   數量
                 </Text>
-                <Text
-                  style={{
+                <Text allowFontScaling={false}     className=" text-2xl"        style={{
                     flex: 1 / 3,
                     flexBasis: 1 / 3,
                     textAlign: "center",
@@ -108,8 +97,7 @@ function MaintainBlock({
                 renderItem={({ item }) => {
                   return (
                     <View className="flex flex-row">
-                      <Text
-                        style={{
+                      <Text allowFontScaling={false}       className=" text-2xl"     style={{
                           flex: 1 / 3,
                           flexBasis: 1 / 3,
                           textAlign: "center",
@@ -118,8 +106,7 @@ function MaintainBlock({
                       >
                         {item.itemName}
                       </Text>
-                      <Text
-                        style={{
+                      <Text allowFontScaling={false}     className=" text-2xl"          style={{
                           flex: 1 / 3,
                           flexBasis: 1 / 3,
                           textAlign: "center",
@@ -128,8 +115,7 @@ function MaintainBlock({
                       >
                         {item.quantity}
                       </Text>
-                      <Text
-                        style={{
+                      <Text allowFontScaling={false}    className=" text-2xl"           style={{
                           flex: 1 / 3,
                           flexBasis: 1 / 3,
                           textAlign: "center",
@@ -147,8 +133,8 @@ function MaintainBlock({
             <View>
               {isPressed ?? (
                 <View>
-                  <Text>姓名:{maintainInfo.Drivername}</Text>
-                  <Text>
+                  <Text className=" text-2xl" allowFontScaling={false}>姓名:{maintainInfo.Drivername}</Text>
+                  <Text className=" text-2xl" allowFontScaling={false}>
                     日期:
                     {maintainInfo.Createdate.split("T")[0] +
                       " " +
@@ -156,7 +142,7 @@ function MaintainBlock({
                   </Text>
                 </View>
               )}
-              <Text>維修總價:{totalPrice}</Text>
+              <Text className=" text-2xl" allowFontScaling={false}>維修總價:{totalPrice}</Text>
             </View>
           </View>
         </View>

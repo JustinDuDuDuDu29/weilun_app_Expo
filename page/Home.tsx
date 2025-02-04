@@ -163,7 +163,7 @@ function Home(): React.JSX.Element {
         <SafeAreaView className="h-full flex justify-center">
           <View className="px-5 flex flex-col justify-around">
             <View className="flex flex-row justify-around items-center">
-              <Text allowFontScaling={false}className="text-xl dark:text-white">
+              <Text allowFontScaling={false}className="text-2xl dark:text-white">
                 歡迎！{store.get(fnAtom).getUserInfofn()?.Username}
               </Text>
               <Pressable onPress={() => navigation.navigate("userInfoP")}>
@@ -370,14 +370,13 @@ function Home(): React.JSX.Element {
                   await store.get(fnAtom).logoutfn();
                 }}
               >
-                <Text
-                  className="text-xl dark:text-white"
+                <Text allowFontScaling={false}                  className="text-2xl dark:text-white"
                   style={{ verticalAlign: "middle", textAlign: "center" }}
                 >
                   登出
                 </Text>
               </Pressable>
-              {/* <Text>{JSON.stringify(store.get(pendingJob))}</Text> */}
+              {/* <Text allowFontScaling={false}>{JSON.stringify(store.get(pendingJob))}</Text> */}
             </View>
             {/* </ScrollView> */}
           </View>
@@ -390,6 +389,7 @@ function Home(): React.JSX.Element {
             >
               <View>
                 <Dialog.Description
+                allowFontScaling={false}
                   style={{
                     color: cS === "light" ? "black" : "#ffffff",
                     fontSize: 25,
@@ -398,20 +398,23 @@ function Home(): React.JSX.Element {
                   請輸入年月
                 </Dialog.Description>
                 <Dialog.Input
+                allowFontScaling={false}
                   style={{ color: cS === "light" ? "black" : "#ffffff" }}
                   placeholder="西元年"
                   onChangeText={(e: string) => setYear(e)}
                   keyboardType="numeric"
                 />
                 <Dialog.Input
+                allowFontScaling={false}
                   placeholder="月份"
                   style={{ color: cS === "light" ? "black" : "#ffffff" }}
                   onChangeText={(e: string) => setMonth(e)}
                   keyboardType="numeric"
                 />
-                <Text>{value}</Text>
+                <Text allowFontScaling={false}>{value}</Text>
                 {store.get(fnAtom).getUserInfofn().Role <= 100 ? (
                   <Dropdown
+                  allowFontScaling={false}
                     style={[
                       styles.dropdown,
                       isFocus && { borderColor: "blue" },
@@ -437,19 +440,20 @@ function Home(): React.JSX.Element {
                   />
                 ) : (
                   <View>
-                    <Text allowFontScaling={false}className=" dark:text-white text-xl">
+                    <Text  allowFontScaling={false}className=" dark:text-white text-2xl">
                       所屬公司：{getUserInfo?.Cmpname}
                     </Text>
                   </View>
                 )}
                 <Dialog.Button
+                allowFontScaling={false}
                   label="送出"
                   onPress={async () => {
                     await download(year!, month!, value);
                     setShow(false);
                   }}
                 />
-                <Dialog.Button label="關閉" onPress={() => setShow(false)} />
+                <Dialog.Button allowFontScaling={false} label="關閉" onPress={() => setShow(false)} />
               </View>
             </Dialog.Container>
           )}

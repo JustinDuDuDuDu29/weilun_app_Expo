@@ -146,7 +146,7 @@ function App() {
       ) : (
         <SafeAreaProvider>
           <Provider store={myStore}>
-            {/* <Text>loginState:{JSON.stringify(getUserInfo)}</Text> */}
+            {/* <Text allowFontScaling={false}>loginState:{JSON.stringify(getUserInfo)}</Text> */}
             <StatusBar
               backgroundColor={cS == "light" ? "#fff" : "#000"}
               barStyle={cS == "light" ? "dark-content" : "light-content"}

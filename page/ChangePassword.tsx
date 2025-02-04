@@ -141,8 +141,7 @@ function ChangePassword(): React.JSX.Element {
             }}
             disabled={canPress}
           >
-            <Text
-              className="text-xl text-stone-800"
+            <Text allowFontScaling={false}              className="text-2xl text-stone-800"
               style={{ verticalAlign: "middle", textAlign: "center" }}
             >
               送出

@@ -102,18 +102,18 @@ function ClaimJobP({
       <View>
         {CJ && (
           <>
-            <Text allowFontScaling={false}className="my-2 text-xl dark:text-white">公司：{CJ.Cmpname}（{CJ.Cmpid}）</Text>
-            <Text allowFontScaling={false}className="my-2 text-xl dark:text-white">駕駛：{CJ.Username}（{CJ.Userid}）</Text>
-            <Text allowFontScaling={false}className="my-2 text-xl dark:text-white">
+            <Text allowFontScaling={false}className="my-2 text-2xl dark:text-white">公司：{CJ.Cmpname}（{CJ.Cmpid}）</Text>
+            <Text allowFontScaling={false}className="my-2 text-2xl dark:text-white">駕駛：{CJ.Username}（{CJ.Userid}）</Text>
+            <Text allowFontScaling={false}className="my-2 text-2xl dark:text-white">
               工作資訊：{CJ.Fromloc} ➡ {CJ.Mid.Valid ? `${CJ.Mid.String} ➡ ` : ""} {CJ.Toloc}
             </Text>
-            <Text allowFontScaling={false}className="my-2 text-xl dark:text-white">
+            <Text allowFontScaling={false}className="my-2 text-2xl dark:text-white">
               接取日期：{CJ.CreateDate.split("T")[0]} {CJ.CreateDate.split("T")[1].split(".")[0]}
             </Text>
-            <Text allowFontScaling={false}className="my-2 text-xl dark:text-white">工作金額：{CJ.Price}</Text>
+            <Text allowFontScaling={false}className="my-2 text-2xl dark:text-white">工作金額：{CJ.Price}</Text>
 
             <View className="my-2">
-              <Text allowFontScaling={false}className="text-xl dark:text-white">完工照片：</Text>
+              <Text allowFontScaling={false}className="text-2xl dark:text-white">完工照片：</Text>
               <UploadPicFCJob src={jobPic} />
             </View>
 
@@ -142,13 +142,12 @@ function ClaimJobP({
                       );
                     }}
                   >
-                    <Text
-                      style={{
+                    <Text allowFontScaling={false}                      style={{
                         textAlign: "center",
 
                         textAlignVertical: "center",
                       }}
-                      className="text-lg"
+                      className="text-2xl"
                     >
                       核可
                     </Text>
@@ -163,12 +162,11 @@ function ClaimJobP({
                     ]);
                   }}
                 >
-                  <Text
-                    style={{
+                  <Text allowFontScaling={false}                    style={{
                       textAlign: "center",
 
                       textAlignVertical: "center",
-                    }} className="text-lg">刪除</Text>
+                    }} className="text-2xl">刪除</Text>
                 </Pressable>
               </View>
             )}

@@ -284,7 +284,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                   onPress={() => toggleVisibility(key)}
                 >
                   <View>
-                    <Text>{key}</Text>
+                    <Text className="text-2xl" allowFontScaling={false}>{key}</Text>
                   </View>
                   <View
                     className={`${
@@ -371,8 +371,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                     setPicModalV(true);
                   }}
                 >
-                  <Text
-                    style={{
+                  <Text allowFontScaling={false}   className="text-2xl"   style={{
                       textAlign: "center",
                       textAlignVertical: "center",
                     }}
@@ -450,8 +449,7 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
                           disabled={canPress}
                           className="my-4 bg-lime-200 w-2/3 rounded-xl py-2 "
                         >
-                          <Text
-                            style={{
+                          <Text allowFontScaling={false}      className="text-2xl"     style={{
                               verticalAlign: "middle",
                               textAlign: "center",
                             }}

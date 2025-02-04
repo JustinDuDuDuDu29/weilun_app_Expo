@@ -22,21 +22,21 @@ function UserInfo(): React.JSX.Element {
   return (
     <SafeAreaView>
       <ScrollView className="mx-4 my-3">
-        {/* <Text>{JSON.stringify(store.get(fnAtom).getUserInfofn())}</Text> */}
+        {/* <Text allowFontScaling={false}>{JSON.stringify(store.get(fnAtom).getUserInfofn())}</Text> */}
         <View>
-          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-2xl dark:text-white my-2">
             姓名：{store.get(fnAtom).getUserInfofn().Username}
           </Text>
-          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-2xl dark:text-white my-2">
             電話：{store.get(fnAtom).getUserInfofn().Phonenum}
           </Text>
-          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-2xl dark:text-white my-2">
             編號：{store.get(fnAtom).getUserInfofn().ID}
           </Text>
-          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">
+          <Text allowFontScaling={false}className="text-2xl dark:text-white my-2">
             所屬公司：{store.get(fnAtom).getUserInfofn().Cmpname}
           </Text>
-          <Text allowFontScaling={false}className="text-xl dark:text-white my-2">類別：{roleName}</Text>
+          <Text allowFontScaling={false}className="text-2xl dark:text-white my-2">類別：{roleName}</Text>
         </View>
         <Pressable
           className=" border border-purple-400 bg-purple-300 rounded-xl py-1"
@@ -44,8 +44,7 @@ function UserInfo(): React.JSX.Element {
             navigation.navigate("changePasswordP");
           }}
         >
-          <Text
-            className="text-xl text-stone-800"
+          <Text allowFontScaling={false}            className="text-2xl text-stone-800"
             style={{ verticalAlign: "middle", textAlign: "center" }}
           >
             修改密碼

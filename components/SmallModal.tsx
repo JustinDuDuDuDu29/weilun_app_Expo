@@ -141,8 +141,7 @@ function SmallModal({
                   }}
                   disabled={canPress}
                 >
-                  <Text
-                    className="text-center text-xl dark:text-white"
+                  <Text allowFontScaling={false}                    className="text-center text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     送出
@@ -160,8 +159,7 @@ function SmallModal({
                     setModalVisible(false);
                   }}
                 >
-                  <Text
-                    className="text-center text-xl dark:text-white"
+                  <Text allowFontScaling={false}                    className="text-center text-2xl dark:text-white"
                     style={{ textAlignVertical: "center" }}
                   >
                     取消

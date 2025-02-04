@@ -112,7 +112,7 @@ function UserInfoJobs({ uid }: { uid: number }): React.JSX.Element {
                 onPress={() => toggleVisibility(key)}
               >
                 <View>
-                  <Text>{key}</Text>
+                  <Text allowFontScaling={false}>{key}</Text>
                 </View>
                 <View
                   className={`${visibility[key] ? "rotate-180" : "rotate-90"}`}

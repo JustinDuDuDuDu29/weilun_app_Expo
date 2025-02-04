@@ -89,16 +89,14 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
       >
         <View className="flex flex-row py-2">
           <View className="flex justify-center content-center flex-1">
-            <Text
-              style={{ textAlign: "center", verticalAlign: "middle" }}
+            <Text allowFontScaling={false}              style={{ textAlign: "center", verticalAlign: "middle" }}
               className="text-3xl"
             >
               {store.get(fnAtom).getPJfn().Fromloc}
             </Text>
           </View>
           <View className="flex justify-center content-center">
-            <Text
-              style={{ textAlign: "center", verticalAlign: "middle" }}
+            <Text allowFontScaling={false}              style={{ textAlign: "center", verticalAlign: "middle" }}
               className="text-3xl"
             >
               ➡
@@ -107,8 +105,7 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
           {store.get(fnAtom).getPJfn().Mid.Valid ? (
             <>
               <View className="flex justify-center content-center flex-1">
-                <Text
-                  style={{ textAlign: "center", verticalAlign: "middle" }}
+                <Text allowFontScaling={false}                  style={{ textAlign: "center", verticalAlign: "middle" }}
                   className="text-3xl"
                 >
                   {store.get(fnAtom).getPJfn().Mid.String}
@@ -116,8 +113,7 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
               </View>
 
               <View className="flex justify-center content-center">
-                <Text
-                  style={{ textAlign: "center", verticalAlign: "middle" }}
+                <Text allowFontScaling={false}                  style={{ textAlign: "center", verticalAlign: "middle" }}
                   className="text-3xl"
                 >
                   ➡
@@ -129,8 +125,7 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
           )}
 
           <View className="flex justify-center content-center flex-1">
-            <Text
-              style={{ textAlign: "center", verticalAlign: "middle" }}
+            <Text allowFontScaling={false}              style={{ textAlign: "center", verticalAlign: "middle" }}
               className="text-3xl "
             >
               {store.get(fnAtom).getPJfn().Toloc}
@@ -140,9 +135,8 @@ function JobBlockPJ({ setData }: { setData: Function }): React.JSX.Element {
         {store.get(fnAtom).getPJfn().Memo.Valid ? (
           <View className="bg-slate-100 rounded-xl px-2 my-2">
             <View className="my-1">
-              <Text
-                style={{ textAlign: "center", verticalAlign: "middle" }}
-                className="text-xl"
+              <Text allowFontScaling={false}                style={{ textAlign: "center", verticalAlign: "middle" }}
+                className="text-2xl"
               >
                 注意事項：{store.get(fnAtom).getPJfn().Memo.String}
               </Text>

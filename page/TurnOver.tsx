@@ -52,13 +52,13 @@ function TurnOver(): React.JSX.Element {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={handlePrevMonth} style={styles.navButton}>
-          <Text allowFontScaling={false}style={styles.navButtonText} className="dark:text-white">{"< 上個月"}</Text>
+          <Text allowFontScaling={false}style={styles.navButtonText} className="dark:text-white text-2xl">{"< 上個月"}</Text>
         </Pressable>
-        <Text allowFontScaling={false}style={styles.dateText} className="dark:text-white">
+        <Text allowFontScaling={false}style={styles.dateText} className="dark:text-white text-2xl">
           {year} / {month.toString().padStart(2, "0")}
         </Text>
         <Pressable onPress={handleNextMonth} style={styles.navButton}>
-          <Text allowFontScaling={false}style={styles.navButtonText} className="dark:text-white">{"下個月 >"}</Text>
+          <Text allowFontScaling={false}style={styles.navButtonText} className="dark:text-white text-2xl">{"下個月 >"}</Text>
         </Pressable>
       </View>
       {isLoading ? (
@@ -76,7 +76,7 @@ function TurnOver(): React.JSX.Element {
         />
       ) : (
         <View style={styles.emptyContainer}>
-          <Text allowFontScaling={false}className="dark:text-white" style={styles.emptyText}>No data available for this month.</Text>
+          <Text allowFontScaling={false}className="dark:text-white text-xl" style={styles.emptyText}>本月沒有資料</Text>
         </View>
       )}
     </SafeAreaView>
@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     // color: "#ffffff",
-    fontSize: 14,
+    
     fontWeight: "600",
   },
   dateText: {
-    fontSize: 16,
+    
     fontWeight: "600",
     // color: "#333",
   },
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   emptyText: {
-    fontSize: 16,
+    
     // color: "#888",
   },
 });

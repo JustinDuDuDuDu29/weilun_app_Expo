@@ -35,8 +35,7 @@ const renderTabBar = (props) => {
       indicatorStyle={{ width: layout.width / 3 }} //<---same width as tab button
       renderLabel={({ route, focused, color }) => (
         <View style={{ width: layout.width / 3 }}>
-          <Text
-            className="text-xl"
+          <Text allowFontScaling={false}            className="text-2xl"
             style={{ verticalAlign: "middle", textAlign: "center" }}
           >
             {route.title}

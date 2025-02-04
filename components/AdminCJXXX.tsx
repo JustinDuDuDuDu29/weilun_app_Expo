@@ -48,7 +48,7 @@ function AdminCJ({
             }}
           >
             <View>
-              <Text>{kk}</Text>
+              <Text className="text-2xl" allowFontScaling={false}>{kk}</Text>
             </View>
             <View className={`${visible ? "rotate-180" : "rotate-90"}`}>
               <Icon source={"triangle"} size={15} />

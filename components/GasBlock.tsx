@@ -72,8 +72,7 @@ function GasBlock({
           >
             <View>
               <View className="flex flex-row">
-                <Text
-                  style={{
+                <Text allowFontScaling={false}         className=" text-2xl"         style={{
                     flex: 1 / 3,
                     flexBasis: 1 / 3,
                     textAlign: "center",
@@ -82,8 +81,7 @@ function GasBlock({
                 >
                   品名
                 </Text>
-                <Text
-                  style={{
+                <Text allowFontScaling={false}      className=" text-2xl"           style={{
                     flex: 1 / 3,
                     flexBasis: 1 / 3,
                     textAlign: "center",
@@ -92,8 +90,7 @@ function GasBlock({
                 >
                   數量
                 </Text>
-                <Text
-                  style={{
+                <Text allowFontScaling={false}       className=" text-2xl"           style={{
                     flex: 1 / 3,
                     flexBasis: 1 / 3,
                     textAlign: "center",
@@ -108,8 +105,7 @@ function GasBlock({
                 renderItem={({ item }) => {
                   return (
                     <View className="flex flex-row">
-                      <Text
-                        style={{
+                      <Text allowFontScaling={false}             className=" text-2xl"          style={{
                           flex: 1 / 3,
                           flexBasis: 1 / 3,
                           textAlign: "center",
@@ -118,8 +114,7 @@ function GasBlock({
                       >
                         {item.itemName}
                       </Text>
-                      <Text
-                        style={{
+                      <Text allowFontScaling={false}              className=" text-2xl"          style={{
                           flex: 1 / 3,
                           flexBasis: 1 / 3,
                           textAlign: "center",
@@ -128,8 +123,7 @@ function GasBlock({
                       >
                         {item.quantity}
                       </Text>
-                      <Text
-                        style={{
+                      <Text allowFontScaling={false}      className=" text-2xl"                  style={{
                           flex: 1 / 3,
                           flexBasis: 1 / 3,
                           textAlign: "center",
@@ -147,8 +141,8 @@ function GasBlock({
             <View>
               {isPressed ?? (
                 <View>
-                  <Text>姓名:{gasInfo.Drivername}</Text>
-                  <Text>
+                  <Text className=" text-2xl" allowFontScaling={false}>姓名:{gasInfo.Drivername}</Text>
+                  <Text className=" text-2xl" allowFontScaling={false}>
                     日期:
                     {gasInfo.Createdate.split("T")[0] +
                       " " +
@@ -156,7 +150,7 @@ function GasBlock({
                   </Text>
                 </View>
               )}
-              <Text>維修總價:{totalPrice}</Text>
+              <Text className=" text-2xl" allowFontScaling={false}>維修總價:{totalPrice}</Text>
             </View>
           </View>
         </View>

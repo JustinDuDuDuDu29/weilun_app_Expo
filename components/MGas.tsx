@@ -48,11 +48,11 @@ function MGas(
                 <Pressable className="flex flex-row w-full py-2">
                   <View className="flex flex-row justify-between w-full bg-neutral-300 rounded-lg px-4 py-2">
                     <View className="flex flex-col">
-                      <Text allowFontScaling={false}className="text-xl">品名：{item.item.itemName}</Text>
-                      <Text allowFontScaling={false}className="text-xl">
+                      <Text allowFontScaling={false}className="text-2xl">品名：{item.item.itemName}</Text>
+                      <Text allowFontScaling={false}className="text-2xl">
                         數量：{item.item.quantity}
                       </Text>
-                      {type == "gas" ?<Text allowFontScaling={false}className="text-xl">總價：{item.item.totalPrice}</Text>: <></>}
+                      {type == "gas" ?<Text allowFontScaling={false}className="text-2xl">總價：{item.item.totalPrice}</Text>: <></>}
                     </View>
                     <View className="flex flex-row items-center ">
                       <Pressable

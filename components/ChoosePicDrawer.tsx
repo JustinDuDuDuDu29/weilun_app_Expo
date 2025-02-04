@@ -60,8 +60,7 @@ function ChoosePicDrawer({
           }}
         >
           <View className="flex h-full justify-center items-center">
-            <Text
-              className=" text-xl font-bold border-b border-gray-200 mx-2"
+            <Text allowFontScaling={false}              className=" text-2xl font-bold border-b border-gray-200 mx-2"
               // style={{
               //   textAlign: "center",
               //   textAlignVertical: "center",
@@ -94,8 +93,7 @@ function ChoosePicDrawer({
           }}
         >
           <View className="flex h-full justify-center items-center">
-            <Text
-              className="  text-xl font-bold  mx-2"
+            <Text allowFontScaling={false}              className="  text-2xl font-bold  mx-2"
               style={
                 {
                   // textAlign: "center",

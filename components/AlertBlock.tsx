@@ -7,8 +7,7 @@ function AlertBlock({ alert }: { alert: alertT }): React.JSX.Element {
     <SafeAreaView>
       <Pressable className="my-1 mx-2 px-6 bg-blue-200 py-2 rounded-xl">
         <View className="flex flex-row">
-          <Text
-            style={{ textAlign: "center", textAlignVertical: "center" }}
+          <Text allowFontScaling={false}            style={{ textAlign: "center", textAlignVertical: "center" }}
             className=" text-2xl"
           >
             {alert.Alert}
@@ -16,30 +15,26 @@ function AlertBlock({ alert }: { alert: alertT }): React.JSX.Element {
         </View>
         <View className="flex flex-row justify-between">
           <View className="flex flex-row">
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-lg"
+            <Text allowFontScaling={false}              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className=" text-2xl"
             >
               關係公司:
             </Text>
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-lg"
+            <Text allowFontScaling={false}              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className=" text-2xl"
             >
               {alert.Cmpname}
             </Text>
           </View>
 
           <View className="flex flex-row">
-            {/* <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-lg"
+            {/* <Text allowFontScaling={false}              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className=" text-2xl"
             >
               通知日期:
             </Text> */}
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-lg"
+            <Text allowFontScaling={false}              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className=" text-2xl"
             >
               {alert.Createdate.split("T")[0] +
                 " " +

@@ -102,41 +102,35 @@ function UserCU({
       )}
       <View>
         <View className="my-3 flex flex-row">
-          <Text
-            className="text-xl dark:text-white"
+          <Text allowFontScaling={false}            className="text-2xl dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             姓名：
           </Text>
-          <Text
-            className={`flex-1 text-xl px-3 color-black rounded-xl  border-slate-400 dark:text-white`}
+          <Text allowFontScaling={false}            className={`flex-1 text-2xl px-3 color-black rounded-xl  border-slate-400 dark:text-white`}
           >
             {OInfo?.Username}
           </Text>
         </View>
         <View className="my-3 flex flex-row">
-          <Text
-            className="text-xl  dark:text-white"
+          <Text allowFontScaling={false}            className="text-2xl  dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             手機號碼：
           </Text>
-          <Text
-            className={`flex-1 text-xl px-3 color-black rounded-xl border-slate-400  dark:text-white`}
+          <Text allowFontScaling={false}            className={`flex-1 text-2xl px-3 color-black rounded-xl border-slate-400  dark:text-white`}
           >
             {OInfo?.Phonenum}
           </Text>
         </View>
 
         <View className="my-3 flex flex-row">
-          <Text
-            className="text-xl dark:text-white"
+          <Text allowFontScaling={false}            className="text-2xl dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             所屬公司：
           </Text>
-          <Text
-            className=" text-xl px-3 color-black rounded-xl  dark:text-white"
+          <Text allowFontScaling={false}            className=" text-2xl px-3 color-black rounded-xl  dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             {OInfo?.Cmpname}
@@ -144,14 +138,12 @@ function UserCU({
         </View>
 
         <View className="my-3 flex flex-row">
-          <Text
-            className="text-xl  dark:text-white"
+          <Text allowFontScaling={false}            className="text-2xl  dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             職位：
           </Text>
-          <Text
-            className=" text-xl px-3 color-black rounded-xl  dark:text-white"
+          <Text allowFontScaling={false}            className=" text-2xl px-3 color-black rounded-xl  dark:text-white"
             style={{ textAlign: "center", textAlignVertical: "center" }}
           >
             {roleName}
@@ -160,40 +152,34 @@ function UserCU({
         {OInfo?.Role == 300 ? (
           <>
             <View className="my-3 flex flex-row">
-              <Text
-                className="text-xl  dark:text-white"
+              <Text allowFontScaling={false}                className="text-2xl  dark:text-white"
                 style={{ textAlign: "center", textAlignVertical: "center" }}
               >
                 身份證：
               </Text>
-              <Text
-                className={`flex-1 text-xl px-3 color-black rounded-xl  border-slate-400  dark:text-white`}
+              <Text allowFontScaling={false}                className={`flex-1 text-2xl px-3 color-black rounded-xl  border-slate-400  dark:text-white`}
               >
                 {OInfo?.Nationalidnumber}
               </Text>
             </View>
             <View className="my-3 flex flex-row">
-              <Text
-                className="text-xl  dark:text-white"
+              <Text allowFontScaling={false}                className="text-2xl  dark:text-white"
                 style={{ textAlign: "center", textAlignVertical: "center" }}
               >
                 車牌號碼：
               </Text>
-              <Text
-                className={`flex-1 text-xl px-3 color-black rounded-xl border-slate-400  dark:text-white`}
+              <Text allowFontScaling={false}                className={`flex-1 text-2xl px-3 color-black rounded-xl border-slate-400  dark:text-white`}
               >
                 {OInfo.Platenum?.String}
               </Text>
             </View>
             {/* <View className="my-3 flex flex-row">
-              <Text
-                className="text-xl dark:text-white"
+              <Text allowFontScaling={false}                className="text-2xl dark:text-white"
                 style={{ textAlign: "center", textAlignVertical: "center" }}
               >
                 比率：
               </Text>
-              <Text
-                className={`flex-1 text-xl px-3 color-black rounded-xl dark:text-white border-slate-400 `}
+              <Text allowFontScaling={false}                className={`flex-1 text-2xl px-3 color-black rounded-xl dark:text-white border-slate-400 `}
               >
                 {OInfo?.Percentage?.Int32}
               </Text>

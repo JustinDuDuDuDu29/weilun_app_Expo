@@ -38,7 +38,7 @@ function CmpJobBlock({ cmpJob, year, month }: { cmpJob: cmpJobT, year: number, m
   const renderUser = ({ item }: { item: userI }) => (
     <>
       {/* <Pressable onPress={() => handleUserPress(item.)} style={styles.userPressable}> */}
-        <Text allowFontScaling={false}style={styles.userName}>{item.UserName} / {item.JobCount} / {item.JobTotal}/ {item.GasTotal} / {item.RepairTotal}</Text>
+        <Text className="text-2xl" allowFontScaling={false}style={styles.userName}>{item.UserName} / {item.JobCount} / {item.JobTotal}/ {item.GasTotal} / {item.RepairTotal}</Text>
         {/* <Text allowFontScaling={false}style={styles.userName}>{JSON.stringify(item)} </Text> */}
 
       {/* </Pressable> */}
@@ -58,7 +58,7 @@ function CmpJobBlock({ cmpJob, year, month }: { cmpJob: cmpJobT, year: number, m
       <Pressable onPress={handleCompanyPress} style={styles.pressable}>
         <View style={styles.row}>
           {/* Left Side: Text */}
-          <Text allowFontScaling={false}style={styles.headerText}>
+          <Text className="text-2xl" allowFontScaling={false} style={styles.headerText}>
             {cmpJob.Name} / {cmpJob.Count} / {cmpJob.Jobtotal} / {cmpJob.Gastotal} / {cmpJob.Repairtotal}
           </Text>
 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   headerText: {
-    fontSize: 18,
+    
     fontWeight: 'bold',
     flex: 1,
   },
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   userName: {
-    fontSize: 16,
+    
     fontWeight: 'bold',
   },
   jobContainer: {

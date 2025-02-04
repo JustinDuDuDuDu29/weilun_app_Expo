@@ -122,21 +122,21 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
         <View className="bg-slate-100 rounded-xl px-2 my-2">
           {jobItem.Memo?.Valid ?? jobItem.Memo ? (
             <View className="my-1">
-              <Text allowFontScaling={false}className="text-xl">注意事項：{jobItem.Memo.String ?? jobItem.Memo}</Text>
+              <Text allowFontScaling={false}className="text-2xl">注意事項：{jobItem.Memo.String ?? jobItem.Memo}</Text>
             </View>
           ) : (
             <></>
           )}
           {jobItem.Price ? (
             <View className="my-1">
-              <Text allowFontScaling={false}className="text-xl">運費：{jobItem.Price}</Text>
+              <Text allowFontScaling={false}className="text-2xl">運費：{jobItem.Price}</Text>
             </View>
           ) : (
             <></>
           )}
           {jobItem.Remaining ? (
             <View className="my-1">
-              <Text allowFontScaling={false}className="text-xl">
+              <Text allowFontScaling={false}className="text-2xl">
                 剩餘趟數：
                 {jobItem.Remaining > 2000000 ? "無限多趟" : jobItem.Remaining}
               </Text>
@@ -146,7 +146,7 @@ function JobBlock({ jobItem }: { jobItem: jobItemT }): React.JSX.Element {
           )}
           {jobItem.Source ? (
             <View className="my-1">
-              <Text allowFontScaling={false}className="text-xl">業主：{jobItem.Source}</Text>
+              <Text allowFontScaling={false}className="text-2xl">業主：{jobItem.Source}</Text>
             </View>
           ) : (
             <></>

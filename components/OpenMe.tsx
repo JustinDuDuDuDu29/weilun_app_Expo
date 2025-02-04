@@ -14,7 +14,7 @@ function OpenMe({
   return (
     <SafeAreaView>
       <Pressable>
-        <Text>
+        <Text allowFontScaling={false} className="text-2xl">
           {cmpId},{cmpName}
         </Text>
       </Pressable>

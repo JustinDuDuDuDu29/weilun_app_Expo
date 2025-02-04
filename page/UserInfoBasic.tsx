@@ -123,9 +123,8 @@ function UserInfoBasic({
                 ]);
               }}
             >
-              <Text
-                style={{ textAlign: "center", textAlignVertical: "center" }}
-                className="text-xl"
+              <Text allowFontScaling={false}                style={{ textAlign: "center", textAlignVertical: "center" }}
+                className="text-2xl"
               >
                 核可
               </Text>
@@ -157,9 +156,8 @@ function UserInfoBasic({
               ]);
             }}
           >
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className="text-xl"
+            <Text allowFontScaling={false}              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className="text-2xl"
             >
               重置密碼
             </Text>
@@ -179,9 +177,8 @@ function UserInfoBasic({
               ]);
             }}
           >
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className="text-xl"
+            <Text allowFontScaling={false}              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className="text-2xl"
             >
               刪除用戶
             </Text>

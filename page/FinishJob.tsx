@@ -88,9 +88,8 @@ function FinishJob(): React.JSX.Element {
               await finishJobf();
             }}
           >
-            <Text
-              style={{ textAlign: "center", textAlignVertical: "center" }}
-              className=" text-xl font-bold"
+            <Text allowFontScaling={false}              style={{ textAlign: "center", textAlignVertical: "center" }}
+              className=" text-2xl font-bold"
             >
               完成工作
             </Text>

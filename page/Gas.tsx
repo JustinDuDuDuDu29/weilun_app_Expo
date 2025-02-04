@@ -302,7 +302,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
                   onPress={() => toggleVisibility(key)}
                 >
                   <View>
-                    <Text>{key}</Text>
+                    <Text allowFontScaling={false}>{key}</Text>
                   </View>
                   <View
                     className={`${
@@ -392,8 +392,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
                     setPicModalV(true);
                   }}
                 >
-                  <Text
-                    style={{
+                  <Text allowFontScaling={false}                    style={{
                       textAlign: "center",
                       textAlignVertical: "center",
                     }}
@@ -471,8 +470,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
                           disabled={canPress}
                           className="my-4 bg-lime-200 w-2/3 rounded-xl py-2 "
                         >
-                          <Text
-                            style={{
+                          <Text allowFontScaling={false}                            style={{
                               verticalAlign: "middle",
                               textAlign: "center",
                             }}

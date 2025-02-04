@@ -245,7 +245,7 @@ function SearchComp(props: {
         flex: 1,
       }}
     >
-      {/* <Text>{JSON.stringify(props.userList)}</Text> */}
+      {/* <Text allowFontScaling={false}>{JSON.stringify(props.userList)}</Text> */}
       <View className="flex flex-row w-full my-2 px-1">
         <View className=" w-1/4">
           <Dropdown
@@ -268,7 +268,7 @@ function SearchComp(props: {
         </View>
         <View className=" mx-1 flex-1 flex justify-center border-2 border-gray-300 onFocus rounded ">
           <TextInput
-            className="px-2 flex items-center align-middle dark:text-white"
+            className="text-2xl px-2 flex items-center align-middle dark:text-white"
             placeholderTextColor={cS == "light" ? "#000" : "#fff"}
             // style={{ verticalAlign: "center" }}
             placeholder="請輸入條件"
@@ -310,9 +310,8 @@ function SearchComp(props: {
             inp.current.clear();
           }}
         >
-          <Text
-            style={{ textAlign: "center", verticalAlign: "middle" }}
-            className="text-lg font-semibold text-white"
+          <Text allowFontScaling={false} style={{ textAlign: "center", verticalAlign: "middle" }}
+            className="text-2xl font-semibold text-white"
           >
             新增
           </Text>
@@ -342,7 +341,7 @@ function SearchComp(props: {
                   );
                 }}
               >
-                <Text allowFontScaling={false}className="text-lg font-semibold text-green-800 ">
+                <Text allowFontScaling={false} className="text-2xl font-semibold text-green-800 ">
                   {el.Name}:{el.searchQ}
                 </Text>
               </Pressable>
@@ -376,8 +375,8 @@ function SearchComp(props: {
           >
             <View className="flex flex-col justify-between">
               <View>
-                {/* <Text>{JSON.stringify(user)}</Text> */}
-                <Text allowFontScaling={false}className=" dark:text-white text-xl">請選擇類別：</Text>
+                {/* <Text allowFontScaling={false}>{JSON.stringify(user)}</Text> */}
+                <Text allowFontScaling={false} className=" dark:text-white text-2xl">請選擇類別：</Text>
                 <View className="flex flex-row justify-between">
                   <RadioButton.Group
                     onValueChange={(newValue) => {
@@ -391,7 +390,7 @@ function SearchComp(props: {
                         {/* <View className=" border my-3 rounded-full"> */}
                         <RadioButton value="user" />
                         {/* </View> */}
-                        <Text allowFontScaling={false}className=" dark:text-white text-xl">
+                        <Text allowFontScaling={false}className=" dark:text-white text-2xl">
                           新增使用者
                         </Text>
                       </View>
@@ -402,7 +401,7 @@ function SearchComp(props: {
                               {/* <View className=" border my-3 rounded-full"> */}
                               <RadioButton value="cmp" />
                               {/* </View> */}
-                              <Text allowFontScaling={false}className=" dark:text-white text-xl">
+                              <Text allowFontScaling={false}className=" dark:text-white text-2xl">
                                 新增公司
                               </Text>
                             </View>
@@ -419,7 +418,7 @@ function SearchComp(props: {
                     <View>
                       <View>
                         <TextInput
-                          className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                          className={` text-2xl dark:text-white border-b border-violet-200 my-2`}
                           placeholder="姓名"
                           placeholderTextColor={
                             cS == "light" ? "black" : "#ffffff"
@@ -431,7 +430,7 @@ function SearchComp(props: {
                       </View>
                       <View>
                         <TextInput
-                          className={`text-xl dark:text-white border-b border-violet-200 my-2`}
+                          className={`text-2xl dark:text-white border-b border-violet-200 my-2`}
                           placeholderTextColor={
                             cS == "light" ? "black" : "#ffffff"
                           }
@@ -468,7 +467,7 @@ function SearchComp(props: {
                               setIsFocus(false);
                             }}
                           /> : <View>
-                            <Text allowFontScaling={false}className=" dark:text-white text-xl">所屬公司：{getUserInfo?.Cmpname}</Text>
+                            <Text allowFontScaling={false}className=" dark:text-white text-2xl">所屬公司：{getUserInfo?.Cmpname}</Text>
                           </View>
                       }
                       <RadioButton.Group
@@ -484,8 +483,7 @@ function SearchComp(props: {
                         value={newUserType}
                       >
                         <View className="flex flex-row items-center">
-                          <Text
-                            className=" dark:text-white text-xl"
+                          <Text allowFontScaling={false}                            className=" dark:text-white text-2xl"
                             style={{
                               textAlignVertical: "center",
                               textAlign: "center",
@@ -497,7 +495,7 @@ function SearchComp(props: {
                             {/* <View className=" border my-3 rounded-full"> */}
                             <RadioButton value="cmpAdmin" />
                             {/* </View> */}
-                            <Text allowFontScaling={false}className=" dark:text-white text-xl">
+                            <Text allowFontScaling={false}className=" dark:text-white text-2xl">
                               公司負責人
                             </Text>
                           </View>
@@ -505,7 +503,7 @@ function SearchComp(props: {
                             {/* <View className=" border my-3 rounded-full"> */}
                             <RadioButton value="driver" />
                             {/* </View> */}
-                            <Text allowFontScaling={false}className=" dark:text-white text-xl">
+                            <Text allowFontScaling={false}className=" dark:text-white text-2xl">
                               司機
                             </Text>
                           </View>
@@ -515,7 +513,7 @@ function SearchComp(props: {
                         <>
                           <View>
                             <TextInput
-                              className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                              className={` text-2xl dark:text-white border-b border-violet-200 my-2`}
                               placeholderTextColor={
                                 cS == "light" ? "black" : "#ffffff"
                               }
@@ -534,7 +532,7 @@ function SearchComp(props: {
                           </View>
                           <View>
                             <TextInput
-                              className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                              className={` text-2xl dark:text-white border-b border-violet-200 my-2`}
                               placeholderTextColor={
                                 cS == "light" ? "black" : "#ffffff"
                               }
@@ -554,7 +552,7 @@ function SearchComp(props: {
                           </View>
                           {/* <View>
                             <TextInput
-                              className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                              className={` text-2xl dark:text-white border-b border-violet-200 my-2`}
                               placeholderTextColor={
                                 cS == "light" ? "black" : "#ffffff"
                               }
@@ -582,7 +580,7 @@ function SearchComp(props: {
                 ) : (
                   <>
                     <TextInput
-                      className={` text-xl dark:text-white border-b border-violet-200 my-2`}
+                      className={` text-2xl dark:text-white border-b border-violet-200 my-2`}
                       placeholderTextColor={cS == "light" ? "black" : "#ffffff"}
                       placeholder="公司名稱"
                       onChangeText={(e) => {
@@ -600,8 +598,7 @@ function SearchComp(props: {
                   }}
                   disabled={canPress}
                 >
-                  <Text
-                    className=" dark:text-white text-xl"
+                  <Text allowFontScaling={false}                    className=" dark:text-white text-2xl"
                     style={{ textAlign: "center", textAlignVertical: "center" }}
                   >
                     送出

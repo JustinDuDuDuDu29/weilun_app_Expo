@@ -97,8 +97,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             setCanPress(!canPress);
           }}
         >
-          <Text
-            className="text-xl text-stone-800"
+          <Text allowFontScaling={false}            className="text-2xl text-stone-800"
             style={{ verticalAlign: "middle", textAlign: "center" }}
           >
             {canPress ? "取消" : "編輯照片"}
@@ -200,8 +199,7 @@ function DriverPic({ showOption }: { showOption: boolean }): React.JSX.Element {
             }
           }}
         >
-          <Text
-            className="text-xl text-stone-800"
+          <Text allowFontScaling={false}            className="text-2xl text-stone-800"
             style={{ textAlign: "center", verticalAlign: "middle" }}
           >
             儲存
