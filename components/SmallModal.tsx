@@ -92,6 +92,7 @@ function SmallModal({
                 <TextInput
                   onChangeText={(e) => {
                     setTmpNew((prev: mInfoT) => {
+                      e = e == "" ? 0 : e;
                       return { ...prev, quantity: parseInt(e) };
                     });
                   }}
@@ -111,6 +112,7 @@ function SmallModal({
                   <TextInput
                     onChangeText={(e) => {
                       setTmpNew((prev: mInfoT) => {
+                        e = e == "" ? 0 : e;
                         return { ...prev, totalPrice: parseInt(e) };
                       });
                     }}

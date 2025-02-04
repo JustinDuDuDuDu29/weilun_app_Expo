@@ -221,10 +221,10 @@ function MaintainInfo({
         <UploadPicFCJob src={jobPic} />
       </View>
       {getUserInfo?.Role <= 200 && (
-        <View className="flex flex-row justify-around">
+        <View className="flex flex-row justify-around flex-wrap">
           {!mInfo?.Approveddate.Valid && (
             <Pressable
-              className="bg-cyan-200 dark:bg-cyan-400 rounded-xl px-20 py-3"
+              className="bg-cyan-200 dark:bg-cyan-400 rounded-xl px-16 py-3"
               onPress={() => {
                 Alert.alert(
                   "注意",
@@ -248,13 +248,13 @@ function MaintainInfo({
             </Pressable>
           )}
           <Pressable
-            className="bg-green-200 dark:bg-green-400 rounded-xl px-20 py-3"
+            className="bg-green-200 dark:bg-green-400 rounded-xl px-16 py-3"
             onPress={() => updatePrices()}
           >
             <Text className="text-lg">儲存修改</Text>
           </Pressable>
           <Pressable
-            className="bg-red-200 dark:bg-red-400 rounded-xl px-20 py-3"
+            className="bg-red-200 dark:bg-red-400 rounded-xl px-16 py-3"
             onPress={() => {
               Alert.alert(
                 "注意",

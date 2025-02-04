@@ -183,7 +183,7 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
     if (tmpNew.itemName === "" || tmpNew.totalPrice === 0 || tmpNew.quantity === 0) {
       // console.log(tmpNew)
 
-      Alert.alert("注意", "3好像有東西沒填齊唷", [{ text: "OK" }]);
+      Alert.alert("注意", "好像有東西沒填齊唷", [{ text: "OK" }]);
       return;
     }
 
@@ -233,6 +233,13 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
   };
 
   const handleSubmit = async () => {
+    console.log(gasLiter.length)
+    if (gasLiter.length == 0) {
+      Alert.alert("錯誤", "似乎有東西沒有填好呢", [{ text: "OK" }])
+      clearD();
+
+      return
+    }
     setCanPress(true);
     const f = new FormData();
 
@@ -378,6 +385,10 @@ function Gas({ uid }: { uid: number }): React.JSX.Element {
         //                 return;
         //               }
         //             }
+                  if (gasLiter.length == 0) {
+                    Alert.alert("錯誤", "似乎有東西沒有填好呢", [{ text: "OK" }])
+                    return
+                  }
                     setPicModalV(true);
                   }}
                 >

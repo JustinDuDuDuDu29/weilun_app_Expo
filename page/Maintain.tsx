@@ -240,6 +240,8 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
       setGasLiter(arr);
     }
     if (gasLiter.length === 0) {
+      
+      Alert.alert("錯誤", "似乎有東西沒有填好呢", [{ text: "OK" }])
       clearD();
       return;
     }
@@ -350,17 +352,21 @@ function Maintain({ uid }: { uid: number }): React.JSX.Element {
               <View className="bg-blue-400 py-3 mt-3 rounded-xl">
                 <Pressable
                   onPress={async () => {
-                    if (type === "gas") {
-                      if (
-                        tmpNew.itemName === "" ||
-                        // tmpNew.totalPrice === 0 ||
-                        tmpNew.quantity === 0
-                      ) {
-                        Alert.alert("注意", "好像有東西沒填齊唷", [
-                          { text: "OK" },
-                        ]);
-                        return;
-                      }
+                    // if (type === "gas") {
+                    //   if (
+                    //     tmpNew.itemName === "" ||
+                    //     // tmpNew.totalPrice === 0 ||
+                    //     tmpNew.quantity === 0
+                    //   ) {
+                    //     Alert.alert("注意", "好像有東西沒填齊唷", [
+                    //       { text: "OK" },
+                    //     ]);
+                    //     return;
+                    //   }
+                    // }
+                    if (gasLiter.length == 0) {
+                      Alert.alert("錯誤", "似乎有東西沒有填好呢", [{ text: "OK" }])
+                      return
                     }
                     setPicModalV(true);
                   }}

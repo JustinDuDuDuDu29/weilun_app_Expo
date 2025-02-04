@@ -66,6 +66,7 @@ function UserInfoBasic({
 
   const deleteUser = async () => {
     try {
+      console.log( OInfo?.ID)
       const res = await callAPI("/api/user", "DELETE", { id: OInfo?.ID }, true);
       if (!res.ok) {
         throw res;
